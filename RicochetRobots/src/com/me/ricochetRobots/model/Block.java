@@ -20,7 +20,7 @@ public class Block {
 	bounds.height = height;
 	this.form = form;
 	this.color = color;
-	texture = new Texture(Gdx.files.internal("data/images/block_" + form + "_" + color + ".png"));
+	texture = new Texture(Gdx.files.internal("data/images/blocks/block_" + form + "_" + color + ".png"));
     }
 
     public Block(Vector2 pos, float size,  String form, String color) {

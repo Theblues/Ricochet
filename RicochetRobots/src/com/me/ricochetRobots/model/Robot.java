@@ -21,7 +21,7 @@ public class Robot {
 	this.bounds.height = SIZE;
 	this.bounds.width = SIZE;
 	this.color = color;
-	texture = new Texture(Gdx.files.internal("data/images/robot_" + color + ".png"));
+	texture = new Texture(Gdx.files.internal("data/images/robots/robot_" + color + ".png"));
     }
 
     public Vector2 getPosition() {
