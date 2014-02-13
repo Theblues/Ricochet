@@ -9,6 +9,8 @@ public class Block {
     protected Texture texture;
     protected Vector2 position;
     protected Rectangle bounds;
+    protected String color;
+    protected String form;
 
     public Block(Vector2 pos, float width, float height,
 	    String form, String color) {
@@ -16,6 +18,8 @@ public class Block {
 	bounds = new Rectangle();
 	bounds.width = width;
 	bounds.height = height;
+	this.form = form;
+	this.color = color;
 	texture = new Texture(Gdx.files.internal("data/images/block_" + form + "_" + color + ".png"));
     }
 
@@ -33,5 +37,13 @@ public class Block {
 
     public Texture getTexture() {
 	return texture;
+    }
+
+    public String getColor() {
+        return color;
+    }
+
+    public String getForm() {
+        return form;
     }
 }

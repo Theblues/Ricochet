@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.me.ricochetRobots.model.Block;
+import com.me.ricochetRobots.model.Robot;
 import com.me.ricochetRobots.model.World;
 
 public class WorldRenderer {
@@ -46,6 +47,7 @@ public class WorldRenderer {
     public void render() {
 	spriteBatch.begin();
 	drawBlocks();
+	drawRobots();
 	spriteBatch.end();
 	if (debug)
 	    drawDebug();
@@ -53,14 +55,19 @@ public class WorldRenderer {
 
     private void drawBlocks() {
 	for (Block block : world.getWorld()) {
-	    if (block.getTexture() != null)
-	    {
 		spriteBatch.draw(block.getTexture(), block.getPosition().x
 			* ppuX, block.getPosition().y * ppuY,
 			block.getBounds().width * ppuX,
 			block.getBounds().height * ppuY);
-	    }
-		
+	}
+    }
+    
+    private void drawRobots() {
+	for (Robot robots : world.getRobots()) {
+		spriteBatch.draw(robots.getTexture(), robots.getPosition().x
+			* ppuX, robots.getPosition().y * ppuY,
+			robots.getBounds().width * ppuX,
+			robots.getBounds().height * ppuY);
 	}
     }
 
