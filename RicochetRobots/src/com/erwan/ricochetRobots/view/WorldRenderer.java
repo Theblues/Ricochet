@@ -27,7 +27,8 @@ public class WorldRenderer {
     public WorldRenderer(World world, boolean debug) {
 	this.world = world;
 	// emplacement de notre fenetre
-	this.cam = new OrthographicCamera(World.SIZE_PLATEAU,World.SIZE_PLATEAU);
+	this.cam = new OrthographicCamera(World.SIZE_PLATEAU,
+		World.SIZE_PLATEAU);
 	this.cam.position.set(World.SIZE_PLATEAU / 2f, World.SIZE_PLATEAU / 2f,
 		0);
 	this.cam.update();
@@ -54,19 +55,18 @@ public class WorldRenderer {
 
     private void drawBlocks() {
 	for (Block block : world.getWorld()) {
-		spriteBatch.draw(block.getTexture(), block.getPosition().x
-			* ppuX, block.getPosition().y * ppuY,
-			block.getBounds().width * ppuX,
-			block.getBounds().height * ppuY);
+	    spriteBatch.draw(block.getTexture(), block.getPosition().x * ppuX,
+		    block.getPosition().y * ppuY, block.getBounds().width
+			    * ppuX, block.getBounds().height * ppuY);
 	}
     }
-    
+
     private void drawRobots() {
 	for (Robot robots : world.getRobots()) {
-		spriteBatch.draw(robots.getTexture(), robots.getPosition().x
-			* ppuX, robots.getPosition().y * ppuY,
-			robots.getBounds().width * ppuX,
-			robots.getBounds().height * ppuY);
+	    spriteBatch.draw(robots.getTexture(),
+		    robots.getPosition().x * ppuX, robots.getPosition().y
+			    * ppuY, robots.getBounds().width * ppuX,
+		    robots.getBounds().height * ppuY);
 	}
     }
 

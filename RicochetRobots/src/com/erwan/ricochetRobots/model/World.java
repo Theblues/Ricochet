@@ -6,8 +6,6 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Random;
 
-import android.util.*;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
@@ -15,13 +13,13 @@ import com.badlogic.gdx.utils.Array;
 public class World {
     public static final float SIZE_PLATEAU = 16;
 
-    private static final String TAG_RICOCHET = "RicochetRobot";
+    public static final String TAG_RICOCHET = "RicochetRobot";
 
     /** The blocks making up the blocks **/
     protected Array<Block> blocks;
     protected Array<Robot> robots;
-    private Random r;
     private ArrayList<Objectif> alObjectif;
+    private Random r;
 
     public World() {
 	blocks = new Array<Block>();
@@ -65,7 +63,7 @@ public class World {
 		String color = tabSplit[2];
 		float x = Integer.parseInt(coordonnee[0]) - 1;
 		float y = SIZE_PLATEAU - Integer.parseInt(coordonnee[1]);
-		Log.i(TAG_RICOCHET, x + " " + y);
+
 		for (int i = 0; i < blocks.size; i++)
 		    if (blocks.get(i).getPosition().x == x
 			    && blocks.get(i).getPosition().y == y)
@@ -96,10 +94,12 @@ public class World {
 	    do {
 		xRand = r.nextInt((int) SIZE_PLATEAU);
 		yRand = r.nextInt((int) SIZE_PLATEAU);
-	    } while (xRand > SIZE_PLATEAU / 2f - 1 && xRand < SIZE_PLATEAU / 2f
-		    && yRand > SIZE_PLATEAU / 2f - 1
-		    && yRand < SIZE_PLATEAU / 2f);
-	    robots.add(new Robot(new Vector2(xRand, yRand), listColor[i]));
+	    } while (xRand >= SIZE_PLATEAU / 2f - 1
+		    && xRand <= SIZE_PLATEAU / 2f
+		    && yRand >= SIZE_PLATEAU / 2f - 1
+		    && yRand <= SIZE_PLATEAU / 2f);
+	    robots.add(new Robot(new Vector2(xRand + 0.1f, yRand + 0.1f),
+		    listColor[i]));
 	}
     }
 

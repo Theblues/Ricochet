@@ -6,7 +6,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
 public class Robot {
-    
+
     static final float SIZE = 0.8f;
 
     protected Vector2 position = new Vector2();
@@ -16,27 +16,36 @@ public class Robot {
 
     public Robot(Vector2 position, String color) {
 	this.position = position;
-	position.x += 0.1;
-	position.y += 0.1;
 	this.bounds.height = SIZE;
 	this.bounds.width = SIZE;
 	this.color = color;
-	texture = new Texture(Gdx.files.internal("data/images/robots/robot_" + color + ".png"));
+	texture = new Texture(Gdx.files.internal("data/images/robots/robot_"
+		+ color + ".png"));
     }
 
     public Vector2 getPosition() {
-        return position;
+	return position;
     }
 
     public Rectangle getBounds() {
-        return bounds;
+	return bounds;
     }
 
     public Texture getTexture() {
-        return texture;
+	return texture;
     }
 
     public String getColor() {
-        return color;
+	return color;
+    }
+
+    public void setPosition(Vector2 position) {
+	this.position = position;
+    }
+
+    @Override
+    public String toString() {
+	return "Robot [position=" + position + ", bounds=" + bounds
+		+ ", texture=" + texture + ", color=" + color + "]";
     }
 }
