@@ -1,7 +1,5 @@
 package com.erwan.ricochetRobots.screen;
 
-import android.util.Log;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
@@ -89,19 +87,18 @@ public class GameScreen implements Screen, InputProcessor {
 	if (Math.abs(screenX - initX) < ppuX + 15f
 		&& Math.abs(screenY - initY) > ppuY + 15f
 		&& screenY - initY < 0)
-	    Log.i(World.TAG_RICOCHET, "touchUp, HAUT");
+	    controller.topPressed(initX, initY, width, height);
 	if (Math.abs(screenX - initX) < ppuX + 15f
 		&& Math.abs(screenY - initY) > ppuY + 15f
 		&& screenY - initY > 0)
-	    Log.i(World.TAG_RICOCHET, "touchUp, BAS");
+	    controller.bottomPressed(initX, initY, width, height);
 	if (Math.abs(screenX - initX) > ppuX + 15f
 		&& Math.abs(screenY - initY) < ppuY + 15f
 		&& screenX - initX < 0)
-	    Log.i(World.TAG_RICOCHET, "touchUp, GAUCHE");
+	    controller.leftPressed(initX, initY, width, height);
 	if (Math.abs(screenX - initX) > ppuX + 15f
 		&& Math.abs(screenY - initY) < ppuY + 15f
 		&& screenX - initX > 0) {
-	    Log.i(World.TAG_RICOCHET, "touchUp, DROITE");
 	    controller.rightPressed(initX, initY, width, height);
 	}
 	return true;
