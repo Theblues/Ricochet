@@ -1,5 +1,9 @@
 package com.erwan.ricochetRobots.screen;
 
+import aurelienribon.tweenengine.Timeline;
+import aurelienribon.tweenengine.Tween;
+import aurelienribon.tweenengine.TweenManager;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.Game;
@@ -7,6 +11,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -16,6 +21,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.erwan.ricochetRobots.tween.ActorAccessor;
 
 public class MenuScreen implements Screen {
 
@@ -29,6 +35,8 @@ public class MenuScreen implements Screen {
     private TextButton btMulti;
     private TextButton btQuitter;
     
+    private TweenManager tweenManager;
+    
     @Override
     public void render(float delta) {
 	Gdx.gl.glClearColor(0,0,0,0);
@@ -41,6 +49,9 @@ public class MenuScreen implements Screen {
     }
     
     public void resize(int width, int height) {
+	stage.setViewport(width, height, true);
+	table.setSize(width, height);
+	table.invalidateHierarchy();
     }
     
     public void show()
@@ -108,6 +119,33 @@ public class MenuScreen implements Screen {
 	table.debug();
 	stage.addActor(table);
 	
+	// creation animations
+	tweenManager = new TweenManager();
+	Tween.registerAccessor(Actor.class, new ActorAccessor());
+	
+	// heading color animation
+	Timeline.createSequence().beginSequence()
+		.push(Tween.to(heading, ActorAccessor.RGB, .5f).target(1,0,0))
+		.push(Tween.to(heading, ActorAccessor.RGB, .5f).target(0,1,0))
+		.push(Tween.to(heading, ActorAccessor.RGB, .5f).target(0,0,1))
+		.push(Tween.to(heading, ActorAccessor.RGB, .5f).target(1,1,0))
+		.push(Tween.to(heading, ActorAccessor.RGB, .5f).target(1,1,1))
+		.end().repeat(Tween.INFINITY, 0.25f).start(tweenManager);
+	
+	// heading and button fadeIn
+	Timeline.createSequence().beginSequence()
+		.push(Tween.set(btSolo, ActorAccessor.ALPHA).target(0))
+		.push(Tween.set(btMulti, ActorAccessor.ALPHA).target(0))
+		.push(Tween.set(btQuitter, ActorAccessor.ALPHA).target(0))
+		.push(Tween.from(heading, ActorAccessor.ALPHA, .25f).target(0))
+		.push(Tween.to(btSolo, ActorAccessor.ALPHA, .5f).target(1))
+		.push(Tween.to(btMulti, ActorAccessor.ALPHA, .5f).target(1))
+		.push(Tween.to(btQuitter, ActorAccessor.ALPHA, .5f).target(1))
+		.end().start(tweenManager);
+	
+	// table fade in
+	Tween.from(table, ActorAccessor.ALPHA, .5f).target(0).start(tweenManager);
+	Tween.from(table, ActorAccessor.Y, .5f).target(Gdx.graphics.getHeight() / 8).start(tweenManager);
     }
     
     @Override
