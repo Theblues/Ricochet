@@ -12,20 +12,15 @@ public class Block {
     protected String color;
     protected String form;
 
-    public Block(Vector2 pos, float width, float height, String form,
-	    String color) {
+    public Block(Vector2 pos, float size, String form, String color) {
 	this.position = pos;
 	bounds = new Rectangle();
-	bounds.width = width;
-	bounds.height = height;
+	bounds.width = size;
+	bounds.height = size;
 	this.form = form;
 	this.color = color;
 	texture = new Texture(Gdx.files.internal("data/images/blocks/block_"
 		+ form + "_" + color + ".png"));
-    }
-
-    public Block(Vector2 pos, float size, String form, String color) {
-	this(pos, size, size, form, color);
     }
 
     public Vector2 getPosition() {

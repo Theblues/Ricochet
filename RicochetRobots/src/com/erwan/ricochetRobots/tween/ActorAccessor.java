@@ -16,7 +16,7 @@ public class ActorAccessor implements TweenAccessor<Actor> {
     public int getValues(Actor target, int tweenType, float[] returnValues) {
 	Gdx.app.log(RicochetRobots.LOG, tweenType + "");
 	switch (tweenType) {
-	case Y :
+	case Y:
 	    returnValues[0] = target.getY();
 	    return 1;
 	case RGB:
@@ -36,7 +36,7 @@ public class ActorAccessor implements TweenAccessor<Actor> {
     @Override
     public void setValues(Actor target, int tweenType, float[] newValues) {
 	switch (tweenType) {
-	case Y :
+	case Y:
 	    target.setY(newValues[0]);
 	    break;
 	case RGB:

@@ -1,6 +1,7 @@
 package com.erwan.ricochetRobots.controller;
 
 import com.badlogic.gdx.math.Vector2;
+import com.erwan.ricochetRobots.model.Mur;
 import com.erwan.ricochetRobots.model.Robot;
 import com.erwan.ricochetRobots.model.World;
 
@@ -10,7 +11,7 @@ public class WorldController {
 
     public WorldController(World world) {
 	this.world = world;
-	
+
     }
 
     public void rightPressed(int initX, int initY, int width, int height) {
@@ -123,7 +124,7 @@ public class WorldController {
 		    + robot.getBounds().height * ppuY;
 
 	    if (Math.abs(initX - coordX) < ppuX + 15f
-		    && Math.abs(initY - coordY) < ppuY + 15f) {		    
+		    && Math.abs(initY - coordY) < ppuY + 15f) {
 		robotMove = robot;
 		break;
 	    }

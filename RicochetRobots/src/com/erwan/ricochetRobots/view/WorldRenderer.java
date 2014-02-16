@@ -3,6 +3,7 @@ package com.erwan.ricochetRobots.view;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.erwan.ricochetRobots.model.Block;
+import com.erwan.ricochetRobots.model.Mur;
 import com.erwan.ricochetRobots.model.Robot;
 import com.erwan.ricochetRobots.model.World;
 import com.erwan.ricochetRobots.screen.GameScreen;
@@ -41,22 +42,35 @@ public class WorldRenderer {
     public void render() {
 	drawBlocks();
 	drawRobots();
+	drawWall();
     }
 
     private void drawBlocks() {
 	for (Block block : world.getWorld()) {
-	    gameScreen.getBatch().draw(block.getTexture(), block.getPosition().x * ppuX,
-		    block.getPosition().y * ppuY, block.getBounds().width
-			    * ppuX, block.getBounds().height * ppuY);
+	    gameScreen.getBatch().draw(block.getTexture(),
+		    block.getPosition().x * ppuX, block.getPosition().y * ppuY,
+		    block.getBounds().width * ppuX,
+		    block.getBounds().height * ppuY);
 	}
     }
 
     private void drawRobots() {
 	for (Robot robots : world.getRobots()) {
 	    gameScreen.getBatch().draw(robots.getTexture(),
-		    robots.getPosition().x * ppuX, robots.getPosition().y
-			    * ppuY, robots.getBounds().width * ppuX,
+		    robots.getPosition().x * ppuX,
+		    robots.getPosition().y * ppuY,
+		    robots.getBounds().width * ppuX,
 		    robots.getBounds().height * ppuY);
+	}
+    }
+
+    private void drawWall() {
+	for (Mur mur : world.getMurs()) {
+	    gameScreen.getBatch()
+		    .draw(mur.getTexture(), mur.getPosition().x * ppuX,
+			    mur.getPosition().y * ppuY,
+			    mur.getBounds().width * ppuX,
+			    mur.getBounds().height * ppuY);
 	}
     }
 }

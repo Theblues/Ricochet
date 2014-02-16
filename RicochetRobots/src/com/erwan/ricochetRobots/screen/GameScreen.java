@@ -10,7 +10,7 @@ import com.erwan.ricochetRobots.model.World;
 import com.erwan.ricochetRobots.view.WorldRenderer;
 
 public class GameScreen implements Screen, InputProcessor {
-   
+
     private SpriteBatch batch;
     private World world;
     private WorldRenderer renderer;
@@ -23,9 +23,9 @@ public class GameScreen implements Screen, InputProcessor {
 
     @Override
     public void render(float delta) {
-	Gdx.gl.glClearColor(0,0,0,0);
+	Gdx.gl.glClearColor(0, 0, 0, 0);
 	Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-	
+
 	batch.begin();
 	renderer.render();
 	batch.end();
@@ -46,7 +46,7 @@ public class GameScreen implements Screen, InputProcessor {
 	controller = new WorldController(world);
 	Gdx.input.setInputProcessor(this);
     }
-    
+
     @Override
     public void hide() {
     }
@@ -124,9 +124,8 @@ public class GameScreen implements Screen, InputProcessor {
     public boolean scrolled(int amount) {
 	return false;
     }
-    
-    public SpriteBatch getBatch()
-    {
+
+    public SpriteBatch getBatch() {
 	return batch;
     }
 }

@@ -16,12 +16,14 @@ public class World {
     /** The blocks making up the blocks **/
     protected Array<Block> blocks;
     protected Array<Robot> robots;
+    protected Array<Mur> murs;
     private ArrayList<Objectif> alObjectif;
     private Random r;
 
     public World() {
 	blocks = new Array<Block>();
 	robots = new Array<Robot>();
+	murs = new Array<Mur>();
 	alObjectif = new ArrayList<Objectif>();
 	r = new Random();
 	createWorld();
@@ -49,8 +51,8 @@ public class World {
 	    /*
 	     * Ouverture du fichier
 	     */
-	    InputStream is = Gdx.files.internal("data/ressources/plateau1.txt")
-		    .read();
+	    InputStream is = Gdx.files
+		    .internal("data/ressources/plateau_1.txt").read();
 	    InputStreamReader isr = new InputStreamReader(is);
 	    BufferedReader br = new BufferedReader(isr);
 	    String ligne;
@@ -59,8 +61,8 @@ public class World {
 		String[] coordonnee = tabSplit[0].split(",");
 		String form = tabSplit[1];
 		String color = tabSplit[2];
-		float x = Integer.parseInt(coordonnee[0]) - 1;
-		float y = SIZE_PLATEAU - Integer.parseInt(coordonnee[1]);
+		float x = Integer.parseInt(coordonnee[0]);
+		float y = Integer.parseInt(coordonnee[1]);
 
 		for (int i = 0; i < blocks.size; i++)
 		    if (blocks.get(i).getPosition().x == x
@@ -103,51 +105,60 @@ public class World {
 
     private void initWall() {
 	initWallBorder();
-	// / TODO le reste des murs
+
+	try {
+	    InputStream is = Gdx.files.internal("data/ressources/wall_1.txt")
+		    .read();
+	    InputStreamReader isr = new InputStreamReader(is);
+	    BufferedReader br = new BufferedReader(isr);
+	    String ligne;
+	    while ((ligne = br.readLine()) != null) {
+		String[] tabSplit = ligne.split(" ");
+		float initX = Float.parseFloat(tabSplit[0]);
+		float initY = Float.parseFloat(tabSplit[1]);
+		float width = Float.parseFloat(tabSplit[2]);
+		float height = Float.parseFloat(tabSplit[3]);
+
+		murs.add(new Mur(new Vector2(initX, initY), width, height));
+	    }
+	    br.close();
+	    isr.close();
+	    is.close();
+	} catch (Exception e) {
+	    System.out.println(e.toString());
+	}
     }
 
     private void initWallBorder() {
 	for (float i = 0f; i < SIZE_PLATEAU; i++) {
 	    for (float j = 0f; j < SIZE_PLATEAU; j++) {
 		if (i == 0f)
-		    blocks.add(new Block(new Vector2(i, j), 0.1f, 1f, "wall",
-			    "black"));
+		    murs.add(new Mur(new Vector2(i, j), 0.1f, 1f));
 		if (i == SIZE_PLATEAU - 1f)
-		    blocks.add(new Block(new Vector2(i + 1f, j), -0.1f, 1f,
-			    "wall", "black"));
+		    murs.add(new Mur(new Vector2(i + 1f, j), -0.1f, 1f));
 		if (j == 0f)
-		    blocks.add(new Block(new Vector2(i, j), 1f, 0.1f, "wall",
-			    "black"));
+		    murs.add(new Mur(new Vector2(i, j), 1f, 0.1f));
 		if (j == SIZE_PLATEAU - 1f)
-		    blocks.add(new Block(new Vector2(i, j + 1f), 1f, -0.1f,
-			    "wall", "black"));
+		    murs.add(new Mur(new Vector2(i, j + 1f), 1f, -0.1f));
 		if (i == (SIZE_PLATEAU / 2f - 1f)
 			&& j == (SIZE_PLATEAU / 2f - 1f)) {
-		    blocks.add(new Block(new Vector2(i, j), 0.1f, 1f, "wall",
-			    "black"));
-		    blocks.add(new Block(new Vector2(i, j), 1f, 0.1f, "wall",
-			    "black"));
+		    murs.add(new Mur(new Vector2(i, j), 0.1f, 1f));
+		    murs.add(new Mur(new Vector2(i, j), 1f, 0.1f));
 		}
 		if (i == (SIZE_PLATEAU / 2f - 1f)
 			&& j == (SIZE_PLATEAU / 2f + 1)) {
-		    blocks.add(new Block(new Vector2(i, j), 0.1f, -1f, "wall",
-			    "black"));
-		    blocks.add(new Block(new Vector2(i, j), 1f, -0.1f, "wall",
-			    "black"));
+		    murs.add(new Mur(new Vector2(i, j - 1), 0.1f, 1f));
+		    murs.add(new Mur(new Vector2(i, j), 1f, -0.1f));
 		}
 		if (i == (SIZE_PLATEAU / 2f + 1f)
 			&& j == (SIZE_PLATEAU / 2f - 1)) {
-		    blocks.add(new Block(new Vector2(i, j), -0.1f, 1f, "wall",
-			    "black"));
-		    blocks.add(new Block(new Vector2(i, j), -1f, 0.1f, "wall",
-			    "black"));
+		    murs.add(new Mur(new Vector2(i, j), -0.1f, 1f));
+		    murs.add(new Mur(new Vector2(i, j), -1f, 0.1f));
 		}
 		if (i == (SIZE_PLATEAU / 2f + 1f)
 			&& j == (SIZE_PLATEAU / 2f + 1)) {
-		    blocks.add(new Block(new Vector2(i, j), -0.1f, -1f, "wall",
-			    "black"));
-		    blocks.add(new Block(new Vector2(i, j), -1f, -0.1f, "wall",
-			    "black"));
+		    murs.add(new Mur(new Vector2(i, j - 1), -0.1f, 1f));
+		    murs.add(new Mur(new Vector2(i, j), -1f, -0.1f));
 		}
 	    }
 	}
@@ -159,5 +170,9 @@ public class World {
 
     public Array<Robot> getRobots() {
 	return robots;
+    }
+
+    public Array<Mur> getMurs() {
+	return murs;
     }
 }
