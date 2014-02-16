@@ -1,8 +1,6 @@
 package com.erwan.ricochetRobots.tween;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.erwan.ricochetRobots.RicochetRobots;
 
 import aurelienribon.tweenengine.TweenAccessor;
 
@@ -14,7 +12,6 @@ public class ActorAccessor implements TweenAccessor<Actor> {
 
     @Override
     public int getValues(Actor target, int tweenType, float[] returnValues) {
-	Gdx.app.log(RicochetRobots.LOG, tweenType + "");
 	switch (tweenType) {
 	case Y:
 	    returnValues[0] = target.getY();

@@ -1,6 +1,8 @@
 package com.erwan.ricochetRobots.controller;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
+import com.erwan.ricochetRobots.RicochetRobots;
 import com.erwan.ricochetRobots.model.Mur;
 import com.erwan.ricochetRobots.model.Robot;
 import com.erwan.ricochetRobots.model.World;
@@ -11,7 +13,6 @@ public class WorldController {
 
     public WorldController(World world) {
 	this.world = world;
-
     }
 
     public void rightPressed(int initX, int initY, int width, int height) {
@@ -34,14 +35,24 @@ public class WorldController {
 	}
 	// on deplace notre robot
 	if (robotMove != null) {
+	    float robotX = robotMove.getPosition().x;
+	    float robotY = robotMove.getPosition().y;
 	    float moveX = World.SIZE_PLATEAU - 1f + 0.1f;
 	    float moveY = robotMove.getPosition().y;
 
 	    for (Robot robot : world.getRobots())
-		if (robot.getPosition().y == robotMove.getPosition().y
-			&& robot.getPosition().x > robotMove.getPosition().x)
-		    if (robot.getPosition().x < moveX)
-			moveX = robot.getPosition().x - 1;
+		if (robot.getPosition().y == robotY)
+		    if (robot.getPosition().x > robotX)
+			if (robot.getPosition().x < moveX)
+			    moveX = robot.getPosition().x - 1;
+	    // on "place" notre robot dans des coordonées normales (9.0,11.0)
+	    robotX -= 0.1f;
+	    robotY -= 0.1f;
+	    for (Mur mur : world.getMurs())
+		if (mur.getPosition().y == robotY)
+		    if (mur.getPosition().x > robotX)
+			if (mur.getPosition().x < moveX)
+			    moveX = mur.getPosition().x-1;
 
 	    // on deplace notre robot
 	    robotMove.setPosition(new Vector2(moveX, moveY));
@@ -66,15 +77,23 @@ public class WorldController {
 	    }
 	}
 	if (robotMove != null) {
+	    float robotX = robotMove.getPosition().x;
+	    float robotY = robotMove.getPosition().y;
 	    float moveX = 0.1f;
 	    float moveY = robotMove.getPosition().y;
 
 	    for (Robot robot : world.getRobots())
-		if (robot.getPosition().y == robotMove.getPosition().y
-			&& robot.getPosition().x < robotMove.getPosition().x)
-		    if (robot.getPosition().x > moveX)
-			moveX = robot.getPosition().x + 1;
-
+		if (robot.getPosition().y == robotY)
+		    if (robot.getPosition().x < robotX)
+			if (robot.getPosition().x > moveX)
+			    moveX = robot.getPosition().x + 1;
+	    robotX -= 0.1f;
+	    robotY -= 0.1f;
+	    for (Mur mur : world.getMurs())
+		if (mur.getPosition().y == robotY)
+		    if (mur.getPosition().x < robotX)
+			if (mur.getPosition().x > moveX)
+			    moveX = mur.getPosition().x;
 	    // on deplace notre robot
 	    robotMove.setPosition(new Vector2(moveX, moveY));
 	}
@@ -98,14 +117,23 @@ public class WorldController {
 	    }
 	}
 	if (robotMove != null) {
+	    float robotX = robotMove.getPosition().x;
+	    float robotY = robotMove.getPosition().y;
 	    float moveX = robotMove.getPosition().x;
 	    float moveY = World.SIZE_PLATEAU - 1f + 0.1f;
 
 	    for (Robot robot : world.getRobots())
-		if (robot.getPosition().x == robotMove.getPosition().x
-			&& robot.getPosition().y > robotMove.getPosition().y)
-		    if (robot.getPosition().y < moveY)
-			moveY = robot.getPosition().y - 1;
+		if (robot.getPosition().x == robotX)
+		    if (robot.getPosition().y > robotY)
+			if (robot.getPosition().y < moveY)
+			    moveY = robotY - 1;
+	    robotX -= 0.1f;
+	    robotY -= 0.1f;
+	    for (Mur mur : world.getMurs())
+		if (mur.getPosition().x == robotX)
+		    if (mur.getPosition().y > robotY)
+			if (mur.getPosition().y < moveY)
+			    moveY = mur.getPosition().y - 1;
 
 	    // on deplace notre robot
 	    robotMove.setPosition(new Vector2(moveX, moveY));
@@ -130,14 +158,23 @@ public class WorldController {
 	    }
 	}
 	if (robotMove != null) {
+	    float robotX = robotMove.getPosition().x;
+	    float robotY = robotMove.getPosition().y;
 	    float moveX = robotMove.getPosition().x;
 	    float moveY = 0.1f;
 
 	    for (Robot robot : world.getRobots())
-		if (robot.getPosition().x == robotMove.getPosition().x
-			&& robot.getPosition().y < robotMove.getPosition().y)
-		    if (robot.getPosition().y > moveY)
-			moveY = robot.getPosition().y + 1;
+		if (robot.getPosition().x == robotX)
+		    if (robot.getPosition().y < robotY)
+			if (robot.getPosition().y > moveY)
+			    moveY = robot.getPosition().y + 1;
+	    robotX -= 0.1f;
+	    robotY -= 0.1f;
+	    for (Mur mur : world.getMurs())
+		if (mur.getPosition().x == robotX)
+		    if (mur.getPosition().y < robotY)
+			if (mur.getPosition().y > moveY)
+			    moveY = mur.getPosition().y;
 	    // on deplace notre robot
 	    robotMove.setPosition(new Vector2(moveX, moveY));
 	}

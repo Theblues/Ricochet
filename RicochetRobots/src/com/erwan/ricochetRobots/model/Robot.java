@@ -42,10 +42,4 @@ public class Robot {
     public void setPosition(Vector2 position) {
 	this.position = position;
     }
-
-    @Override
-    public String toString() {
-	return "Robot [position=" + position + ", bounds=" + bounds
-		+ ", texture=" + texture + ", color=" + color + "]";
-    }
 }
