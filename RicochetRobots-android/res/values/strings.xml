@@ -2,9 +2,5 @@
 <resources>
 
     <string name="app_name">Ricochet Robots</string>
-    <string name="title_activity_menu">Ricochet Robots</string>
-    <string name="action_settings">Paramètres</string>
-    <string name="s_bt_solo">Solo</string>
-    <string name="s_bt_multi">Multijoueur</string>
 
 </resources>

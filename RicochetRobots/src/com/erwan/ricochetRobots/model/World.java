@@ -13,8 +13,6 @@ import com.badlogic.gdx.utils.Array;
 public class World {
     public static final float SIZE_PLATEAU = 16;
 
-    public static final String TAG_RICOCHET = "RicochetRobot";
-
     /** The blocks making up the blocks **/
     protected Array<Block> blocks;
     protected Array<Robot> robots;

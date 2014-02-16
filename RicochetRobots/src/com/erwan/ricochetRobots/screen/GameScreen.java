@@ -3,12 +3,15 @@ package com.erwan.ricochetRobots.screen;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.GL10;
+import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.erwan.ricochetRobots.controller.WorldController;
 import com.erwan.ricochetRobots.model.World;
 import com.erwan.ricochetRobots.view.WorldRenderer;
 
 public class GameScreen implements Screen, InputProcessor {
+   
+    private SpriteBatch batch;
     private World world;
     private WorldRenderer renderer;
     private WorldController controller;
@@ -20,9 +23,12 @@ public class GameScreen implements Screen, InputProcessor {
 
     @Override
     public void render(float delta) {
-	Gdx.gl.glClearColor(0.1f, 0.1f, 0.1f, 1);
-	Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
+	Gdx.gl.glClearColor(0,0,0,0);
+	Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+	
+	batch.begin();
 	renderer.render();
+	batch.end();
     }
 
     @Override
@@ -35,14 +41,14 @@ public class GameScreen implements Screen, InputProcessor {
     @Override
     public void show() {
 	world = new World();
-	renderer = new WorldRenderer(world, false);
+	batch = new SpriteBatch();
+	renderer = new WorldRenderer(this, world);
 	controller = new WorldController(world);
 	Gdx.input.setInputProcessor(this);
     }
-
+    
     @Override
     public void hide() {
-	Gdx.input.setInputProcessor(null);
     }
 
     @Override
@@ -55,7 +61,7 @@ public class GameScreen implements Screen, InputProcessor {
 
     @Override
     public void dispose() {
-	Gdx.input.setInputProcessor(null);
+	batch.dispose();
     }
 
     @Override
@@ -117,5 +123,10 @@ public class GameScreen implements Screen, InputProcessor {
     @Override
     public boolean scrolled(int amount) {
 	return false;
+    }
+    
+    public SpriteBatch getBatch()
+    {
+	return batch;
     }
 }
