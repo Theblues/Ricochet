@@ -1,76 +1,62 @@
 package com.erwan.ricochetRobots.view;
 
-import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.erwan.ricochetRobots.model.Block;
 import com.erwan.ricochetRobots.model.Mur;
 import com.erwan.ricochetRobots.model.Robot;
 import com.erwan.ricochetRobots.model.World;
-import com.erwan.ricochetRobots.screen.GameScreen;
 
-public class WorldRenderer {
-    private GameScreen gameScreen;
+public class WorldRenderer extends Actor {
     private World world;
-    private OrthographicCamera cam;
     private int width;
-    private int height;
+    private float tailleBottom;
 
-    private float ppuX; // pixels per unit on the X axis
-    private float ppuY; // pixels per unit on the Y axis
+    private float ppu; // pixels per unit
 
-    protected ShapeRenderer debugRenderer;
-
-    public WorldRenderer(GameScreen gameScreen, World world) {
-	this.gameScreen = gameScreen;
+    public WorldRenderer(World world) {
 	this.world = world;
-	// emplacement de notre fenetre
-	this.cam = new OrthographicCamera(World.SIZE_PLATEAU,
-		World.SIZE_PLATEAU);
-	this.cam.position.set(World.SIZE_PLATEAU / 2f, World.SIZE_PLATEAU / 2f,
-		0);
-	this.cam.update();
-	debugRenderer = new ShapeRenderer();
     }
 
-    public void setSize(int w, int h) {
+    public void setWidth(int w, float tailleBottom) {
 	this.width = w;
-	this.height = h;
-	ppuX = (float) width / World.SIZE_PLATEAU;
-	ppuY = (float) height / World.SIZE_PLATEAU;
+	ppu = (float) width / World.SIZE_PLATEAU;
+	this.tailleBottom = tailleBottom;
     }
 
-    public void render() {
-	drawBlocks();
-	drawRobots();
-	drawWall();
+    public void draw(Batch batch, float parentAlpha) {
+
+	drawBlocks(batch);
+	drawRobots(batch);
+	drawWall(batch);
+
+	super.draw(batch, parentAlpha);
     }
 
-    private void drawBlocks() {
+    private void drawBlocks(Batch batch) {
 	for (Block block : world.getWorld()) {
-	    gameScreen.getBatch().draw(block.getTexture(),
-		    block.getPosition().x * ppuX, block.getPosition().y * ppuY,
-		    block.getBounds().width * ppuX,
-		    block.getBounds().height * ppuY);
+	    batch.draw(block.getTexture(), block.getPosition().x * ppu,
+		    block.getPosition().y * ppu + tailleBottom,
+		    block.getBounds().width * ppu, block.getBounds().height
+			    * ppu);
 	}
     }
 
-    private void drawRobots() {
+    private void drawRobots(Batch batch) {
 	for (Robot robots : world.getRobots()) {
-	    gameScreen.getBatch().draw(robots.getTexture(),
-		    (robots.getPosition().x + .1f) * ppuX,
-		    (robots.getPosition().y + .1f) * ppuY,
-		    robots.getBounds().width * ppuX,
-		    robots.getBounds().height * ppuY);
+	    batch.draw(robots.getTexture(), (robots.getPosition().x + .1f)
+		    * ppu, (robots.getPosition().y + .1f) * ppu + tailleBottom,
+		    robots.getBounds().width * ppu, robots.getBounds().height
+			    * ppu);
 	}
     }
 
-    private void drawWall() {
+    private void drawWall(Batch batch) {
 	for (Mur mur : world.getMurs()) {
-	    gameScreen.getBatch().draw(mur.getTexture(), 
-		    (mur.getPosition().x - .05f) * ppuX,
-		    (mur.getPosition().y - .05f) * ppuY,
-		    (mur.getBounds().width + .05f) * ppuX,
-		    (mur.getBounds().height + .05f) * ppuY);
+	    batch.draw(mur.getTexture(), (mur.getPosition().x - .05f) * ppu,
+		    (mur.getPosition().y - .05f) * ppu + tailleBottom,
+		    (mur.getBounds().width + .05f) * ppu,
+		    (mur.getBounds().height + .05f) * ppu);
 	}
     }
 }

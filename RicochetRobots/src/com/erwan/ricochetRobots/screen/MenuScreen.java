@@ -46,6 +46,8 @@ public class MenuScreen implements Screen {
 
 	// Table.drawDebug(stage);
 
+	tweenManager.update(delta);
+
 	stage.act(delta);
 	stage.draw();
     }
@@ -96,7 +98,8 @@ public class MenuScreen implements Screen {
 	btMulti.addListener(new ClickListener() {
 	    public void clicked(InputEvent event, float x, float y) {
 		LabelStyle headingStyle = new LabelStyle(fontWhite, Color.RED);
-		Label text = new Label("Accès Multijoueur Impossible", headingStyle);
+		Label text = new Label("Accès Multijoueur Impossible",
+			headingStyle);
 		text.setScale(1.5f);
 
 		WindowStyle ws = new WindowStyle();
@@ -138,19 +141,16 @@ public class MenuScreen implements Screen {
 	// heading color animation
 	Timeline.createSequence()
 		.beginSequence()
-		.push(Tween.to(heading, ActorAccessor.RGB, .5f).target(1, 0, 0))
-		.push(Tween.to(heading, ActorAccessor.RGB, .5f).target(0, 1, 0))
-		.push(Tween.to(heading, ActorAccessor.RGB, .5f).target(0, 0, 1))
 		.push(Tween.to(heading, ActorAccessor.RGB, .5f).target(1, 1, 0))
 		.push(Tween.to(heading, ActorAccessor.RGB, .5f).target(1, 1, 1))
-		.end().repeat(Tween.INFINITY, 0.25f).start(tweenManager);
+		.end().repeat(Tween.INFINITY, 0).start(tweenManager);
 
 	// heading and button fadeIn
 	Timeline.createSequence().beginSequence()
 		.push(Tween.set(btSolo, ActorAccessor.ALPHA).target(0))
 		.push(Tween.set(btMulti, ActorAccessor.ALPHA).target(0))
 		.push(Tween.set(btQuitter, ActorAccessor.ALPHA).target(0))
-		.push(Tween.from(heading, ActorAccessor.ALPHA, .25f).target(0))
+		.push(Tween.from(heading, ActorAccessor.ALPHA, .5f).target(0))
 		.push(Tween.to(btSolo, ActorAccessor.ALPHA, .5f).target(1))
 		.push(Tween.to(btMulti, ActorAccessor.ALPHA, .5f).target(1))
 		.push(Tween.to(btQuitter, ActorAccessor.ALPHA, .5f).target(1))

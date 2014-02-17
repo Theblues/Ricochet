@@ -16,7 +16,7 @@ public class WorldController {
     }
 
     public Robot getRobotMove() {
-        return robotMove;
+	return robotMove;
     }
 
     public void rightPressed() {
@@ -37,10 +37,10 @@ public class WorldController {
 		    if (mur.getPosition().x > robotX)
 			if (mur.getPosition().x < moveX)
 			    if (mur.getBounds().height == 1)
-			    moveX = mur.getPosition().x;
+				moveX = mur.getPosition().x;
 
 	    // on deplace notre robot
-	    robotMove.setPosition(new Vector2(moveX-1, moveY));
+	    robotMove.setPosition(new Vector2(moveX - 1, moveY));
 	}
     }
 
@@ -61,7 +61,7 @@ public class WorldController {
 		    if (mur.getPosition().x <= robotX)
 			if (mur.getPosition().x > moveX)
 			    if (mur.getBounds().height == 1)
-			    moveX = mur.getPosition().x;
+				moveX = mur.getPosition().x;
 	    // on deplace notre robot
 	    robotMove.setPosition(new Vector2(moveX, moveY));
 	}
@@ -84,15 +84,15 @@ public class WorldController {
 		    if (mur.getPosition().y > robotY)
 			if (mur.getPosition().y < moveY)
 			    if (mur.getBounds().width == 1)
-			    moveY = mur.getPosition().y;
+				moveY = mur.getPosition().y;
 
 	    // on deplace notre robot
-	    robotMove.setPosition(new Vector2(moveX, moveY-1));
+	    robotMove.setPosition(new Vector2(moveX, moveY - 1));
 	}
     }
 
     public void bottomPressed() {
-	
+
 	if (robotMove != null) {
 	    float robotX = robotMove.getPosition().x;
 	    float robotY = robotMove.getPosition().y;
@@ -109,27 +109,27 @@ public class WorldController {
 		    if (mur.getPosition().y <= robotY)
 			if (mur.getPosition().y > moveY)
 			    if (mur.getBounds().width == 1)
-			    moveY = mur.getPosition().y;
+				moveY = mur.getPosition().y;
 	    // on deplace notre robot
 	    robotMove.setPosition(new Vector2(moveX, moveY));
 	}
     }
 
-    public void touchDown(int screenX, int screenY, int width, int height) {
-	float ppuX = (float) width / World.SIZE_PLATEAU;
-	float ppuY = (float) height / World.SIZE_PLATEAU;
+    public void touchDown(int screenX, int screenY, int width,
+	    float tailleBottom) {
+	float ppu = (float) width / World.SIZE_PLATEAU;
 	robotMove = null;
 	for (Robot robot : world.getRobots()) {
-	    double coordX = robot.getPosition().x * ppuX
-		    + robot.getBounds().width * ppuX;
-	    double coordY = (World.SIZE_PLATEAU - robot.getPosition().y) * ppuY
-		    + robot.getBounds().height * ppuY;
+	    double coordX = robot.getPosition().x * ppu;
+	    double coordY = (World.SIZE_PLATEAU - robot.getPosition().y) * ppu
+		    + (tailleBottom / 2f);
 
-	    if (Math.abs(screenX - coordX) < ppuX + .25f * ppuX
-		    && Math.abs(screenY - coordY) < ppuY + .25f * ppuY) {
+	    if (Math.abs(screenX - coordX) < ppu + .25f * ppu
+		    && Math.abs(screenY - coordY) < ppu + .25f * ppu) {
 		robotMove = robot;
 		break;
 	    }
-	}	
+	}
+
     }
 }

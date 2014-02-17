@@ -98,8 +98,7 @@ public class World {
 		    && xRand <= SIZE_PLATEAU / 2f
 		    && yRand >= SIZE_PLATEAU / 2f - 1
 		    && yRand <= SIZE_PLATEAU / 2f);
-	    robots.add(new Robot(new Vector2(xRand, yRand),
-		    listColor[i]));
+	    robots.add(new Robot(new Vector2(xRand, yRand), listColor[i]));
 	}
     }
 
