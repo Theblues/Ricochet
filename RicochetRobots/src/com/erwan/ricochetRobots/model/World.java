@@ -98,7 +98,7 @@ public class World {
 		    && xRand <= SIZE_PLATEAU / 2f
 		    && yRand >= SIZE_PLATEAU / 2f - 1
 		    && yRand <= SIZE_PLATEAU / 2f);
-	    robots.add(new Robot(new Vector2(xRand + 0.1f, yRand + 0.1f),
+	    robots.add(new Robot(new Vector2(xRand, yRand),
 		    listColor[i]));
 	}
     }
@@ -133,33 +133,29 @@ public class World {
 	for (float i = 0f; i < SIZE_PLATEAU; i++) {
 	    for (float j = 0f; j < SIZE_PLATEAU; j++) {
 		if (i == 0f)
-		    murs.add(new Mur(new Vector2(i, j), 0.1f, 1f));
+		    murs.add(new Mur(new Vector2(i, j), .1f, 1f));
 		if (i == SIZE_PLATEAU - 1f)
-		    murs.add(new Mur(new Vector2(i + 1f, j), -0.1f, 1f));
+		    murs.add(new Mur(new Vector2(i + 1f, j), .1f, 1f));
 		if (j == 0f)
-		    murs.add(new Mur(new Vector2(i, j), 1f, 0.1f));
+		    murs.add(new Mur(new Vector2(i, j), 1f, .1f));
 		if (j == SIZE_PLATEAU - 1f)
-		    murs.add(new Mur(new Vector2(i, j + 1f), 1f, -0.1f));
-		if (i == (SIZE_PLATEAU / 2f - 1f)
-			&& j == (SIZE_PLATEAU / 2f - 1f)) {
+		    murs.add(new Mur(new Vector2(i, j + 1f), 1f, .1f));
+		if (i == 7 && j == 7) {
 		    murs.add(new Mur(new Vector2(i, j), 0.1f, 1f));
-		    murs.add(new Mur(new Vector2(i, j), 1f, 0.1f));
+		    murs.add(new Mur(new Vector2(i, j), 1f, .1f));
 		}
-		if (i == (SIZE_PLATEAU / 2f - 1f)
-			&& j == (SIZE_PLATEAU / 2f + 1)) {
-		    murs.add(new Mur(new Vector2(i, j - 1), 0.1f, 1f));
-		    murs.add(new Mur(new Vector2(i, j), 1f, -0.1f));
-		}
-		if (i == (SIZE_PLATEAU / 2f + 1f)
-			&& j == (SIZE_PLATEAU / 2f - 1)) {
-		    murs.add(new Mur(new Vector2(i, j), -0.1f, 1f));
-		    murs.add(new Mur(new Vector2(i, j), -1f, 0.1f));
-		}
-		if (i == (SIZE_PLATEAU / 2f + 1f)
-			&& j == (SIZE_PLATEAU / 2f + 1)) {
-		    murs.add(new Mur(new Vector2(i, j - 1), -0.1f, 1f));
-		    murs.add(new Mur(new Vector2(i, j), -1f, -0.1f));
-		}
+		if (i == 7 && j == 8)
+		    murs.add(new Mur(new Vector2(i, j), .1f, 1f));
+		if (i == 7 && j == 9)
+		    murs.add(new Mur(new Vector2(i, j), 1f, .1f));
+		if (i == 8 && j == 7)
+		    murs.add(new Mur(new Vector2(i, j), 1f, .1f));
+		if (i == 8 && j == 9)
+		    murs.add(new Mur(new Vector2(i, j), 1f, .1f));
+		if (i == 9 && j == 7)
+		    murs.add(new Mur(new Vector2(i, j), .1f, 1f));
+		if (i == 9 && j == 8)
+		    murs.add(new Mur(new Vector2(i, j), .1f, 1f));
 	    }
 	}
     }

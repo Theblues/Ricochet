@@ -57,8 +57,8 @@ public class WorldRenderer {
     private void drawRobots() {
 	for (Robot robots : world.getRobots()) {
 	    gameScreen.getBatch().draw(robots.getTexture(),
-		    robots.getPosition().x * ppuX,
-		    robots.getPosition().y * ppuY,
+		    (robots.getPosition().x + .1f) * ppuX,
+		    (robots.getPosition().y + .1f) * ppuY,
 		    robots.getBounds().width * ppuX,
 		    robots.getBounds().height * ppuY);
 	}
@@ -66,11 +66,11 @@ public class WorldRenderer {
 
     private void drawWall() {
 	for (Mur mur : world.getMurs()) {
-	    gameScreen.getBatch()
-		    .draw(mur.getTexture(), mur.getPosition().x * ppuX,
-			    mur.getPosition().y * ppuY,
-			    mur.getBounds().width * ppuX,
-			    mur.getBounds().height * ppuY);
+	    gameScreen.getBatch().draw(mur.getTexture(), 
+		    (mur.getPosition().x - .05f) * ppuX,
+		    (mur.getPosition().y - .05f) * ppuY,
+		    (mur.getBounds().width + .05f) * ppuX,
+		    (mur.getBounds().height + .05f) * ppuY);
 	}
     }
 }

@@ -14,12 +14,15 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
+import com.badlogic.gdx.scenes.scene2d.ui.Window;
+import com.badlogic.gdx.scenes.scene2d.ui.Window.WindowStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.erwan.ricochetRobots.tween.ActorAccessor;
 
@@ -91,6 +94,21 @@ public class MenuScreen implements Screen {
 	});
 	btMulti = new TextButton("Multijoueur", txtBtStyle);
 	btMulti.pad(10f);
+	btMulti.addListener(new ClickListener() {
+	    public void clicked(InputEvent event, float x, float y) {
+		LabelStyle headingStyle = new LabelStyle(fontWhite, Color.RED);
+		Label text = new Label("Accès Multijoueur Impossible", headingStyle);
+		text.setScale(1.5f);
+
+		WindowStyle ws = new WindowStyle();
+		ws.titleFont = fontWhite;
+		Window window = new Window("", ws);
+		window.add(text);
+		window.pack();
+
+		stage.addActor(window);
+	    }
+	});
 	btQuitter = new TextButton("Quitter", txtBtStyle);
 	btQuitter.pad(10f);
 	btQuitter.addListener(new ClickListener() {
