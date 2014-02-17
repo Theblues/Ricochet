@@ -34,7 +34,7 @@ Une fois mis en mouvement, le robot ne peut s'arrêter ou repartir dans une autr
 
 Chaque déplacement de robot compte pour un mouvement, quel que soit le nombre de cases parcourues.
 
-Installation de l'apk
+Installation de l'apllication Android
 ---------------------
 
 - Télécharger le fichier .apk et copier sur le téléphone (dossier Download)
