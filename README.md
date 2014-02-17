@@ -1,6 +1,17 @@
 Ricochet Robot
 ==============
 
+Installation de l'application Android
+---------------------
+
+- Télécharger le fichier .apk et copier sur le téléphone (dossier Download)
+- Sur le téléphone, aller dans __Paramètre__ => __Sécurité__ => Cocher __Sources inconnues__
+- Aller sur l'application [Astro](https://play.google.com/store/apps/details?id=com.metago.astro&hl=fr) 
+- Installer l'application qui ce trouve dans le dossier Download
+    
+Lien d'un [tutoriel](http://www.commentcamarche.net/faq/38861-android-installer-un-apk) si besoin.
+
+
 Structure du jeu :
 ---------------------
 
@@ -33,13 +44,3 @@ Une fois mis en mouvement, le robot ne peut s'arrêter ou repartir dans une autr
 - un autre robot
 
 Chaque déplacement de robot compte pour un mouvement, quel que soit le nombre de cases parcourues.
-
-Installation de l'apllication Android
----------------------
-
-- Télécharger le fichier .apk et copier sur le téléphone (dossier Download)
-- Sur le téléphone, aller dans __Paramètre__ => __Sécurité__ => Cocher __Sources inconnues__
-- Aller sur l'application [Astro](https://play.google.com/store/apps/details?id=com.metago.astro&hl=fr) 
-- Installer l'application qui ce trouve dans le dossier Download
-    
-Lien d'un [tutoriel](http://www.commentcamarche.net/faq/38861-android-installer-un-apk) si besoin.
