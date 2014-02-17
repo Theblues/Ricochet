@@ -29,10 +29,4 @@ public class Mur {
     public Rectangle getBounds() {
 	return bounds;
     }
-
-    @Override
-    public String toString() {
-	return "Mur [texture=" + texture + ", position=" + position
-		+ ", bounds=" + bounds + "]";
-    }
 }
