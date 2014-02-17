@@ -1,7 +1,7 @@
 Ricochet Robot
 ==============
 
-Installation de l'apllication Android
+Installation de l'application Android
 ---------------------
 
 - Télécharger le fichier .apk et copier sur le téléphone (dossier Download)
