@@ -90,20 +90,20 @@ public class GameScreen implements Screen, InputProcessor {
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
 	float ppuX = (float) width / World.SIZE_PLATEAU;
 	float ppuY = (float) height / World.SIZE_PLATEAU;
-	if (Math.abs(screenX - initX) < ppuX + 15f
-		&& Math.abs(screenY - initY) > ppuY + 15f
+	if (Math.abs(screenX - initX) < ppuX + (1 / 4f * ppuX)
+		&& Math.abs(screenY - initY) > ppuY + (1 / 4f * ppuY)
 		&& screenY - initY < 0)
 	    controller.topPressed(initX, initY, width, height);
-	if (Math.abs(screenX - initX) < ppuX + 15f
-		&& Math.abs(screenY - initY) > ppuY + 15f
+	if (Math.abs(screenX - initX) < ppuX + (1 / 4f * ppuX)
+		&& Math.abs(screenY - initY) > ppuY + (1 / 4f * ppuY)
 		&& screenY - initY > 0)
 	    controller.bottomPressed(initX, initY, width, height);
-	if (Math.abs(screenX - initX) > ppuX + 15f
-		&& Math.abs(screenY - initY) < ppuY + 15f
+	if (Math.abs(screenX - initX) > ppuX + (1 / 4f * ppuX)
+		&& Math.abs(screenY - initY) < ppuY + (1 / 4f * ppuY)
 		&& screenX - initX < 0)
 	    controller.leftPressed(initX, initY, width, height);
-	if (Math.abs(screenX - initX) > ppuX + 15f
-		&& Math.abs(screenY - initY) < ppuY + 15f
+	if (Math.abs(screenX - initX) > ppuX + (1 / 4f * ppuX)
+		&& Math.abs(screenY - initY) < ppuY + (1 / 4f * ppuY)
 		&& screenX - initX > 0) {
 	    controller.rightPressed(initX, initY, width, height);
 	}

@@ -81,11 +81,11 @@ public class WorldController {
 	    for (Robot robot : world.getRobots())
 		if (robot.getPosition().y == robotY)
 		    if (robot.getPosition().x < robotX)
-			if (robot.getPosition().x > moveX)
+			if (robot.getPosition().x >= moveX)
 			    moveX = robot.getPosition().x + 1;
 	    for (Mur mur : world.getMurs())
 		if (mur.getPosition().y == robotY)
-		    if (mur.getPosition().x < robotX)
+		    if (mur.getPosition().x <= robotX)
 			if (mur.getPosition().x > moveX)
 			    if (mur.getBounds().height == 1)
 			    moveX = mur.getPosition().x;
@@ -160,11 +160,11 @@ public class WorldController {
 	    for (Robot robot : world.getRobots())
 		if (robot.getPosition().x == robotX)
 		    if (robot.getPosition().y < robotY)
-			if (robot.getPosition().y > moveY)
+			if (robot.getPosition().y >= moveY)
 			    moveY = robot.getPosition().y + 1;
 	    for (Mur mur : world.getMurs())
 		if (mur.getPosition().x == robotX)
-		    if (mur.getPosition().y < robotY)
+		    if (mur.getPosition().y <= robotY)
 			if (mur.getPosition().y > moveY)
 			    if (mur.getBounds().width == 1)
 			    moveY = mur.getPosition().y;
