@@ -111,8 +111,8 @@ public class World {
 		    if (robot.getPosition().x == xRand
 			    && robot.getPosition().y == yRand)
 			pos = false;
-	    } while (!pos && xRand != 8 && xRand != 9 && yRand != 8
-		    && yRand != 9);
+	    } while (!pos || xRand == 8 || xRand == 9 || yRand == 8
+		    || yRand == 9);
 	    robots.add(new Robot(new Vector2(xRand, yRand), listColor[i]));
 	}
     }
@@ -173,11 +173,9 @@ public class World {
 	    }
 	}
     }
-    
-    public void deplacementRobot(Robot robot)
-    {
-	if (objectifAccompli(robot))
-	{
+
+    public void deplacementRobot(Robot robot) {
+	if (objectifAccompli(robot)) {
 	    // on supprime l'objectif de la liste
 	    alObjectif.remove(objectifEnCours);
 	    // on tire un nouvel objectif
@@ -196,12 +194,13 @@ public class World {
 	    if (objectifEnCours.getColor().equals(block.color)
 		    && objectifEnCours.getForm().equals(block.getForm())) {
 		// on verifie les coordonées
-		if (block.getPosition().x == robot.getPosition().x && block.getPosition().y == robot.getPosition().y)
-		// on vérifie que le bloc a la même couleur que le robot
-		if (block.getColor().equals(robot.getColor()))
-		    return true;
-		else if (block.getColor().equals("multi"))
-		    return true;
+		if (block.getPosition().x == robot.getPosition().x
+			&& block.getPosition().y == robot.getPosition().y)
+		    // on vérifie que le bloc a la même couleur que le robot
+		    if (block.getColor().equals(robot.getColor()))
+			return true;
+		    else if (block.getColor().equals("multi"))
+			return true;
 	    }
 	}
 	return false;
@@ -228,14 +227,14 @@ public class World {
     }
 
     public Chronometre getChrono() {
-        return chrono;
+	return chrono;
     }
 
     public String getMessage() {
-        return message;
+	return message;
     }
 
     public void setMessage(String message) {
-        this.message = message;
+	this.message = message;
     }
 }
