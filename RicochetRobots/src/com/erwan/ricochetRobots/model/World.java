@@ -21,7 +21,6 @@ public class World {
     private int nbMouvement;
     private int nbMouvementTotal;
     private Random r;
-    
 
     public World() {
 	blocks = new Array<Block>();
@@ -95,13 +94,15 @@ public class World {
 	int yRand;
 	String[] listColor = { "rouge", "bleu", "jaune", "vert", "noir" };
 	for (int i = 0; i < listColor.length; i++) {
+	    boolean pos;
 	    do {
+		pos = true;
 		xRand = r.nextInt((int) SIZE_PLATEAU);
 		yRand = r.nextInt((int) SIZE_PLATEAU);
-	    } while (xRand >= SIZE_PLATEAU / 2f - 1
-		    && xRand <= SIZE_PLATEAU / 2f
-		    && yRand >= SIZE_PLATEAU / 2f - 1
-		    && yRand <= SIZE_PLATEAU / 2f);
+		for (Robot robot : robots)
+		    if (robot.getPosition().x == xRand && robot.getPosition().y == yRand)
+			pos = false;
+	    } while (!pos && xRand != 8 && xRand != 9 && yRand != 8 && yRand != 9);
 	    robots.add(new Robot(new Vector2(xRand, yRand), listColor[i]));
 	}
     }
@@ -174,12 +175,12 @@ public class World {
     public Array<Mur> getMurs() {
 	return murs;
     }
-    
+
     public int getNbMouvement() {
 	return nbMouvement;
     }
 
     public void setNbMouvement(int nbMouvement) {
-        this.nbMouvement = nbMouvement;
+	this.nbMouvement = nbMouvement;
     }
 }

@@ -1,7 +1,5 @@
 package com.erwan.ricochetRobots.model;
 
-import android.os.Handler;
-
 public class Chronometre {
 
     private long startTime;
