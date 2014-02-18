@@ -4,7 +4,7 @@ Ricochet Robot
 Installation de l'application Android
 ---------------------
 
-- Télécharger le fichier .apk (cliquer sur le lien, puis télécharger grâce au bouton __Raw__)
+- Télécharger le fichier __RicochetRobots-android.apk__ (cliquer sur le lien, puis télécharger grâce au bouton __Raw__)
 - Copier sur votre téléphone Android (dossier Download)
 - Sur votre téléphone, aller dans __Paramètre__ => __Sécurité__ => Cocher __Sources inconnues__
 - Aller sur l'application [Astro](https://play.google.com/store/apps/details?id=com.metago.astro&hl=fr) 
