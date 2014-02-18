@@ -18,6 +18,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
+import com.erwan.ricochetRobots.RicochetRobots;
 import com.erwan.ricochetRobots.controller.WorldController;
 import com.erwan.ricochetRobots.model.World;
 import com.erwan.ricochetRobots.tween.ActorAccessor;
@@ -41,6 +42,7 @@ public class GameScreen implements Screen, InputProcessor {
     private BitmapFont fontBlack;
     private Label heading;
     private Label chrono;
+    private Label mouvement;
     private float tailleBottom;
     private TweenManager tweenManager;
 
@@ -51,7 +53,11 @@ public class GameScreen implements Screen, InputProcessor {
 
 	renderer.setWidth(width, tailleBottom);
 	tweenManager.update(delta);
-
+	
+	if (world.getNbMouvement() < 2)
+	    mouvement.setText("Mouvement : " + world.getNbMouvement());
+	else
+	    mouvement.setText("Mouvements : " + world.getNbMouvement());
 	stage.act(delta);
 	stage.draw();
 	// Table.drawDebug(stage);
@@ -85,25 +91,20 @@ public class GameScreen implements Screen, InputProcessor {
 	int tailleRestante = Gdx.graphics.getHeight() - Gdx.graphics.getWidth();
 	tailleBottom = tailleRestante * 2 / 3f;
 
-	TextButtonStyle txtBtStyle = new TextButtonStyle();
-	txtBtStyle.up = skin.getDrawable("button.up");
-	txtBtStyle.down = skin.getDrawable("button.down");
-	txtBtStyle.pressedOffsetX = 1;
-	txtBtStyle.pressedOffsetY = -1;
-	txtBtStyle.font = fontBlack;
-
 	LabelStyle headingStyle = new LabelStyle(fontWhite, Color.WHITE);
 	heading = new Label("Robot Ricochet", headingStyle);
 	heading.setFontScale(2);
 	chrono = new Label("00:00", headingStyle);
-	chrono.setFontScale(1.5f);
-
+	chrono.setFontScale(1.2f);
+	mouvement = new Label("Mouvement : " + world.getNbMouvement(), headingStyle);
+	mouvement.setFontScale(1.2f);
+	
 	table.add(heading).expandX().height(tailleRestante - tailleBottom);
 	table.row();
 	table.add(renderer).height(Gdx.graphics.getWidth());
-	table.row();
-	// units
-	table.add(chrono).expandX().height(tailleBottom);
+	table.row().height(tailleBottom);
+	table.add(mouvement).width(Gdx.graphics.getWidth() /2f);
+	table.add(chrono).width(Gdx.graphics.getWidth() /2f);
 	table.debug();
 	stage.addActor(table);
 

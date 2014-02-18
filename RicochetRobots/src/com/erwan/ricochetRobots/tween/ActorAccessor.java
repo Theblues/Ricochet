@@ -9,7 +9,6 @@ public class ActorAccessor implements TweenAccessor<Actor> {
     public static final int ALPHA = 0;
     public static final int RGB = 1;
     public static final int Y = 2;
-    public static final int CHRONO = 3;
 
     @Override
     public int getValues(Actor target, int tweenType, float[] returnValues) {

@@ -18,6 +18,8 @@ public class World {
     protected Array<Robot> robots;
     protected Array<Mur> murs;
     private ArrayList<Objectif> alObjectif;
+    private int nbMouvement;
+    private int nbMouvementTotal;
     private Random r;
 
     public World() {
@@ -26,6 +28,7 @@ public class World {
 	murs = new Array<Mur>();
 	alObjectif = new ArrayList<Objectif>();
 	r = new Random();
+	nbMouvement = nbMouvementTotal = 0;
 	createWorld();
     }
 
@@ -169,5 +172,13 @@ public class World {
 
     public Array<Mur> getMurs() {
 	return murs;
+    }
+    
+    public int getNbMouvement() {
+	return nbMouvement;
+    }
+
+    public void setNbMouvement(int nbMouvement) {
+        this.nbMouvement = nbMouvement;
     }
 }
