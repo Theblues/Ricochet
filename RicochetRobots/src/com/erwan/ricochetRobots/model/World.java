@@ -6,6 +6,8 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Random;
 
+import android.os.SystemClock;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
@@ -18,9 +20,13 @@ public class World {
     protected Array<Robot> robots;
     protected Array<Mur> murs;
     private ArrayList<Objectif> alObjectif;
+    private Objectif objectifEnCours;
     private int nbMouvement;
     private int nbMouvementTotal;
     private Random r;
+    private Chronometre chrono;
+    private long chronoTotal;
+    private String message;
 
     public World() {
 	blocks = new Array<Block>();
@@ -29,6 +35,8 @@ public class World {
 	alObjectif = new ArrayList<Objectif>();
 	r = new Random();
 	nbMouvement = nbMouvementTotal = 0;
+	chrono = new Chronometre();
+	message = "";
 	createWorld();
     }
 
@@ -84,9 +92,9 @@ public class World {
 
     private void createMiddle() {
 	float size = SIZE_PLATEAU / 2f;
-	int rand = r.nextInt(alObjectif.size());
+	objectifEnCours = alObjectif.get(r.nextInt(alObjectif.size()));
 	blocks.add(new Block(new Vector2(size - 0.5f, size - 0.5f), 1,
-		alObjectif.get(rand).getForm(), alObjectif.get(rand).getColor()));
+		objectifEnCours.getForm(), objectifEnCours.getColor()));
     }
 
     private void initRobots() {
@@ -100,9 +108,11 @@ public class World {
 		xRand = r.nextInt((int) SIZE_PLATEAU);
 		yRand = r.nextInt((int) SIZE_PLATEAU);
 		for (Robot robot : robots)
-		    if (robot.getPosition().x == xRand && robot.getPosition().y == yRand)
+		    if (robot.getPosition().x == xRand
+			    && robot.getPosition().y == yRand)
 			pos = false;
-	    } while (!pos && xRand != 8 && xRand != 9 && yRand != 8 && yRand != 9);
+	    } while (!pos && xRand != 8 && xRand != 9 && yRand != 8
+		    && yRand != 9);
 	    robots.add(new Robot(new Vector2(xRand, yRand), listColor[i]));
 	}
     }
@@ -163,6 +173,39 @@ public class World {
 	    }
 	}
     }
+    
+    public void deplacementRobot(Robot robot)
+    {
+	if (objectifAccompli(robot))
+	{
+	    // on supprime l'objectif de la liste
+	    alObjectif.remove(objectifEnCours);
+	    // on tire un nouvel objectif
+	    createMiddle();
+	    nbMouvementTotal = nbMouvement;
+	    nbMouvement = 0;
+	    chronoTotal = chrono.getFinalTime();
+	    chrono.setStartTime(SystemClock.uptimeMillis());
+	    message = "Félicitation, vous avez réussi";
+	}
+    }
+
+    private boolean objectifAccompli(Robot robot) {
+	for (Block block : blocks) {
+	    // on vérifie s'il s'agit du bloc objectif
+	    if (objectifEnCours.getColor().equals(block.color)
+		    && objectifEnCours.getForm().equals(block.getForm())) {
+		// on verifie les coordonées
+		if (block.getPosition().x == robot.getPosition().x && block.getPosition().y == robot.getPosition().y)
+		// on vérifie que le bloc a la même couleur que le robot
+		if (block.getColor().equals(robot.getColor()))
+		    return true;
+		else if (block.getColor().equals("multi"))
+		    return true;
+	    }
+	}
+	return false;
+    }
 
     public Array<Block> getWorld() {
 	return blocks;
@@ -182,5 +225,17 @@ public class World {
 
     public void setNbMouvement(int nbMouvement) {
 	this.nbMouvement = nbMouvement;
+    }
+
+    public Chronometre getChrono() {
+        return chrono;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
     }
 }

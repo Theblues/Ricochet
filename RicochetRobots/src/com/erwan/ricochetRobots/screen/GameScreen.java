@@ -18,9 +18,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
-import com.erwan.ricochetRobots.RicochetRobots;
 import com.erwan.ricochetRobots.controller.WorldController;
-import com.erwan.ricochetRobots.model.Chronometre;
 import com.erwan.ricochetRobots.model.World;
 import com.erwan.ricochetRobots.tween.ActorAccessor;
 import com.erwan.ricochetRobots.view.WorldRenderer;
@@ -43,9 +41,9 @@ public class GameScreen implements Screen, InputProcessor {
     private Label heading;
     private Label timer;
     private Label mouvement;
+    private Label message;
     private float tailleBottom;
     private TweenManager tweenManager;
-    protected Chronometre chrono;
 
     @Override
     public void render(float delta) {
@@ -54,23 +52,30 @@ public class GameScreen implements Screen, InputProcessor {
 
 	renderer.setWidth(width, tailleBottom);
 	tweenManager.update(delta);
-	
+
 	if (world.getNbMouvement() < 2)
 	    mouvement.setText("Mouvement : " + world.getNbMouvement());
 	else
 	    mouvement.setText("Mouvements : " + world.getNbMouvement());
-	
-	chrono.setTimeInMillies(SystemClock.uptimeMillis() - chrono.getStartTime());
-	chrono.setFinalTime(chrono.getTimeSwap() + chrono.getTimeInMillies());
 
-	int seconds = (int) (chrono.getFinalTime() / 1000);
+	world.getChrono().setTimeInMillies(
+		SystemClock.uptimeMillis() - world.getChrono().getStartTime());
+	world.getChrono().setFinalTime(
+		world.getChrono().getTimeSwap()
+			+ world.getChrono().getTimeInMillies());
+
+	int seconds = (int) (world.getChrono().getFinalTime() / 1000);
 	int minutes = seconds / 60;
 	seconds = seconds % 60;
-	timer.setText("Temps : " + minutes + ":" + String.format("%02d", seconds));
-	
+	timer.setText("Temps : " + minutes + ":"
+		+ String.format("%02d", seconds));
+
+	message.setText(world.getMessage());
+	if (seconds == 10)
+	    world.setMessage("");
 	stage.act(delta);
 	stage.draw();
-	//Table.drawDebug(stage);
+	// Table.drawDebug(stage);
     }
 
     @Override
@@ -91,30 +96,39 @@ public class GameScreen implements Screen, InputProcessor {
 	atlas = new TextureAtlas("ui/button.pack");
 	skin = new Skin(atlas);
 
-	chrono = new Chronometre();
-	
 	fontWhite = new BitmapFont(Gdx.files.internal("font/font_white.fnt"),
 		false);
 	table = new Table(skin);
 	table.setBounds(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-
-	int tailleRestante = Gdx.graphics.getHeight() - Gdx.graphics.getWidth();
-	tailleBottom = tailleRestante * 2 / 3f;
+	table.setFillParent(true);
 
 	LabelStyle headingStyle = new LabelStyle(fontWhite, Color.WHITE);
+
 	heading = new Label("Robot Ricochet", headingStyle);
 	heading.setFontScale(2);
 	timer = new Label("Temps : 0:00", headingStyle);
 	timer.setFontScale(1.2f);
-	mouvement = new Label("Mouvement : " + world.getNbMouvement(), headingStyle);
+	mouvement = new Label("Mouvement : " + world.getNbMouvement(),
+		headingStyle);
 	mouvement.setFontScale(1.2f);
-	
-	table.add(heading).height(tailleRestante - tailleBottom).colspan(2);
+	headingStyle = new LabelStyle(fontWhite, Color.RED);
+	message = new Label(" " + world.getMessage(), headingStyle);
+	mouvement.setFontScale(1.2f);
+
+	int tailleRestante = Gdx.graphics.getHeight() - Gdx.graphics.getWidth();
+	tailleBottom = tailleRestante * 2 / 3f;
+
+	// Creation du tableau
+	table.add(heading).colspan(2).height(tailleRestante - tailleBottom);
 	table.row();
-	table.add(renderer).height(Gdx.graphics.getWidth()).colspan(2);
+	table.add(renderer).colspan(2).height(Gdx.graphics.getWidth());
 	table.row();
-	table.add(mouvement).width(Gdx.graphics.getWidth() /2f).height(tailleBottom);
-	table.add(timer).width(Gdx.graphics.getWidth() /2f).height(tailleBottom);
+	table.add(message).colspan(2);
+	table.row();
+	table.add(mouvement).width(Gdx.graphics.getWidth() / 2f)
+		.height(tailleBottom);
+	table.add(timer).width(Gdx.graphics.getWidth() / 2f)
+		.height(tailleBottom);
 	table.debug();
 	stage.addActor(table);
 
@@ -134,8 +148,8 @@ public class GameScreen implements Screen, InputProcessor {
 		.start(tweenManager);
 	Tween.from(table, ActorAccessor.Y, .5f)
 		.target(Gdx.graphics.getHeight() / 8).start(tweenManager);
-	
-	chrono.setStartTime(SystemClock.uptimeMillis());
+
+	world.getChrono().setStartTime(SystemClock.uptimeMillis());
     }
 
     @Override

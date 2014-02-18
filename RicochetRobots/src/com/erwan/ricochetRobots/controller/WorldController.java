@@ -42,6 +42,7 @@ public class WorldController {
 	    // on deplace notre robot
 	    robotMove.setPosition(new Vector2(moveX - 1, moveY));
 	    world.setNbMouvement(world.getNbMouvement() + 1);
+	    world.deplacementRobot(robotMove);
 	}
     }
 
@@ -66,6 +67,7 @@ public class WorldController {
 	    // on deplace notre robot
 	    robotMove.setPosition(new Vector2(moveX, moveY));
 	    world.setNbMouvement(world.getNbMouvement() + 1);
+	    world.deplacementRobot(robotMove);
 	}
     }
 
@@ -91,6 +93,7 @@ public class WorldController {
 	    // on deplace notre robot
 	    robotMove.setPosition(new Vector2(moveX, moveY - 1));
 	    world.setNbMouvement(world.getNbMouvement() + 1);
+	    world.deplacementRobot(robotMove);
 	}
     }
 
@@ -116,6 +119,7 @@ public class WorldController {
 	    // on deplace notre robot
 	    robotMove.setPosition(new Vector2(moveX, moveY));
 	    world.setNbMouvement(world.getNbMouvement() + 1);
+	    world.deplacementRobot(robotMove);
 	}
     }
 
