@@ -1,5 +1,6 @@
 package com.erwan.ricochetRobots.screen;
 
+import android.os.SystemClock;
 import aurelienribon.tweenengine.Timeline;
 import aurelienribon.tweenengine.Tween;
 import aurelienribon.tweenengine.TweenManager;
@@ -18,8 +19,10 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
+import com.badlogic.gdx.utils.Timer;
 import com.erwan.ricochetRobots.RicochetRobots;
 import com.erwan.ricochetRobots.controller.WorldController;
+import com.erwan.ricochetRobots.model.Chronometre;
 import com.erwan.ricochetRobots.model.World;
 import com.erwan.ricochetRobots.tween.ActorAccessor;
 import com.erwan.ricochetRobots.view.WorldRenderer;
@@ -39,12 +42,12 @@ public class GameScreen implements Screen, InputProcessor {
     private Skin skin;
     private Table table;
     private BitmapFont fontWhite;
-    private BitmapFont fontBlack;
     private Label heading;
-    private Label chrono;
+    private Label timer;
     private Label mouvement;
     private float tailleBottom;
     private TweenManager tweenManager;
+    protected Chronometre chrono;
 
     @Override
     public void render(float delta) {
@@ -58,9 +61,18 @@ public class GameScreen implements Screen, InputProcessor {
 	    mouvement.setText("Mouvement : " + world.getNbMouvement());
 	else
 	    mouvement.setText("Mouvements : " + world.getNbMouvement());
+	
+	chrono.setTimeInMillies(SystemClock.uptimeMillis() - chrono.getStartTime());
+	chrono.setFinalTime(chrono.getTimeSwap() + chrono.getTimeInMillies());
+
+	int seconds = (int) (chrono.getFinalTime() / 1000);
+	int minutes = seconds / 60;
+	seconds = seconds % 60;
+	timer.setText("Temps : " + minutes + ":" + String.format("%02d", seconds));
+	
 	stage.act(delta);
 	stage.draw();
-	// Table.drawDebug(stage);
+	Table.drawDebug(stage);
     }
 
     @Override
@@ -81,8 +93,8 @@ public class GameScreen implements Screen, InputProcessor {
 	atlas = new TextureAtlas("ui/button.pack");
 	skin = new Skin(atlas);
 
-	fontBlack = new BitmapFont(Gdx.files.internal("font/font_black.fnt"),
-		false);
+	chrono = new Chronometre();
+	
 	fontWhite = new BitmapFont(Gdx.files.internal("font/font_white.fnt"),
 		false);
 	table = new Table(skin);
@@ -94,17 +106,17 @@ public class GameScreen implements Screen, InputProcessor {
 	LabelStyle headingStyle = new LabelStyle(fontWhite, Color.WHITE);
 	heading = new Label("Robot Ricochet", headingStyle);
 	heading.setFontScale(2);
-	chrono = new Label("00:00", headingStyle);
-	chrono.setFontScale(1.2f);
+	timer = new Label("Temps : 0:00", headingStyle);
+	timer.setFontScale(1.2f);
 	mouvement = new Label("Mouvement : " + world.getNbMouvement(), headingStyle);
 	mouvement.setFontScale(1.2f);
 	
-	table.add(heading).expandX().height(tailleRestante - tailleBottom);
+	table.add(heading).height(tailleRestante - tailleBottom).colspan(2);
 	table.row();
-	table.add(renderer).height(Gdx.graphics.getWidth());
-	table.row().height(tailleBottom);
-	table.add(mouvement).width(Gdx.graphics.getWidth() /2f);
-	table.add(chrono).width(Gdx.graphics.getWidth() /2f);
+	table.add(renderer).height(Gdx.graphics.getWidth()).colspan(2);
+	table.row();
+	table.add(mouvement).width(Gdx.graphics.getWidth() /2f).height(tailleBottom);
+	table.add(timer).width(Gdx.graphics.getWidth() /2f).height(tailleBottom);
 	table.debug();
 	stage.addActor(table);
 
@@ -124,6 +136,8 @@ public class GameScreen implements Screen, InputProcessor {
 		.start(tweenManager);
 	Tween.from(table, ActorAccessor.Y, .5f)
 		.target(Gdx.graphics.getHeight() / 8).start(tweenManager);
+	
+	chrono.setStartTime(SystemClock.uptimeMillis());
     }
 
     @Override

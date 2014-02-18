@@ -21,6 +21,7 @@ public class World {
     private int nbMouvement;
     private int nbMouvementTotal;
     private Random r;
+    
 
     public World() {
 	blocks = new Array<Block>();
