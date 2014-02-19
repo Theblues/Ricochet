@@ -6,6 +6,8 @@ import aurelienribon.tweenengine.Tween;
 import aurelienribon.tweenengine.TweenManager;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
@@ -18,20 +20,22 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
+import com.erwan.ricochetRobots.RicochetRobots;
+import com.erwan.ricochetRobots.controller.InputController;
 import com.erwan.ricochetRobots.controller.WorldController;
-import com.erwan.ricochetRobots.model.World;
+import com.erwan.ricochetRobots.model.Solo;
 import com.erwan.ricochetRobots.tween.ActorAccessor;
 import com.erwan.ricochetRobots.view.WorldRenderer;
 
-public class GameScreen implements Screen, InputProcessor {
-
-    private World world;
+public class GameScreen implements Screen {
+    
     private WorldRenderer renderer;
     private WorldController controller;
 
     private int initX;
     private int initY;
 
+    private Solo solo;
     private int width, height;
     private Stage stage;
     private TextureAtlas atlas;
@@ -50,29 +54,30 @@ public class GameScreen implements Screen, InputProcessor {
 	Gdx.gl.glClearColor(0, 0, 0, 0);
 	Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+	
 	renderer.setWidth(width, tailleBottom);
 	tweenManager.update(delta);
 
-	if (world.getNbMouvement() < 2)
-	    mouvement.setText("Mouvement : " + world.getNbMouvement());
+	if (solo.getNbMouvement() < 2)
+	    mouvement.setText("Mouvement : " + solo.getNbMouvement());
 	else
-	    mouvement.setText("Mouvements : " + world.getNbMouvement());
+	    mouvement.setText("Mouvements : " + solo.getNbMouvement());
 
-	world.getChrono().setTimeInMillies(
-		SystemClock.uptimeMillis() - world.getChrono().getStartTime());
-	world.getChrono().setFinalTime(
-		world.getChrono().getTimeSwap()
-			+ world.getChrono().getTimeInMillies());
+	solo.getChrono().setTimeInMillies(
+		SystemClock.uptimeMillis() - solo.getChrono().getStartTime());
+	solo.getChrono().setFinalTime(
+		solo.getChrono().getTimeSwap()
+			+ solo.getChrono().getTimeInMillies());
 
-	int seconds = (int) (world.getChrono().getFinalTime() / 1000);
+	int seconds = (int) (solo.getChrono().getFinalTime() / 1000);
 	int minutes = seconds / 60;
 	seconds = seconds % 60;
 	timer.setText("Temps : " + minutes + ":"
 		+ String.format("%02d", seconds));
 
-	message.setText(world.getMessage());
+	message.setText(solo.getMessage());
 	if (seconds == 10)
-	    world.setMessage("");
+	    solo.setMessage("");
 	stage.act(delta);
 	stage.draw();
 	// Table.drawDebug(stage);
@@ -86,12 +91,12 @@ public class GameScreen implements Screen, InputProcessor {
 
     @Override
     public void show() {
-	stage = new Stage();
-
-	world = new World();
-	renderer = new WorldRenderer(world);
-	controller = new WorldController(world);
-	Gdx.input.setInputProcessor(this);
+	stage = new Stage();	
+	
+	
+	solo = new Solo();
+	renderer = new WorldRenderer(solo);
+	controller = new WorldController(solo);
 
 	atlas = new TextureAtlas("ui/button.pack");
 	skin = new Skin(atlas);
@@ -104,15 +109,15 @@ public class GameScreen implements Screen, InputProcessor {
 
 	LabelStyle headingStyle = new LabelStyle(fontWhite, Color.WHITE);
 
-	heading = new Label("Robot Ricochet", headingStyle);
+	heading = new Label("Ricochet Robot", headingStyle);
 	heading.setFontScale(2);
 	timer = new Label("Temps : 0:00", headingStyle);
 	timer.setFontScale(1.2f);
-	mouvement = new Label("Mouvement : " + world.getNbMouvement(),
+	mouvement = new Label("Mouvement : " + solo.getNbMouvement(),
 		headingStyle);
 	mouvement.setFontScale(1.2f);
 	headingStyle = new LabelStyle(fontWhite, Color.RED);
-	message = new Label(" " + world.getMessage(), headingStyle);
+	message = new Label(" " + solo.getMessage(), headingStyle);
 	mouvement.setFontScale(1.2f);
 
 	int tailleRestante = Gdx.graphics.getHeight() - Gdx.graphics.getWidth();
@@ -149,7 +154,50 @@ public class GameScreen implements Screen, InputProcessor {
 	Tween.from(table, ActorAccessor.Y, .5f)
 		.target(Gdx.graphics.getHeight() / 8).start(tweenManager);
 
-	world.getChrono().setStartTime(SystemClock.uptimeMillis());
+	solo.getChrono().setStartTime(SystemClock.uptimeMillis());
+	
+	Gdx.input.setInputProcessor(new InputController() {
+	    @Override
+	    public boolean keyDown(int keycode) {
+		if (keycode == Keys.BACK)
+		    ((Game) Gdx.app.getApplicationListener())
+			.setScreen(new MenuScreen());
+		return true;
+	    }
+	    
+	    @Override
+	    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+		controller.touchDown(screenX, screenY, width, tailleBottom);
+		initX = screenX;
+		initY = screenY;
+		return true;
+	    }
+
+	    @Override
+	    public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+		float ppuX = (float) width / Solo.SIZE_PLATEAU;
+		float ppuY = (float) height / Solo.SIZE_PLATEAU;
+		if (controller.getRobotMove() != null) {
+		    if (Math.abs(screenX - initX) < ppuX + .25f * ppuX
+			    && Math.abs(screenY - initY) > ppuY + .25f * ppuY
+			    && screenY - initY < 0)
+			controller.topPressed();
+		    if (Math.abs(screenX - initX) < ppuX + .25f * ppuX
+			    && Math.abs(screenY - initY) > ppuY + .25f * ppuY
+			    && screenY - initY > 0)
+			controller.bottomPressed();
+		    if (Math.abs(screenX - initX) > ppuX + .25f * ppuX
+			    && Math.abs(screenY - initY) < ppuY + .25f * ppuY
+			    && screenX - initX < 0)
+			controller.leftPressed();
+		    if (Math.abs(screenX - initX) > ppuX + .25f * ppuX
+			    && Math.abs(screenY - initY) < ppuY + .25f * ppuY
+			    && screenX - initX > 0)
+			controller.rightPressed();
+		}
+		return true;
+	    }
+	});
     }
 
     @Override
@@ -166,68 +214,5 @@ public class GameScreen implements Screen, InputProcessor {
 
     @Override
     public void dispose() {
-    }
-
-    @Override
-    public boolean keyDown(int keycode) {
-	return true;
-    }
-
-    @Override
-    public boolean keyUp(int keycode) {
-	return true;
-    }
-
-    @Override
-    public boolean keyTyped(char character) {
-	return false;
-    }
-
-    @Override
-    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-	controller.touchDown(screenX, screenY, width, tailleBottom);
-	initX = screenX;
-	initY = screenY;
-	return true;
-    }
-
-    @Override
-    public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-	float ppuX = (float) width / World.SIZE_PLATEAU;
-	float ppuY = (float) height / World.SIZE_PLATEAU;
-	if (controller.getRobotMove() != null) {
-	    if (Math.abs(screenX - initX) < ppuX + .25f * ppuX
-		    && Math.abs(screenY - initY) > ppuY + .25f * ppuY
-		    && screenY - initY < 0)
-		controller.topPressed();
-	    if (Math.abs(screenX - initX) < ppuX + .25f * ppuX
-		    && Math.abs(screenY - initY) > ppuY + .25f * ppuY
-		    && screenY - initY > 0)
-		controller.bottomPressed();
-	    if (Math.abs(screenX - initX) > ppuX + .25f * ppuX
-		    && Math.abs(screenY - initY) < ppuY + .25f * ppuY
-		    && screenX - initX < 0)
-		controller.leftPressed();
-	    if (Math.abs(screenX - initX) > ppuX + .25f * ppuX
-		    && Math.abs(screenY - initY) < ppuY + .25f * ppuY
-		    && screenX - initX > 0)
-		controller.rightPressed();
-	}
-	return true;
-    }
-
-    @Override
-    public boolean touchDragged(int screenX, int screenY, int pointer) {
-	return false;
-    }
-
-    @Override
-    public boolean mouseMoved(int screenX, int screenY) {
-	return false;
-    }
-
-    @Override
-    public boolean scrolled(int amount) {
-	return false;
     }
 }

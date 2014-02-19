@@ -5,22 +5,22 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.erwan.ricochetRobots.model.Block;
 import com.erwan.ricochetRobots.model.Mur;
 import com.erwan.ricochetRobots.model.Robot;
-import com.erwan.ricochetRobots.model.World;
+import com.erwan.ricochetRobots.model.Solo;
 
 public class WorldRenderer extends Actor {
-    private World world;
+    private Solo solo;
     private int width;
     private float tailleBottom;
 
     private float ppu; // pixels per unit
 
-    public WorldRenderer(World world) {
-	this.world = world;
+    public WorldRenderer(Solo solo) {
+	this.solo = solo;
     }
 
     public void setWidth(int w, float tailleBottom) {
 	this.width = w;
-	ppu = (float) width / World.SIZE_PLATEAU;
+	ppu = (float) width / Solo.SIZE_PLATEAU;
 	this.tailleBottom = tailleBottom;
     }
 
@@ -34,7 +34,7 @@ public class WorldRenderer extends Actor {
     }
 
     private void drawBlocks(Batch batch) {
-	for (Block block : world.getWorld()) {
+	for (Block block : solo.getWorld()) {
 	    batch.draw(block.getTexture(), block.getPosition().x * ppu,
 		    block.getPosition().y * ppu + tailleBottom,
 		    block.getBounds().width * ppu, block.getBounds().height
@@ -43,7 +43,7 @@ public class WorldRenderer extends Actor {
     }
 
     private void drawRobots(Batch batch) {
-	for (Robot robots : world.getRobots()) {
+	for (Robot robots : solo.getRobots()) {
 	    batch.draw(robots.getTexture(), (robots.getPosition().x + .1f)
 		    * ppu, (robots.getPosition().y + .1f) * ppu + tailleBottom,
 		    robots.getBounds().width * ppu, robots.getBounds().height
@@ -52,7 +52,7 @@ public class WorldRenderer extends Actor {
     }
 
     private void drawWall(Batch batch) {
-	for (Mur mur : world.getMurs()) {
+	for (Mur mur : solo.getMurs()) {
 	    batch.draw(mur.getTexture(), (mur.getPosition().x - .05f) * ppu,
 		    (mur.getPosition().y - .05f) * ppu + tailleBottom,
 		    (mur.getBounds().width + .05f) * ppu,

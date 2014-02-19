@@ -35,6 +35,7 @@ public class MenuScreen implements Screen {
     private Label heading;
     private TextButton btSolo;
     private TextButton btMulti;
+    private TextButton btEssai;
     private TextButton btQuitter;
 
     private TweenManager tweenManager;
@@ -82,7 +83,7 @@ public class MenuScreen implements Screen {
 	txtBtStyle.font = fontBlack;
 
 	LabelStyle headingStyle = new LabelStyle(fontWhite, Color.WHITE);
-	heading = new Label("Robot Ricochet", headingStyle);
+	heading = new Label("Ricochet Robot", headingStyle);
 	heading.setFontScale(2);
 
 	btSolo = new TextButton("Solo", txtBtStyle);
@@ -111,6 +112,14 @@ public class MenuScreen implements Screen {
 		stage.addActor(window);
 	    }
 	});
+	btEssai = new TextButton("Essai Box2D", txtBtStyle);
+	btEssai.pad(10f);
+	btEssai.addListener(new ClickListener() {
+	    public void clicked(InputEvent event, float x, float y) {
+		((Game) Gdx.app.getApplicationListener())
+			.setScreen(new EssaiScreen());
+	    }
+	});
 	btQuitter = new TextButton("Quitter", txtBtStyle);
 	btQuitter.pad(10f);
 	btQuitter.addListener(new ClickListener() {
@@ -119,17 +128,19 @@ public class MenuScreen implements Screen {
 	    }
 	});
 
-	table.add(heading).uniform().spaceTop(50);
+	table.add(heading).uniform().spaceTop(30);
 	table.row();
 	// units
-	table.add(btSolo).uniform().fill().spaceTop(50).height(100f);
+	table.add(btSolo).uniform().fill().spaceTop(30).height(100f);
 	// move to the next row
 	table.row();
 	// add the options button in a cell similiar to the start-game button's
 	// cell
-	table.add(btMulti).uniform().fill().spaceTop(50).height(100f);
+	table.add(btMulti).uniform().fill().spaceTop(30).height(100f);
 	table.row();
-	table.add(btQuitter).uniform().fill().spaceTop(50).height(100f);
+	table.add(btEssai).uniform().fill().spaceTop(30).height(100f);
+	table.row();
+	table.add(btQuitter).uniform().fill().spaceTop(30).height(100f);
 
 	table.debug();
 	stage.addActor(table);
@@ -149,10 +160,12 @@ public class MenuScreen implements Screen {
 	Timeline.createSequence().beginSequence()
 		.push(Tween.set(btSolo, ActorAccessor.ALPHA).target(0))
 		.push(Tween.set(btMulti, ActorAccessor.ALPHA).target(0))
+		.push(Tween.set(btEssai, ActorAccessor.ALPHA).target(0))
 		.push(Tween.set(btQuitter, ActorAccessor.ALPHA).target(0))
 		.push(Tween.from(heading, ActorAccessor.ALPHA, .5f).target(0))
 		.push(Tween.to(btSolo, ActorAccessor.ALPHA, .5f).target(1))
 		.push(Tween.to(btMulti, ActorAccessor.ALPHA, .5f).target(1))
+		.push(Tween.to(btEssai, ActorAccessor.ALPHA, .5f).target(1))
 		.push(Tween.to(btQuitter, ActorAccessor.ALPHA, .5f).target(1))
 		.end().start(tweenManager);
 

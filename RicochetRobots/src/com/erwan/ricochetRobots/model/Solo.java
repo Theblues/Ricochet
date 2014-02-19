@@ -12,7 +12,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 
-public class World {
+public class Solo {
     public static final float SIZE_PLATEAU = 16;
 
     /** The blocks making up the blocks **/
@@ -28,7 +28,7 @@ public class World {
     private long chronoTotal;
     private String message;
 
-    public World() {
+    public Solo() {
 	blocks = new Array<Block>();
 	robots = new Array<Robot>();
 	murs = new Array<Mur>();

@@ -1,6 +1,7 @@
 package com.erwan.ricochetRobots;
 
 import android.os.Bundle;
+import android.view.KeyEvent;
 
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
@@ -17,4 +18,13 @@ public class RicochetRobotActivity extends AndroidApplication {
 	config.useGL20 = true;
 	initialize(new RicochetRobots(), config);
     }
+    
+    public boolean onKeyDown(int keyCode, KeyEvent event)  {
+	    if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
+	        // on ne fait rien c'est gérer avec lib gdx.
+	        return true;
+	    }
+
+	    return super.onKeyDown(keyCode, event);
+	}
 }
