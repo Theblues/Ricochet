@@ -111,8 +111,8 @@ public class Solo {
 		    if (robot.getPosition().x == xRand
 			    && robot.getPosition().y == yRand)
 			pos = false;
-	    } while (!pos || xRand == 8 || xRand == 9 || yRand == 8
-		    || yRand == 9);
+	    } while (!pos
+		    || (xRand >= 8 && xRand <= 9 && yRand >= 8 && yRand <= 9));
 	    robots.add(new Robot(new Vector2(xRand, yRand), listColor[i]));
 	}
     }
