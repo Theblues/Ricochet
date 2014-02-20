@@ -26,6 +26,7 @@ public class Solo {
     private Random r;
     private Chronometre chrono;
     private long chronoTotal;
+    private boolean stop;
     private String message;
 
     public Solo() {
@@ -36,6 +37,9 @@ public class Solo {
 	r = new Random();
 	nbMouvement = nbMouvementTotal = 0;
 	chrono = new Chronometre();
+	nbMouvementTotal = 0;
+	chronoTotal = 0l;
+	stop = false;
 	message = "";
 	createWorld();
     }
@@ -75,11 +79,14 @@ public class Solo {
 		float x = Integer.parseInt(coordonnee[0]);
 		float y = Integer.parseInt(coordonnee[1]);
 
+		// on supprime les blocs normaux
 		for (int i = 0; i < blocks.size; i++)
 		    if (blocks.get(i).getPosition().x == x
 			    && blocks.get(i).getPosition().y == y)
 			blocks.removeIndex(i);
+		// on ajoute notre bloc objectif
 		blocks.add(new Block(new Vector2(x, y), 1, form, color));
+		// on l'ajoute a la liste des objectif
 		alObjectif.add(new Objectif(form, color));
 	    }
 	    br.close();
@@ -91,7 +98,9 @@ public class Solo {
     }
 
     private void createMiddle() {
+	blocks.add(new Block(new Vector2(7, 7), 2, "game", "blanc"));
 	float size = SIZE_PLATEAU / 2f;
+	// on ajoute un objectif aléatoire parmis les objectifs disponibles
 	objectifEnCours = alObjectif.get(r.nextInt(alObjectif.size()));
 	blocks.add(new Block(new Vector2(size - 0.5f, size - 0.5f), 1,
 		objectifEnCours.getForm(), objectifEnCours.getColor()));
@@ -105,6 +114,7 @@ public class Solo {
 	    boolean pos;
 	    do {
 		pos = true;
+		// on place aléatoirement nos robots
 		xRand = r.nextInt((int) SIZE_PLATEAU);
 		yRand = r.nextInt((int) SIZE_PLATEAU);
 		for (Robot robot : robots)
@@ -112,7 +122,7 @@ public class Solo {
 			    && robot.getPosition().y == yRand)
 			pos = false;
 	    } while (!pos
-		    || (xRand >= 8 && xRand <= 9 && yRand >= 8 && yRand <= 9));
+		    || (xRand >= 7 && xRand <= 8 && yRand >= 7 && yRand <= 8));
 	    robots.add(new Robot(new Vector2(xRand, yRand), listColor[i]));
 	}
     }
@@ -128,11 +138,12 @@ public class Solo {
 	    String ligne;
 	    while ((ligne = br.readLine()) != null) {
 		String[] tabSplit = ligne.split(" ");
+		// on recupere les coordonées et la taille des murs
 		float initX = Float.parseFloat(tabSplit[0]);
 		float initY = Float.parseFloat(tabSplit[1]);
 		float width = Float.parseFloat(tabSplit[2]);
 		float height = Float.parseFloat(tabSplit[3]);
-
+		// on crée nos murs
 		murs.add(new Mur(new Vector2(initX, initY), width, height));
 	    }
 	    br.close();
@@ -146,6 +157,7 @@ public class Solo {
     private void initWallBorder() {
 	for (float i = 0f; i < SIZE_PLATEAU; i++) {
 	    for (float j = 0f; j < SIZE_PLATEAU; j++) {
+		// on initialise les bords du plateau
 		if (i == 0f)
 		    murs.add(new Mur(new Vector2(i, j), .1f, 1f));
 		if (i == SIZE_PLATEAU - 1f)
@@ -154,6 +166,7 @@ public class Solo {
 		    murs.add(new Mur(new Vector2(i, j), 1f, .1f));
 		if (j == SIZE_PLATEAU - 1f)
 		    murs.add(new Mur(new Vector2(i, j + 1f), 1f, .1f));
+		// on initialise le bloc objectif
 		if (i == 7 && j == 7) {
 		    murs.add(new Mur(new Vector2(i, j), 0.1f, 1f));
 		    murs.add(new Mur(new Vector2(i, j), 1f, .1f));
@@ -175,16 +188,25 @@ public class Solo {
     }
 
     public void deplacementRobot(Robot robot) {
+	// le robot est sur l'objectif
 	if (objectifAccompli(robot)) {
+	    nbMouvementTotal += nbMouvement;
+	    nbMouvement = 0;
+	    chronoTotal += chrono.getFinalTime();
+	    chrono.setStartTime(SystemClock.uptimeMillis());
 	    // on supprime l'objectif de la liste
 	    alObjectif.remove(objectifEnCours);
-	    // on tire un nouvel objectif
-	    createMiddle();
-	    nbMouvementTotal = nbMouvement;
-	    nbMouvement = 0;
-	    chronoTotal = chrono.getFinalTime();
-	    chrono.setStartTime(SystemClock.uptimeMillis());
-	    message = "Félicitation, vous avez réussi";
+	    if (alObjectif.size() > 0) {
+		// on tire un nouvel objectif
+		createMiddle();
+		message = "Objectif suivant !";
+	    } else {
+		nbMouvement = nbMouvementTotal;
+		chrono.setFinalTime(chronoTotal);
+		stop = true;
+		message = "Félicitation ! Vous avez terminé";
+	    }
+
 	}
     }
 
@@ -236,5 +258,9 @@ public class Solo {
 
     public void setMessage(String message) {
 	this.message = message;
+    }
+
+    public boolean getStop() {
+	return stop;
     }
 }

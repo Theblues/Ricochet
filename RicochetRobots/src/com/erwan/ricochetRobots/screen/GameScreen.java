@@ -28,7 +28,7 @@ import com.erwan.ricochetRobots.tween.ActorAccessor;
 import com.erwan.ricochetRobots.view.WorldRenderer;
 
 public class GameScreen implements Screen {
-    
+
     private WorldRenderer renderer;
     private WorldController controller;
 
@@ -54,33 +54,35 @@ public class GameScreen implements Screen {
 	Gdx.gl.glClearColor(0, 0, 0, 0);
 	Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-	
 	renderer.setWidth(width, tailleBottom);
 	tweenManager.update(delta);
 
-	if (solo.getNbMouvement() < 2)
-	    mouvement.setText("Mouvement : " + solo.getNbMouvement());
-	else
-	    mouvement.setText("Mouvements : " + solo.getNbMouvement());
-
-	solo.getChrono().setTimeInMillies(
-		SystemClock.uptimeMillis() - solo.getChrono().getStartTime());
-	solo.getChrono().setFinalTime(
-		solo.getChrono().getTimeSwap()
-			+ solo.getChrono().getTimeInMillies());
+	if (!solo.getStop()) {
+	    solo.getChrono().setTimeInMillies(
+		    SystemClock.uptimeMillis()
+			    - solo.getChrono().getStartTime());
+	    solo.getChrono().setFinalTime(
+		    solo.getChrono().getTimeSwap()
+			    + solo.getChrono().getTimeInMillies());
+	}
 
 	int seconds = (int) (solo.getChrono().getFinalTime() / 1000);
 	int minutes = seconds / 60;
 	seconds = seconds % 60;
-	timer.setText("Temps : " + minutes + ":"
-		+ String.format("%02d", seconds));
-
+	timer.setText("Temps " + ((solo.getStop()) ? "total : " : " : ")
+		+ minutes + ":" + String.format("%02d", seconds));
 	message.setText(solo.getMessage());
+	if (solo.getNbMouvement() < 2)
+	    mouvement.setText("Mouvement : " + solo.getNbMouvement());
+	else
+	    mouvement.setText("Mouvements "
+		    + ((solo.getStop()) ? "totaux : " : " : ")
+		    + solo.getNbMouvement());
 	if (seconds == 10)
 	    solo.setMessage("");
 	stage.act(delta);
 	stage.draw();
-	// Table.drawDebug(stage);
+	//Table.drawDebug(stage);
     }
 
     @Override
@@ -91,9 +93,8 @@ public class GameScreen implements Screen {
 
     @Override
     public void show() {
-	stage = new Stage();	
-	
-	
+	stage = new Stage();
+
 	solo = new Solo();
 	renderer = new WorldRenderer(solo);
 	controller = new WorldController(solo);
@@ -105,35 +106,34 @@ public class GameScreen implements Screen {
 		false);
 	table = new Table(skin);
 	table.setBounds(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-	table.setFillParent(true);
 
 	LabelStyle headingStyle = new LabelStyle(fontWhite, Color.WHITE);
 
 	heading = new Label("Ricochet Robot", headingStyle);
 	heading.setFontScale(2);
 	timer = new Label("Temps : 0:00", headingStyle);
-	timer.setFontScale(1.2f);
+	timer.setFontScale(1.3f);
 	mouvement = new Label("Mouvement : " + solo.getNbMouvement(),
 		headingStyle);
-	mouvement.setFontScale(1.2f);
+	mouvement.setFontScale(1.3f);
 	headingStyle = new LabelStyle(fontWhite, Color.RED);
 	message = new Label(" " + solo.getMessage(), headingStyle);
 	mouvement.setFontScale(1.2f);
 
 	int tailleRestante = Gdx.graphics.getHeight() - Gdx.graphics.getWidth();
-	tailleBottom = tailleRestante * 2 / 3f;
+	tailleBottom = tailleRestante - tailleRestante / 4f;
 
+	int widthScreen = Gdx.graphics.getWidth();
 	// Creation du tableau
-	table.add(heading).colspan(2).height(tailleRestante - tailleBottom);
+	table.add(heading).height(tailleRestante / 4f);
 	table.row();
-	table.add(renderer).colspan(2).height(Gdx.graphics.getWidth());
+	table.add(renderer).height(widthScreen).width(widthScreen).space(0);
 	table.row();
-	table.add(message).colspan(2);
+	table.add(mouvement).height(tailleRestante / 4f);
 	table.row();
-	table.add(mouvement).width(Gdx.graphics.getWidth() / 2f)
-		.height(tailleBottom);
-	table.add(timer).width(Gdx.graphics.getWidth() / 2f)
-		.height(tailleBottom);
+	table.add(timer).height(tailleRestante / 4f);
+	table.row();
+	table.add(message).height(tailleRestante / 4f);
 	table.debug();
 	stage.addActor(table);
 
@@ -155,47 +155,56 @@ public class GameScreen implements Screen {
 		.target(Gdx.graphics.getHeight() / 8).start(tweenManager);
 
 	solo.getChrono().setStartTime(SystemClock.uptimeMillis());
-	
+
 	Gdx.input.setInputProcessor(new InputController() {
 	    @Override
 	    public boolean keyDown(int keycode) {
 		if (keycode == Keys.BACK)
 		    ((Game) Gdx.app.getApplicationListener())
-			.setScreen(new MenuScreen());
-		return true;
-	    }
-	    
-	    @Override
-	    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-		controller.touchDown(screenX, screenY, width, tailleBottom);
-		initX = screenX;
-		initY = screenY;
+			    .setScreen(new MenuScreen());
 		return true;
 	    }
 
 	    @Override
-	    public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-		float ppuX = (float) width / Solo.SIZE_PLATEAU;
-		float ppuY = (float) height / Solo.SIZE_PLATEAU;
-		if (controller.getRobotMove() != null) {
-		    if (Math.abs(screenX - initX) < ppuX + .25f * ppuX
-			    && Math.abs(screenY - initY) > ppuY + .25f * ppuY
-			    && screenY - initY < 0)
-			controller.topPressed();
-		    if (Math.abs(screenX - initX) < ppuX + .25f * ppuX
-			    && Math.abs(screenY - initY) > ppuY + .25f * ppuY
-			    && screenY - initY > 0)
-			controller.bottomPressed();
-		    if (Math.abs(screenX - initX) > ppuX + .25f * ppuX
-			    && Math.abs(screenY - initY) < ppuY + .25f * ppuY
-			    && screenX - initX < 0)
-			controller.leftPressed();
-		    if (Math.abs(screenX - initX) > ppuX + .25f * ppuX
-			    && Math.abs(screenY - initY) < ppuY + .25f * ppuY
-			    && screenX - initX > 0)
-			controller.rightPressed();
+	    public boolean touchDown(int screenX, int screenY, int pointer,
+		    int button) {
+		if (!solo.getStop()) {
+		    Gdx.app.log(RicochetRobots.LOG, tailleBottom + "");
+		    controller.touchDown(screenX, screenY, width, tailleBottom / 3f);
+		    initX = screenX;
+		    initY = screenY;
+		    return true;
 		}
-		return true;
+		return false;
+	    }
+
+	    @Override
+	    public boolean touchUp(int screenX, int screenY, int pointer,
+		    int button) {
+		if (!solo.getStop()) {
+		    float ppuX = (float) width / Solo.SIZE_PLATEAU;
+		    float ppuY = (float) height / Solo.SIZE_PLATEAU;
+		    if (controller.getRobotMove() != null) {
+			if (Math.abs(screenX - initX) < ppuX + .25f * ppuX
+				&& Math.abs(screenY - initY) > ppuY + .25f
+					* ppuY && screenY - initY < 0)
+			    controller.topPressed();
+			if (Math.abs(screenX - initX) < ppuX + .25f * ppuX
+				&& Math.abs(screenY - initY) > ppuY + .25f
+					* ppuY && screenY - initY > 0)
+			    controller.bottomPressed();
+			if (Math.abs(screenX - initX) > ppuX + .25f * ppuX
+				&& Math.abs(screenY - initY) < ppuY + .25f
+					* ppuY && screenX - initX < 0)
+			    controller.leftPressed();
+			if (Math.abs(screenX - initX) > ppuX + .25f * ppuX
+				&& Math.abs(screenY - initY) < ppuY + .25f
+					* ppuY && screenX - initX > 0)
+			    controller.rightPressed();
+		    }
+		    return true;
+		}
+		return false;
 	    }
 	});
     }
