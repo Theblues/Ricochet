@@ -47,6 +47,7 @@ public class GameScreen implements Screen {
     private Label message;
     private float tailleTop;
     private TweenManager tweenManager;
+    private long timePause;
 
     @Override
     public void render(float delta) {
@@ -61,10 +62,9 @@ public class GameScreen implements Screen {
 		    SystemClock.uptimeMillis()
 			    - solo.getChrono().getStartTime());
 	    solo.getChrono().setFinalTime(
-		    solo.getChrono().getTimeSwap()
-			    + solo.getChrono().getTimeInMillies());
+		    solo.getChrono().getTimeInMillies()
+			    - solo.getChrono().getTimeSwap());
 	}
-
 	int seconds = (int) (solo.getChrono().getFinalTime() / 1000);
 	int minutes = seconds / 60;
 	seconds = seconds % 60;
@@ -81,7 +81,7 @@ public class GameScreen implements Screen {
 	    solo.setMessage("");
 	stage.act(delta);
 	stage.draw();
-	//Table.drawDebug(stage);
+	// Table.drawDebug(stage);
     }
 
     @Override
@@ -214,10 +214,14 @@ public class GameScreen implements Screen {
 
     @Override
     public void pause() {
+	timePause = SystemClock.uptimeMillis();
     }
 
     @Override
     public void resume() {
+	long timeInPause = SystemClock.uptimeMillis() - timePause;
+	solo.getChrono().setTimeSwap(
+		solo.getChrono().getTimeSwap() + timeInPause);
     }
 
     @Override

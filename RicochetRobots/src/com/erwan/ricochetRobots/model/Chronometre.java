@@ -6,9 +6,8 @@ public class Chronometre {
     long timeInMillies;
     long timeSwap;
     long finalTime;
-    
-    public Chronometre()
-    {
+
+    public Chronometre() {
 	startTime = 0L;
 	timeInMillies = 0L;
 	timeSwap = 0L;
@@ -16,34 +15,34 @@ public class Chronometre {
     }
 
     public long getStartTime() {
-        return startTime;
+	return startTime;
     }
 
     public void setStartTime(long startTime) {
-        this.startTime = startTime;
+	this.startTime = startTime;
     }
 
     public long getTimeInMillies() {
-        return timeInMillies;
+	return timeInMillies;
     }
 
     public void setTimeInMillies(long timeInMillies) {
-        this.timeInMillies = timeInMillies;
+	this.timeInMillies = timeInMillies;
     }
 
     public long getTimeSwap() {
-        return timeSwap;
+	return timeSwap;
     }
 
     public void setTimeSwap(long timeSwap) {
-        this.timeSwap = timeSwap;
+	this.timeSwap = timeSwap;
     }
 
     public long getFinalTime() {
-        return finalTime;
+	return finalTime;
     }
 
     public void setFinalTime(long finalTime) {
-        this.finalTime = finalTime;
-    }	
+	this.finalTime = finalTime;
+    }
 }

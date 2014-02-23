@@ -123,15 +123,16 @@ public class DeplacementController {
 	}
     }
 
-    public void touchDown(int screenX, int screenY, int width,
-	    float tailleTop) {
+    public void touchDown(int screenX, int screenY, int width, float tailleTop) {
 	float ppu = (float) width / Solo.SIZE_PLATEAU;
 	robotMove = null;
 	for (Robot robot : solo.getRobots()) {
 	    double coordX = robot.getPosition().x * ppu;
-	    double coordY = (Solo.SIZE_PLATEAU - robot.getPosition().y) * ppu + tailleTop;
+	    double coordY = (Solo.SIZE_PLATEAU - robot.getPosition().y) * ppu
+		    + tailleTop;
 
-	    if (screenX > coordX && screenX < coordX + ppu && screenY < coordY && screenY > coordY - ppu) {		
+	    if (screenX > coordX && screenX < coordX + ppu && screenY < coordY
+		    && screenY > coordY - ppu) {
 		robotMove = robot;
 		break;
 	    }

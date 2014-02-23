@@ -29,7 +29,7 @@ public class EssaiScreen implements Screen {
 	Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
 	debugRenderer.render(world, camera.combined);
-	    
+
 	world.step(1 / 45f, 6, 2);
     }
 
@@ -49,7 +49,7 @@ public class EssaiScreen implements Screen {
 	BodyDef robotDef = new BodyDef();
 	robotDef.type = BodyType.DynamicBody;
 	robotDef.position.set(100, 300);
-	
+
 	BodyDef wall = new BodyDef();
 	wall.type = BodyType.StaticBody;
 	wall.position.set(50, -200);
@@ -68,7 +68,7 @@ public class EssaiScreen implements Screen {
 	fixtureDef.restitution = 0.6f; // Make it bounce a little bit
 
 	Body body = world.createBody(robotDef);
-	//body.setLinearVelocity(0.0f, -20.0f);
+	// body.setLinearVelocity(0.0f, -20.0f);
 	// Create our fixture and attach it to the body
 	body.createFixture(fixtureDef);
 

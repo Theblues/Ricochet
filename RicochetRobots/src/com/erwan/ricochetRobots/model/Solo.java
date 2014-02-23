@@ -99,11 +99,13 @@ public class Solo {
 
     private void createMiddle() {
 	blocks.add(new Block(new Vector2(7, 7), 2, "game", "blanc"));
-	float size = SIZE_PLATEAU / 2f;
-	// on ajoute un objectif aléatoire parmis les objectifs disponibles
-	objectifEnCours = alObjectif.get(r.nextInt(alObjectif.size()));
-	blocks.add(new Block(new Vector2(size - 0.5f, size - 0.5f), 1,
-		objectifEnCours.getForm(), objectifEnCours.getColor()));
+	if (alObjectif.size() > 0) {
+	    float size = SIZE_PLATEAU / 2f;
+	    // on ajoute un objectif aléatoire parmis les objectifs disponibles
+	    objectifEnCours = alObjectif.get(r.nextInt(alObjectif.size()));
+	    blocks.add(new Block(new Vector2(size - 0.5f, size - 0.5f), 1,
+		    objectifEnCours.getForm(), objectifEnCours.getColor()));
+	}
     }
 
     private void initRobots() {
@@ -197,8 +199,6 @@ public class Solo {
 	    // on supprime l'objectif de la liste
 	    alObjectif.remove(objectifEnCours);
 	    if (alObjectif.size() > 0) {
-		// on tire un nouvel objectif
-		createMiddle();
 		message = "Objectif suivant !";
 	    } else {
 		nbMouvement = nbMouvementTotal;
@@ -206,6 +206,8 @@ public class Solo {
 		stop = true;
 		message = "Félicitation ! Vous avez terminé";
 	    }
+	    // on tire un nouvel objectif
+	    createMiddle();
 
 	}
     }
