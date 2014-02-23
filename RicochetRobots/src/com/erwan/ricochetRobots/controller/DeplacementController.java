@@ -5,12 +5,12 @@ import com.erwan.ricochetRobots.model.Mur;
 import com.erwan.ricochetRobots.model.Robot;
 import com.erwan.ricochetRobots.model.Solo;
 
-public class WorldController {
+public class DeplacementController {
 
     private Solo solo;
     private Robot robotMove;
 
-    public WorldController(Solo solo) {
+    public DeplacementController(Solo solo) {
 	this.solo = solo;
 	robotMove = null;
     }
@@ -124,16 +124,14 @@ public class WorldController {
     }
 
     public void touchDown(int screenX, int screenY, int width,
-	    float tailleBottom) {
+	    float tailleTop) {
 	float ppu = (float) width / Solo.SIZE_PLATEAU;
 	robotMove = null;
 	for (Robot robot : solo.getRobots()) {
 	    double coordX = robot.getPosition().x * ppu;
-	    double coordY = (Solo.SIZE_PLATEAU - robot.getPosition().y) * ppu
-		    + (tailleBottom / 2f);
+	    double coordY = (Solo.SIZE_PLATEAU - robot.getPosition().y) * ppu + tailleTop;
 
-	    if (Math.abs(screenX - coordX) < ppu + .25f * ppu
-		    && Math.abs(screenY - coordY) < ppu + .25f * ppu) {
+	    if (screenX > coordX && screenX < coordX + ppu && screenY < coordY && screenY > coordY - ppu) {		
 		robotMove = robot;
 		break;
 	    }

@@ -8,7 +8,6 @@ import aurelienribon.tweenengine.TweenManager;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Game;
-import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
@@ -22,7 +21,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.erwan.ricochetRobots.RicochetRobots;
 import com.erwan.ricochetRobots.controller.InputController;
-import com.erwan.ricochetRobots.controller.WorldController;
+import com.erwan.ricochetRobots.controller.DeplacementController;
 import com.erwan.ricochetRobots.model.Solo;
 import com.erwan.ricochetRobots.tween.ActorAccessor;
 import com.erwan.ricochetRobots.view.WorldRenderer;
@@ -30,7 +29,7 @@ import com.erwan.ricochetRobots.view.WorldRenderer;
 public class GameScreen implements Screen {
 
     private WorldRenderer renderer;
-    private WorldController controller;
+    private DeplacementController controller;
 
     private int initX;
     private int initY;
@@ -46,7 +45,7 @@ public class GameScreen implements Screen {
     private Label timer;
     private Label mouvement;
     private Label message;
-    private float tailleBottom;
+    private float tailleTop;
     private TweenManager tweenManager;
 
     @Override
@@ -54,7 +53,7 @@ public class GameScreen implements Screen {
 	Gdx.gl.glClearColor(0, 0, 0, 0);
 	Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-	renderer.setWidth(width, tailleBottom);
+	renderer.setWidth(width, tailleTop);
 	tweenManager.update(delta);
 
 	if (!solo.getStop()) {
@@ -97,7 +96,7 @@ public class GameScreen implements Screen {
 
 	solo = new Solo();
 	renderer = new WorldRenderer(solo);
-	controller = new WorldController(solo);
+	controller = new DeplacementController(solo);
 
 	atlas = new TextureAtlas("ui/button.pack");
 	skin = new Skin(atlas);
@@ -121,7 +120,7 @@ public class GameScreen implements Screen {
 	mouvement.setFontScale(1.2f);
 
 	int tailleRestante = Gdx.graphics.getHeight() - Gdx.graphics.getWidth();
-	tailleBottom = tailleRestante - tailleRestante / 4f;
+	tailleTop = tailleRestante / 4f;
 
 	int widthScreen = Gdx.graphics.getWidth();
 	// Creation du tableau
@@ -169,8 +168,8 @@ public class GameScreen implements Screen {
 	    public boolean touchDown(int screenX, int screenY, int pointer,
 		    int button) {
 		if (!solo.getStop()) {
-		    Gdx.app.log(RicochetRobots.LOG, tailleBottom + "");
-		    controller.touchDown(screenX, screenY, width, tailleBottom / 3f);
+		    Gdx.app.log(RicochetRobots.LOG, tailleTop + "");
+		    controller.touchDown(screenX, screenY, width, tailleTop);
 		    initX = screenX;
 		    initY = screenY;
 		    return true;
