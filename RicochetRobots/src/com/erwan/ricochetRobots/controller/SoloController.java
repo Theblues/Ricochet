@@ -45,7 +45,6 @@ public class SoloController {
 
 	    // on deplace notre robot
 	    robotMove.setPosition(new Vector2(moveX - 1, moveY));
-	    solo.setNbMouvement(solo.getNbMouvement() + 1);
 	    solo.deplacementRobot(robotMove);
 	}
     }
@@ -70,7 +69,6 @@ public class SoloController {
 				moveX = mur.getPosition().x;
 	    // on deplace notre robot
 	    robotMove.setPosition(new Vector2(moveX, moveY));
-	    solo.setNbMouvement(solo.getNbMouvement() + 1);
 	    solo.deplacementRobot(robotMove);
 	}
     }
@@ -96,7 +94,6 @@ public class SoloController {
 
 	    // on deplace notre robot
 	    robotMove.setPosition(new Vector2(moveX, moveY - 1));
-	    solo.setNbMouvement(solo.getNbMouvement() + 1);
 	    solo.deplacementRobot(robotMove);
 	}
     }
@@ -122,6 +119,7 @@ public class SoloController {
 				moveY = mur.getPosition().y;
 	    // on deplace notre robot
 	    robotMove.setPosition(new Vector2(moveX, moveY));
+	    solo.setNbMouvementTotal(solo.getNbMouvementTotal() + 1);
 	    solo.setNbMouvement(solo.getNbMouvement() + 1);
 	    solo.deplacementRobot(robotMove);
 	}

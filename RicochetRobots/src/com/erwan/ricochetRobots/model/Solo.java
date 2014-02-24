@@ -25,7 +25,7 @@ public class Solo {
     private int nbMouvementTotal;
     private Random r;
     private Chronometre chrono;
-    private long chronoTotal;
+    private Chronometre chronoTotal;
     private boolean stop;
     private String message;
 
@@ -37,11 +37,14 @@ public class Solo {
 	r = new Random();
 	nbMouvement = nbMouvementTotal = 0;
 	chrono = new Chronometre();
-	nbMouvementTotal = 0;
-	chronoTotal = 0l;
+	chronoTotal = new Chronometre();
 	stop = false;
 	message = "";
 	createWorld();
+    }
+
+    public ArrayList<Objectif> getAlObjectif() {
+	return alObjectif;
     }
 
     private void createWorld() {
@@ -190,25 +193,24 @@ public class Solo {
     }
 
     public void deplacementRobot(Robot robot) {
+	nbMouvement++;
+	nbMouvementTotal++;
 	// le robot est sur l'objectif
 	if (objectifAccompli(robot)) {
-	    nbMouvementTotal += nbMouvement;
 	    nbMouvement = 0;
-	    chronoTotal += chrono.getFinalTime();
 	    chrono.setStartTime(SystemClock.uptimeMillis());
+	    chrono.setTimeSwap(0);
 	    // on supprime l'objectif de la liste
 	    alObjectif.remove(objectifEnCours);
 	    if (alObjectif.size() > 0) {
 		message = "Objectif suivant !";
 	    } else {
 		nbMouvement = nbMouvementTotal;
-		chrono.setFinalTime(chronoTotal);
 		stop = true;
 		message = "Félicitation ! Vous avez terminé";
 	    }
 	    // on tire un nouvel objectif
 	    createMiddle();
-
 	}
     }
 
@@ -246,10 +248,6 @@ public class Solo {
 	return nbMouvement;
     }
 
-    public void setNbMouvement(int nbMouvement) {
-	this.nbMouvement = nbMouvement;
-    }
-
     public Chronometre getChrono() {
 	return chrono;
     }
@@ -258,11 +256,27 @@ public class Solo {
 	return message;
     }
 
-    public void setMessage(String message) {
-	this.message = message;
+    public int getNbMouvementTotal() {
+	return nbMouvementTotal;
+    }
+
+    public Chronometre getChronoTotal() {
+	return chronoTotal;
     }
 
     public boolean getStop() {
 	return stop;
+    }
+
+    public void setNbMouvement(int nbMouvement) {
+	this.nbMouvement = nbMouvement;
+    }
+
+    public void setMessage(String message) {
+	this.message = message;
+    }
+
+    public void setNbMouvementTotal(int nbMouvementTotal) {
+	this.nbMouvementTotal = nbMouvementTotal;
     }
 }

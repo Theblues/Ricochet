@@ -32,6 +32,7 @@ public class SoloScreen implements Screen {
     private SoloRenderer renderer;
     private SoloController controller;
 
+    private Label nbObjectif;
     private Label nbMouvement;
     private Label timer;
     private Label message;
@@ -58,12 +59,11 @@ public class SoloScreen implements Screen {
 	// the end method does the drawing
 	batch.end();
 
-	if (solo.getNbMouvement() < 2)
-	    nbMouvement.setText("MOUVEMENT : " + solo.getNbMouvement());
-	else
-	    nbMouvement.setText("MOUVEMENTS "
-		    + ((solo.getStop()) ? "TOTAUX : " : " : ")
-		    + solo.getNbMouvement());
+	nbObjectif.setText("NOMBRE D'OBJECTIF REUSSI : "
+		+ (17 - solo.getAlObjectif().size()) + "/17");
+
+	nbMouvement.setText("MOUVEMENTS : " + solo.getNbMouvement()
+		+ " | TOTAL : " + solo.getNbMouvementTotal());
 
 	if (!solo.getStop()) {
 	    solo.getChrono().setTimeInMillies(
@@ -72,14 +72,26 @@ public class SoloScreen implements Screen {
 	    solo.getChrono().setFinalTime(
 		    solo.getChrono().getTimeInMillies()
 			    - solo.getChrono().getTimeSwap());
+	    solo.getChronoTotal().setTimeInMillies(
+		    SystemClock.uptimeMillis()
+			    - solo.getChronoTotal().getStartTime());
+	    solo.getChronoTotal().setFinalTime(
+		    solo.getChronoTotal().getTimeInMillies()
+			    - solo.getChronoTotal().getTimeSwap());
 	}
-	int seconds = (int) (solo.getChrono().getFinalTime() / 1000);
-	int minutes = seconds / 60;
-	seconds = seconds % 60;
-	timer.setText("TEMPS " + ((solo.getStop()) ? "TOTAL : " : " : ")
-		+ minutes + ":" + String.format("%02d", seconds));
+	int secondsChrono = (int) (solo.getChrono().getFinalTime() / 1000);
+	int minutesChrono = secondsChrono / 60;
+	secondsChrono = secondsChrono % 60;
+	int secondsChronoTotal = (int) (solo.getChronoTotal().getFinalTime() / 1000);
+	int minutesChronoTotal = secondsChronoTotal / 60;
+	secondsChronoTotal = secondsChronoTotal % 60;
 
-	if (seconds == 10)
+	timer.setText("TEMPS : " + minutesChrono + ":"
+		+ String.format("%02d", secondsChrono) + " | TOTAL : "
+		+ minutesChronoTotal + ":"
+		+ String.format("%02d", secondsChronoTotal));
+
+	if (secondsChrono == 10)
 	    solo.setMessage("");
 	message.setText(solo.getMessage());
 
@@ -116,38 +128,50 @@ public class SoloScreen implements Screen {
 	renderer = new SoloRenderer(solo, top);
 	controller = new SoloController(solo, top);
 
+	top -= Gdx.graphics.getWidth();
 	fontWhite = new BitmapFont(Gdx.files.internal("font/font_white.fnt"),
 		false);
 
 	LabelStyle style = new LabelStyle(fontWhite, Color.BLACK);
 
+	// LABEL COMPTEUR OBJECTIF
+	nbObjectif = new Label("NOMBRE D'OBJECTIF REUSSI : 0/17", style);
+	nbObjectif.setFontScale(1.3f);
+	width = Gdx.graphics.getWidth();
+	height = nbObjectif.getTextBounds().height + 30;
+	top -= height;
+	nbObjectif.setPosition(0, top);
+	nbObjectif.setSize(width, height);
+
 	// LABEL MOUVEMENT
-	nbMouvement = new Label("MOUVEMENT : 0", style);
-	nbMouvement.setFontScale(1.5f);
+	nbMouvement = new Label("MOUVEMENTS : 0 | TOTAL : 0", style);
+	nbMouvement.setFontScale(1.3f);
 	width = Gdx.graphics.getWidth();
 	height = nbMouvement.getTextBounds().height + 30;
-	top = top - Gdx.graphics.getWidth() - height;
+	top -= height;
 	nbMouvement.setPosition(0, top);
 	nbMouvement.setSize(width, height);
 
 	// LABEL TIME
-	timer = new Label("TEMPS : 0:00", style);
-	timer.setFontScale(1.5f);
+	timer = new Label("TEMPS : 0:00 | TOTAL : 0", style);
+	timer.setFontScale(1.3f);
 	width = Gdx.graphics.getWidth();
 	height = timer.getTextBounds().height + 30;
-	top = top - height;
+	top -= height;
 	timer.setPosition(0, top);
 	timer.setSize(width, height);
 
+	// LABEL MESSAGE
 	style = new LabelStyle(fontWhite, Color.GREEN);
 	message = new Label(" ", style);
 	message.setFontScale(1.5f);
 	width = Gdx.graphics.getWidth();
 	height = message.getTextBounds().height + 30;
-	top = top - height;
+	top -= height;
 	message.setPosition(0, top);
 	message.setSize(width, height);
 
+	stage.addActor(nbObjectif);
 	stage.addActor(nbMouvement);
 	stage.addActor(timer);
 	stage.addActor(message);
@@ -181,10 +205,8 @@ public class SoloScreen implements Screen {
 	    public boolean touchUp(int screenX, int screenY, int pointer,
 		    int button) {
 		if (!solo.getStop()) {
-		    float ppuX = Gdx.graphics.getWidth()
-			    / Solo.SIZE_PLATEAU;
-		    float ppuY = Gdx.graphics.getHeight()
-			    / Solo.SIZE_PLATEAU;
+		    float ppuX = Gdx.graphics.getWidth() / Solo.SIZE_PLATEAU;
+		    float ppuY = Gdx.graphics.getHeight() / Solo.SIZE_PLATEAU;
 		    int depX = Math.abs(screenX - initX);
 		    int depY = Math.abs(screenY - initY);
 		    if (controller.getRobotMove() != null) {
@@ -212,6 +234,7 @@ public class SoloScreen implements Screen {
 	});
 
 	solo.getChrono().setStartTime(SystemClock.uptimeMillis());
+	solo.getChronoTotal().setStartTime(SystemClock.uptimeMillis());
     }
 
     @Override
@@ -228,12 +251,15 @@ public class SoloScreen implements Screen {
 	long timeInPause = SystemClock.uptimeMillis() - timePause;
 	solo.getChrono().setTimeSwap(
 		solo.getChrono().getTimeSwap() + timeInPause);
+	solo.getChronoTotal().setTimeSwap(
+		solo.getChronoTotal().getTimeSwap() + timeInPause);
     }
 
     @Override
     public void dispose() {
 	batch.dispose();
 	titleSprite.getTexture().dispose();
+	fondSprite.getTexture().dispose();
 	stage.dispose();
     }
 }
