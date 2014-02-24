@@ -20,10 +20,11 @@ public class WorldRenderer extends Actor {
 
     public void setWidth(int w, float tailleTop) {
 	this.width = w;
-	ppu = (float) width / Solo.SIZE_PLATEAU;
+	ppu = width / Solo.SIZE_PLATEAU;
 	this.tailleTop = tailleTop;
     }
 
+    @Override
     public void draw(Batch batch, float parentAlpha) {
 
 	drawBlocks(batch);

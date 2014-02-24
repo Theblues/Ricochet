@@ -22,6 +22,7 @@ public class SplashScreen implements Screen {
     private TweenManager tweenManager;
     private Sprite splashSprite;
 
+    @Override
     public void show() {
 	batch = new SpriteBatch();
 	tweenManager = new TweenManager();
@@ -66,6 +67,7 @@ public class SplashScreen implements Screen {
 	batch.end();
     }
 
+    @Override
     public void dispose() {
 	batch.dispose();
 	splashSprite.getTexture().dispose();

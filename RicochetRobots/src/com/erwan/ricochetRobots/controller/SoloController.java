@@ -1,18 +1,22 @@
 package com.erwan.ricochetRobots.controller;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.erwan.ricochetRobots.model.Mur;
 import com.erwan.ricochetRobots.model.Robot;
 import com.erwan.ricochetRobots.model.Solo;
 
-public class DeplacementController {
+public class SoloController {
 
     private Solo solo;
     private Robot robotMove;
 
-    public DeplacementController(Solo solo) {
+    private float top;
+
+    public SoloController(Solo solo, float top) {
 	this.solo = solo;
 	robotMove = null;
+	this.top = top;
     }
 
     public Robot getRobotMove() {
@@ -123,13 +127,15 @@ public class DeplacementController {
 	}
     }
 
-    public void touchDown(int screenX, int screenY, int width, float tailleTop) {
-	float ppu = (float) width / Solo.SIZE_PLATEAU;
+    public void touchDown(int screenX, int screenY) {
+	float ppu = Gdx.graphics.getWidth() / Solo.SIZE_PLATEAU;
 	robotMove = null;
 	for (Robot robot : solo.getRobots()) {
 	    double coordX = robot.getPosition().x * ppu;
-	    double coordY = (Solo.SIZE_PLATEAU - robot.getPosition().y) * ppu
-		    + tailleTop;
+	    // les coordonées du toucher est inversé par rapport au dessin
+	    double coordY = Gdx.graphics.getHeight()
+		    - (top - Gdx.graphics.getWidth() + (robot.getPosition().y)
+			    * ppu);
 
 	    if (screenX > coordX && screenX < coordX + ppu && screenY < coordY
 		    && screenY > coordY - ppu) {

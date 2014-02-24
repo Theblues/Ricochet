@@ -53,12 +53,14 @@ public class MenuScreen implements Screen {
 	stage.draw();
     }
 
+    @Override
     public void resize(int width, int height) {
 	stage.setViewport(width, height, true);
 	table.setSize(width, height);
 	table.invalidateHierarchy();
     }
 
+    @Override
     public void show() {
 	stage = new Stage();
 
@@ -89,14 +91,16 @@ public class MenuScreen implements Screen {
 	btSolo = new TextButton("Solo", txtBtStyle);
 	btSolo.pad(10f);
 	btSolo.addListener(new ClickListener() {
+	    @Override
 	    public void clicked(InputEvent event, float x, float y) {
 		((Game) Gdx.app.getApplicationListener())
-			.setScreen(new GameScreen());
+			.setScreen(new SoloScreen());
 	    }
 	});
 	btMulti = new TextButton("Multijoueur", txtBtStyle);
 	btMulti.pad(10f);
 	btMulti.addListener(new ClickListener() {
+	    @Override
 	    public void clicked(InputEvent event, float x, float y) {
 		LabelStyle headingStyle = new LabelStyle(fontWhite, Color.RED);
 		Label text = new Label("Accès Multijoueur Impossible",
@@ -115,6 +119,7 @@ public class MenuScreen implements Screen {
 	btEssai = new TextButton("Essai Box2D", txtBtStyle);
 	btEssai.pad(10f);
 	btEssai.addListener(new ClickListener() {
+	    @Override
 	    public void clicked(InputEvent event, float x, float y) {
 		((Game) Gdx.app.getApplicationListener())
 			.setScreen(new EssaiScreen());
@@ -123,6 +128,7 @@ public class MenuScreen implements Screen {
 	btQuitter = new TextButton("Quitter", txtBtStyle);
 	btQuitter.pad(10f);
 	btQuitter.addListener(new ClickListener() {
+	    @Override
 	    public void clicked(InputEvent event, float x, float y) {
 		Gdx.app.exit();
 	    }
