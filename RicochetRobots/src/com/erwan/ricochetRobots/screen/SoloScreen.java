@@ -59,7 +59,7 @@ public class SoloScreen implements Screen {
 	// the end method does the drawing
 	batch.end();
 
-	nbObjectif.setText("NOMBRE D'OBJECTIF REUSSI : "
+	nbObjectif.setText("OBJECTIFS REUSSIS : "
 		+ (17 - solo.getAlObjectif().size()) + "/17");
 
 	nbMouvement.setText("MOUVEMENTS : " + solo.getNbMouvement()
@@ -135,39 +135,35 @@ public class SoloScreen implements Screen {
 	LabelStyle style = new LabelStyle(fontWhite, Color.BLACK);
 
 	// LABEL COMPTEUR OBJECTIF
-	nbObjectif = new Label("NOMBRE D'OBJECTIF REUSSI : 0/17", style);
-	nbObjectif.setFontScale(1.3f);
-	width = Gdx.graphics.getWidth();
+	nbObjectif = new Label("OBJECTIFS REUSSIS : 0/17   ", style);
 	height = nbObjectif.getTextBounds().height + 30;
 	top -= height;
+	nbObjectif.setFontScale(width / nbObjectif.getTextBounds().width);
 	nbObjectif.setPosition(0, top);
 	nbObjectif.setSize(width, height);
 
 	// LABEL MOUVEMENT
-	nbMouvement = new Label("MOUVEMENTS : 0 | TOTAL : 0", style);
-	nbMouvement.setFontScale(1.3f);
-	width = Gdx.graphics.getWidth();
+	nbMouvement = new Label("MOUVEMENTS : 0 | TOTAL : 0 ", style);
 	height = nbMouvement.getTextBounds().height + 30;
 	top -= height;
+	nbMouvement.setFontScale(width / nbMouvement.getTextBounds().width);
 	nbMouvement.setPosition(0, top);
 	nbMouvement.setSize(width, height);
 
 	// LABEL TIME
-	timer = new Label("TEMPS : 0:00 | TOTAL : 0", style);
-	timer.setFontScale(1.3f);
-	width = Gdx.graphics.getWidth();
+	timer = new Label("TEMPS : 0:00 | TOTAL : 0:00", style);
 	height = timer.getTextBounds().height + 30;
 	top -= height;
+	timer.setFontScale(width / timer.getTextBounds().width);
 	timer.setPosition(0, top);
 	timer.setSize(width, height);
 
 	// LABEL MESSAGE
 	style = new LabelStyle(fontWhite, Color.GREEN);
-	message = new Label(" ", style);
-	message.setFontScale(1.5f);
-	width = Gdx.graphics.getWidth();
+	message = new Label("                           ", style);
 	height = message.getTextBounds().height + 30;
 	top -= height;
+	message.setFontScale(width / message.getTextBounds().width);
 	message.setPosition(0, top);
 	message.setSize(width, height);
 
