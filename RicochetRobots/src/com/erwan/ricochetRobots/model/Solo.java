@@ -11,6 +11,7 @@ import android.os.SystemClock;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
+import com.erwan.ricochetRobots.RicochetRobots;
 
 public class Solo {
     public static final float SIZE_PLATEAU = 16;
@@ -51,7 +52,8 @@ public class Solo {
 	createBlocks();
 	createBlocksObjectif();
 	createMiddle();
-	initWall();
+	initWallBorder();
+
 	initRobots();
     }
 
@@ -65,49 +67,89 @@ public class Solo {
     }
 
     private void createBlocksObjectif() {
+
+	/*
+	 * Ouverture du fichier
+	 */
+	Array<Integer> liste = new Array<Integer>();
+	liste.add(0);
+	liste.add(1);
+	liste.add(2);
+	liste.add(3);
+	for (int cpt = 0; cpt < 4; cpt++) {
+	    int rand = r.nextInt(liste.size);
+	    int nbPlateau = liste.get(rand);
+	    liste.removeIndex(rand);
+	    int verso = r.nextInt(2);
+	    initWall(cpt, nbPlateau, verso);
+	    try {
+		InputStream is = Gdx.files.internal(
+			"data/ressources/plateau_" + nbPlateau + "_" + verso
+				+ ".txt").read();
+		InputStreamReader isr = new InputStreamReader(is);
+		BufferedReader br = new BufferedReader(isr);
+		String ligne;
+		while ((ligne = br.readLine()) != null) {
+		    String[] tabSplit = ligne.split(" ");
+		    String[] coordonnee = tabSplit[0].split(",");
+
+		    // on effectue nos rotations
+		    coordonnee = rotate(coordonnee, cpt);
+		    // on effectue nos translations
+		    coordonnee = translate(coordonnee, cpt);
+
+		    // on recupere les informations de notre blocs
+		    float x = Float.parseFloat(coordonnee[0]);
+		    float y = Float.parseFloat(coordonnee[1]);
+		    String form = tabSplit[1];
+		    String color = tabSplit[2];
+
+		    // on supprime les blocs normaux
+		    suppressionBlock(x, y);
+
+		    // on ajoute notre bloc objectif
+		    blocks.add(new Block(new Vector2(x, y), 1, form, color));
+		    // on l'ajoute a la liste des objectif
+		    alObjectif.add(new Objectif(form, color));
+		}
+		br.close();
+		isr.close();
+		is.close();
+	    } catch (Exception e) {
+		System.out.println(e.toString());
+	    }
+	}
+    }
+
+    private void initWall(int cpt, int nbPlateau, int verso) {
 	try {
-	    /*
-	     * Ouverture du fichier
-	     */
-	    InputStream is = Gdx.files
-		    .internal("data/ressources/plateau_1.txt").read();
+	    InputStream is = Gdx.files.internal(
+		    "data/ressources/wall_" + nbPlateau + "_" + verso + ".txt")
+		    .read();
 	    InputStreamReader isr = new InputStreamReader(is);
 	    BufferedReader br = new BufferedReader(isr);
 	    String ligne;
 	    while ((ligne = br.readLine()) != null) {
 		String[] tabSplit = ligne.split(" ");
-		String[] coordonnee = tabSplit[0].split(",");
-		String form = tabSplit[1];
-		String color = tabSplit[2];
-		float x = Integer.parseInt(coordonnee[0]);
-		float y = Integer.parseInt(coordonnee[1]);
 
-		// on supprime les blocs normaux
-		for (int i = 0; i < blocks.size; i++)
-		    if (blocks.get(i).getPosition().x == x
-			    && blocks.get(i).getPosition().y == y)
-			blocks.removeIndex(i);
-		// on ajoute notre bloc objectif
-		blocks.add(new Block(new Vector2(x, y), 1, form, color));
-		// on l'ajoute a la liste des objectif
-		alObjectif.add(new Objectif(form, color));
+		// on effectue nos rotations
+		tabSplit = rotateWall(tabSplit, cpt);
+		// on effectue nos translations
+		tabSplit = translate(tabSplit, cpt);
+
+		// on recupere les coordonées et la taille des murs
+		float initX = Float.parseFloat(tabSplit[0]);
+		float initY = Float.parseFloat(tabSplit[1]);
+		float width = Float.parseFloat(tabSplit[2]);
+		float height = Float.parseFloat(tabSplit[3]);
+		// on crée nos murs
+		murs.add(new Mur(new Vector2(initX, initY), width, height));
 	    }
 	    br.close();
 	    isr.close();
 	    is.close();
 	} catch (Exception e) {
 	    System.out.println(e.toString());
-	}
-    }
-
-    private void createMiddle() {
-	blocks.add(new Block(new Vector2(7, 7), 2, "game", "blanc"));
-	if (alObjectif.size() > 0) {
-	    float size = SIZE_PLATEAU / 2f;
-	    // on ajoute un objectif aléatoire parmis les objectifs disponibles
-	    objectifEnCours = alObjectif.get(r.nextInt(alObjectif.size()));
-	    blocks.add(new Block(new Vector2(size - 0.5f, size - 0.5f), 1,
-		    objectifEnCours.getForm(), objectifEnCours.getColor()));
 	}
     }
 
@@ -126,36 +168,26 @@ public class Solo {
 		    if (robot.getPosition().x == xRand
 			    && robot.getPosition().y == yRand)
 			pos = false;
+		// on ne peut pas placer directement sur les cases ojectifs
+		for (Block block : blocks)
+		    if (block.getColor() != "blanc"
+			    && block.getPosition().x == xRand
+			    && block.getPosition().y == yRand)
+			pos = false;
 	    } while (!pos
 		    || (xRand >= 7 && xRand <= 8 && yRand >= 7 && yRand <= 8));
 	    robots.add(new Robot(new Vector2(xRand, yRand), listColor[i]));
 	}
     }
 
-    private void initWall() {
-	initWallBorder();
-
-	try {
-	    InputStream is = Gdx.files.internal("data/ressources/wall_1.txt")
-		    .read();
-	    InputStreamReader isr = new InputStreamReader(is);
-	    BufferedReader br = new BufferedReader(isr);
-	    String ligne;
-	    while ((ligne = br.readLine()) != null) {
-		String[] tabSplit = ligne.split(" ");
-		// on recupere les coordonées et la taille des murs
-		float initX = Float.parseFloat(tabSplit[0]);
-		float initY = Float.parseFloat(tabSplit[1]);
-		float width = Float.parseFloat(tabSplit[2]);
-		float height = Float.parseFloat(tabSplit[3]);
-		// on crée nos murs
-		murs.add(new Mur(new Vector2(initX, initY), width, height));
-	    }
-	    br.close();
-	    isr.close();
-	    is.close();
-	} catch (Exception e) {
-	    System.out.println(e.toString());
+    private void createMiddle() {
+	blocks.add(new Block(new Vector2(7, 7), 2, "game", "blanc"));
+	if (alObjectif.size() > 0) {
+	    float size = SIZE_PLATEAU / 2f;
+	    // on ajoute un objectif aléatoire parmis les objectifs disponibles
+	    objectifEnCours = alObjectif.get(r.nextInt(alObjectif.size()));
+	    blocks.add(new Block(new Vector2(size - 0.5f, size - 0.5f), 1,
+		    objectifEnCours.getForm(), objectifEnCours.getColor()));
 	}
     }
 
@@ -230,6 +262,65 @@ public class Solo {
 	    }
 	}
 	return false;
+    }
+
+    private void suppressionBlock(float x, float y) {
+	for (int i = 0; i < blocks.size; i++)
+	    if (blocks.get(i).getPosition().x == x
+		    && blocks.get(i).getPosition().y == y)
+		blocks.removeIndex(i);
+    }
+
+    private String[] rotate(String[] coordonnee, int cpt) {
+	float x = Float.parseFloat(coordonnee[0]);
+	float y = Float.parseFloat(coordonnee[1]);
+	for (int nbRotate = 0; nbRotate < cpt; nbRotate++) {
+	    float temp = x;
+	    x = y;
+	    y = 7 - temp;
+	}
+	coordonnee[0] = x + "";
+	coordonnee[1] = y + "";
+	return coordonnee;
+    }
+
+    private String[] rotateWall(String[] wall, int cpt) {
+	float x = Float.parseFloat(wall[0]);
+	float y = Float.parseFloat(wall[1]);
+
+	float width = Float.parseFloat(wall[2]);
+	float height = Float.parseFloat(wall[3]);
+
+	for (int nbRotate = 0; nbRotate < cpt; nbRotate++) {
+	    float temp = x;
+
+	    x = y;
+	    y = width > height ? 7 - temp : 8 - temp;
+	    temp = width;
+	    width = height;
+	    height = temp;
+	}
+
+	wall[0] = x + "";
+	wall[1] = y + "";
+	wall[2] = width + "";
+	wall[3] = height + "";
+	return wall;
+    }
+
+    private String[] translate(String[] coordonnee, int cpt) {
+	float x = Float.parseFloat(coordonnee[0]);
+	float y = Float.parseFloat(coordonnee[1]);
+	if (cpt == 1)
+	    y += 8;
+	else if (cpt == 2) {
+	    x += 8;
+	    y += 8;
+	} else if (cpt == 3)
+	    x += 8;
+	coordonnee[0] = x + "";
+	coordonnee[1] = y + "";
+	return coordonnee;
     }
 
     public Array<Block> getWorld() {

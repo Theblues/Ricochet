@@ -1,0 +1,4 @@
+6,4 carre bleu
+4,1 cercle rouge
+3,6 croix jaune
+1,3 triangle vert
