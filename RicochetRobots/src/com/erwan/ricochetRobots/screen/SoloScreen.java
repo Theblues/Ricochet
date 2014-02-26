@@ -142,7 +142,7 @@ public class SoloScreen implements Screen {
 	LabelStyle style = new LabelStyle(fontWhite, Color.BLACK);
 
 	// LABEL COMPTEUR OBJECTIF
-	nbObjectif = new Label("OBJECTIFS REUSSIS : 0/17   ", style);
+	nbObjectif = new Label("OBJECTIFS REUSSIS : 0/17     ", style);
 	height = nbObjectif.getTextBounds().height + 30;
 	top -= height;
 	nbObjectif.setFontScale(width / nbObjectif.getTextBounds().width);
@@ -150,7 +150,7 @@ public class SoloScreen implements Screen {
 	nbObjectif.setSize(width, height);
 
 	// LABEL MOUVEMENT
-	nbMouvement = new Label("MOUVEMENTS : 0 | TOTAL : 0 ", style);
+	nbMouvement = new Label("MOUVEMENTS : 0 | TOTAL : 0   ", style);
 	height = nbMouvement.getTextBounds().height + 30;
 	top -= height;
 	nbMouvement.setFontScale(width / nbMouvement.getTextBounds().width);
@@ -158,7 +158,7 @@ public class SoloScreen implements Screen {
 	nbMouvement.setSize(width, height);
 
 	// LABEL TIME
-	timer = new Label("TEMPS : 0:00 | TOTAL : 0:00", style);
+	timer = new Label("TEMPS : 00:00 | TOTAL : 00:00", style);
 	height = timer.getTextBounds().height + 30;
 	top -= height;
 	timer.setFontScale(width / timer.getTextBounds().width);
@@ -167,7 +167,7 @@ public class SoloScreen implements Screen {
 
 	// LABEL MESSAGE
 	style = new LabelStyle(fontWhite, Color.GREEN);
-	message = new Label("                           ", style);
+	message = new Label("                             ", style);
 	height = message.getTextBounds().height + 30;
 	top -= height;
 	message.setFontScale(width / message.getTextBounds().width);
