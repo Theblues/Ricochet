@@ -26,7 +26,7 @@ public class SoloRenderer {
     }
 
     private void drawBlocks(Batch batch) {
-	for (Block block : solo.getWorld()) {
+	for (Block block : solo.getBlocks()) {
 	    float posX = block.getPosition().x * ppu;
 	    float posY = top - Gdx.graphics.getWidth() + block.getPosition().y
 		    * ppu;

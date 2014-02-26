@@ -9,9 +9,9 @@ import java.util.Random;
 import android.os.SystemClock;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
-import com.erwan.ricochetRobots.RicochetRobots;
 
 public class Solo {
     public static final float SIZE_PLATEAU = 16;
@@ -28,7 +28,10 @@ public class Solo {
     private Chronometre chrono;
     private Chronometre chronoTotal;
     private boolean stop;
+
     private String message;
+    private int messageTimer;
+    private Color messageColor;
 
     public Solo() {
 	blocks = new Array<Block>();
@@ -41,11 +44,8 @@ public class Solo {
 	chronoTotal = new Chronometre();
 	stop = false;
 	message = "";
+	messageColor = Color.GREEN;
 	createWorld();
-    }
-
-    public ArrayList<Objectif> getAlObjectif() {
-	return alObjectif;
     }
 
     private void createWorld() {
@@ -53,7 +53,6 @@ public class Solo {
 	createBlocksObjectif();
 	createMiddle();
 	initWallBorder();
-
 	initRobots();
     }
 
@@ -67,7 +66,6 @@ public class Solo {
     }
 
     private void createBlocksObjectif() {
-
 	/*
 	 * Ouverture du fichier
 	 */
@@ -234,6 +232,7 @@ public class Solo {
 	    chrono.setTimeSwap(0);
 	    // on supprime l'objectif de la liste
 	    alObjectif.remove(objectifEnCours);
+
 	    if (alObjectif.size() > 0) {
 		message = "Objectif suivant !";
 	    } else {
@@ -241,12 +240,14 @@ public class Solo {
 		stop = true;
 		message = "Félicitation ! Vous avez terminé";
 	    }
+	    messageColor = Color.GREEN;
+	    messageTimer = (int) ((chrono.getFinalTime() / 1000) % 60);
 	    // on tire un nouvel objectif
 	    createMiddle();
 	}
     }
 
-    private boolean objectifAccompli(Robot robot) {
+    public boolean objectifAccompli(Robot robot) {
 	for (Block block : blocks) {
 	    // on vérifie s'il s'agit du bloc objectif
 	    if (objectifEnCours.getColor().equals(block.color)
@@ -323,7 +324,31 @@ public class Solo {
 	return coordonnee;
     }
 
-    public Array<Block> getWorld() {
+    public String getMessage() {
+	return message;
+    }
+
+    public void setMessage(String message) {
+	this.message = message;
+    }
+
+    public int getMessageTimer() {
+	return messageTimer;
+    }
+
+    public void setMessageTimer(int messageTimer) {
+	this.messageTimer = messageTimer;
+    }
+
+    public Color getMessageColor() {
+	return messageColor;
+    }
+
+    public void setMessageColor(Color messageColor) {
+	this.messageColor = messageColor;
+    }
+
+    public Array<Block> getBlocks() {
 	return blocks;
     }
 
@@ -335,39 +360,31 @@ public class Solo {
 	return murs;
     }
 
+    public ArrayList<Objectif> getAlObjectif() {
+	return alObjectif;
+    }
+
+    public Objectif getObjectifEnCours() {
+	return objectifEnCours;
+    }
+
     public int getNbMouvement() {
 	return nbMouvement;
-    }
-
-    public Chronometre getChrono() {
-	return chrono;
-    }
-
-    public String getMessage() {
-	return message;
     }
 
     public int getNbMouvementTotal() {
 	return nbMouvementTotal;
     }
 
+    public Chronometre getChrono() {
+	return chrono;
+    }
+
     public Chronometre getChronoTotal() {
 	return chronoTotal;
     }
 
-    public boolean getStop() {
+    public boolean isStop() {
 	return stop;
-    }
-
-    public void setNbMouvement(int nbMouvement) {
-	this.nbMouvement = nbMouvement;
-    }
-
-    public void setMessage(String message) {
-	this.message = message;
-    }
-
-    public void setNbMouvementTotal(int nbMouvementTotal) {
-	this.nbMouvementTotal = nbMouvementTotal;
     }
 }
