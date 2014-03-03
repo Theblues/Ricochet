@@ -116,13 +116,12 @@ public class MenuScreen implements Screen {
 		stage.addActor(window);
 	    }
 	});
-	btEssai = new TextButton("Essai Box2D", txtBtStyle);
+	btEssai = new TextButton("Option", txtBtStyle);
 	btEssai.pad(10f);
 	btEssai.addListener(new ClickListener() {
 	    @Override
 	    public void clicked(InputEvent event, float x, float y) {
-		((Game) Gdx.app.getApplicationListener())
-			.setScreen(new EssaiScreen());
+		
 	    }
 	});
 	btQuitter = new TextButton("Quitter", txtBtStyle);

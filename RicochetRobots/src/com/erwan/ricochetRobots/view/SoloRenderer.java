@@ -2,12 +2,13 @@ package com.erwan.ricochetRobots.view;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.scenes.scene2d.ui.Widget;
 import com.erwan.ricochetRobots.model.Block;
 import com.erwan.ricochetRobots.model.Mur;
 import com.erwan.ricochetRobots.model.Robot;
 import com.erwan.ricochetRobots.model.Solo;
 
-public class SoloRenderer {
+public class SoloRenderer extends Widget {
     private Solo solo;
     private float top;
 
@@ -19,7 +20,8 @@ public class SoloRenderer {
 	ppu = Gdx.graphics.getWidth() / Solo.SIZE_PLATEAU;
     }
 
-    public void draw(Batch batch) {
+    public void draw(Batch batch, float parentAlpha) {
+	validate();
 	drawBlocks(batch);
 	drawRobots(batch);
 	drawWall(batch);

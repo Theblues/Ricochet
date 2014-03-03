@@ -15,6 +15,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
+import com.badlogic.gdx.scenes.scene2d.utils.Align;
 import com.erwan.ricochetRobots.controller.InputController;
 import com.erwan.ricochetRobots.controller.SoloController;
 import com.erwan.ricochetRobots.model.Solo;
@@ -26,12 +27,12 @@ public class SoloScreen implements Screen {
 
     private SpriteBatch batch;
     private Sprite fondSprite;
-    private Sprite titleSprite;
 
     private Solo solo;
     private SoloRenderer renderer;
     private SoloController controller;
 
+    private Label title;
     private Label nbObjectif;
     private Label nbMouvement;
     private Label timer;
@@ -46,17 +47,9 @@ public class SoloScreen implements Screen {
 	Gdx.gl.glClearColor(0, 0, 0, 0);
 	Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-	// we use the SpriteBatch to draw 2D textures (it is defined in our base
-	// class: AbstractScreen)
+	// On dessine l'image de fond
 	batch.begin();
-
-	// we tell the batch to draw the region starting at (0,0) of the
-	// lower-left corner with the size of the screen
 	fondSprite.draw(batch);
-	titleSprite.draw(batch);
-	renderer.draw(batch);
-
-	// the end method does the drawing
 	batch.end();
 
 	// modification du nombre d'objectif reussi
@@ -115,65 +108,78 @@ public class SoloScreen implements Screen {
 	batch = new SpriteBatch();
 	stage = new Stage();
 
+	// on créer l'image du fond
 	Texture fondTexture = new Texture("data/images/fond_screen.png");
 	fondSprite = new Sprite(fondTexture);
 	fondSprite.setPosition(0, 0);
 	fondSprite.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
-	// Creation de l'image
-	Texture titleTexture = new Texture("data/images/title.png");
-	titleSprite = new Sprite(titleTexture);
-
+	fontWhite = new BitmapFont(Gdx.files.internal("font/font_white.fnt"),
+		false);
+	LabelStyle style = new LabelStyle(fontWhite, Color.BLACK);
+	
 	float width = Gdx.graphics.getWidth();
-	float height = titleSprite.getHeight() * width / titleSprite.getWidth();
-	float top = Gdx.graphics.getHeight() - height;
-
-	titleSprite.setPosition(0, top);
-	titleSprite.setSize(width, height);
-
+	float top = Gdx.graphics.getHeight();
+	float height = 0f;
+	
+	// LABEL TITRE
+	title = new Label(" RICOCHET ROBOTS ", style);
+	title.setFontScale(width / title.getTextBounds().width);
+	title.getTextBounds().height += 30;
+	height = title.getTextBounds().height;
+	top -= height;
+	title.setPosition(0, top);
+	title.setSize(width, height);
+	title.setAlignment(Align.center);
+	
+	// CREATION DU PLATEAU
 	solo = new Solo();
 	renderer = new SoloRenderer(solo, top);
 	controller = new SoloController(solo, top);
-
-	top -= Gdx.graphics.getWidth();
-	fontWhite = new BitmapFont(Gdx.files.internal("font/font_white.fnt"),
-		false);
-
-	LabelStyle style = new LabelStyle(fontWhite, Color.BLACK);
-
+	
+	top -= width;
+	renderer.setSize(width, width);
+	renderer.setPosition(0, top);	
+	
 	// LABEL COMPTEUR OBJECTIF
-	nbObjectif = new Label("OBJECTIFS REUSSIS : 0/17     ", style);
-	height = nbObjectif.getTextBounds().height + 30;
-	top -= height;
+	nbObjectif = new Label("OBJECTIFS REUSSIS : 0/17      ", style);
 	nbObjectif.setFontScale(width / nbObjectif.getTextBounds().width);
+	nbObjectif.getTextBounds().height += 20;
+	height = nbObjectif.getTextBounds().height;
+	top -= height;
 	nbObjectif.setPosition(0, top);
 	nbObjectif.setSize(width, height);
 
 	// LABEL MOUVEMENT
-	nbMouvement = new Label("MOUVEMENTS : 0 | TOTAL : 0   ", style);
-	height = nbMouvement.getTextBounds().height + 30;
-	top -= height;
+	nbMouvement = new Label("MOUVEMENTS : 0 | TOTAL : 0    ", style);
 	nbMouvement.setFontScale(width / nbMouvement.getTextBounds().width);
+	nbMouvement.getTextBounds().height += 20;
+	height = nbMouvement.getTextBounds().height;
+	top -= height;
 	nbMouvement.setPosition(0, top);
 	nbMouvement.setSize(width, height);
 
 	// LABEL TIME
-	timer = new Label("TEMPS : 00:00 | TOTAL : 00:00", style);
-	height = timer.getTextBounds().height + 30;
-	top -= height;
+	timer = new Label("TEMPS : 00:00 | TOTAL : 00:00 ", style);
 	timer.setFontScale(width / timer.getTextBounds().width);
+	timer.getTextBounds().height += 20;
+	height = timer.getTextBounds().height;
+	top -= height;
 	timer.setPosition(0, top);
 	timer.setSize(width, height);
 
 	// LABEL MESSAGE
 	style = new LabelStyle(fontWhite, Color.GREEN);
-	message = new Label("                             ", style);
-	height = message.getTextBounds().height + 30;
-	top -= height;
+	message = new Label("                              ", style);
 	message.setFontScale(width / message.getTextBounds().width);
+	message.getTextBounds().height += 20;
+	height = message.getTextBounds().height;
+	top -= height;
 	message.setPosition(0, top);
 	message.setSize(width, height);
 
+	stage.addActor(title);
+	stage.addActor(renderer);
 	stage.addActor(nbObjectif);
 	stage.addActor(nbMouvement);
 	stage.addActor(timer);
@@ -261,7 +267,6 @@ public class SoloScreen implements Screen {
     @Override
     public void dispose() {
 	batch.dispose();
-	titleSprite.getTexture().dispose();
 	fondSprite.getTexture().dispose();
 	stage.dispose();
     }
