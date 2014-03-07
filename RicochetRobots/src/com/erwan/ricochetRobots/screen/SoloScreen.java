@@ -117,11 +117,11 @@ public class SoloScreen implements Screen {
 	fontWhite = new BitmapFont(Gdx.files.internal("font/font_white.fnt"),
 		false);
 	LabelStyle style = new LabelStyle(fontWhite, Color.BLACK);
-	
+
 	float width = Gdx.graphics.getWidth();
 	float top = Gdx.graphics.getHeight();
 	float height = 0f;
-	
+
 	// LABEL TITRE
 	title = new Label(" RICOCHET ROBOTS ", style);
 	title.setFontScale(width / title.getTextBounds().width);
@@ -131,16 +131,16 @@ public class SoloScreen implements Screen {
 	title.setPosition(0, top);
 	title.setSize(width, height);
 	title.setAlignment(Align.center);
-	
+
 	// CREATION DU PLATEAU
 	solo = new Solo();
 	renderer = new SoloRenderer(solo, top);
 	controller = new SoloController(solo, top);
-	
+
 	top -= width;
 	renderer.setSize(width, width);
-	renderer.setPosition(0, top);	
-	
+	renderer.setPosition(0, top);
+
 	// LABEL COMPTEUR OBJECTIF
 	nbObjectif = new Label("OBJECTIFS REUSSIS : 0/17      ", style);
 	nbObjectif.setFontScale(width / nbObjectif.getTextBounds().width);

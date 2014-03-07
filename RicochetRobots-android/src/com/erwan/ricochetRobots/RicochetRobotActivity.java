@@ -1,8 +1,11 @@
 package com.erwan.ricochetRobots;
 
+import java.util.Set;
+
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,20 +13,23 @@ import android.view.KeyEvent;
 
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
-import com.erwan.interfaces.BluetoothInterface;
+import com.erwan.ricochetRobots.bluetooth.BluetoothConnexion;
+import com.erwan.ricochetRobots.bluetooth.BluetoothInterface;
 
 public class RicochetRobotActivity extends AndroidApplication implements
 	BluetoothInterface {
     private static final int REQUEST_ENABLE_BT = 0;
 
-    private BluetoothAdapter mBluetoothAdapter;
+    private AndroidApplicationConfiguration config;
     private RicochetRobots rb;
+
+    private BluetoothAdapter mBluetoothAdapter;
 
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
 	super.onCreate(savedInstanceState);
-	AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
+	config = new AndroidApplicationConfiguration();
 	config.useAccelerometer = false;
 	config.useCompass = false;
 	config.useWakelock = true;
@@ -41,37 +47,34 @@ public class RicochetRobotActivity extends AndroidApplication implements
     }
 
     @Override
-    public boolean possedeBluetooth() {
+    public void possedeBluetooth() {
 	mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 	// Device does not support Bluetooth
-	if (mBluetoothAdapter == null)
-	{
+	if (mBluetoothAdapter == null) {
 	    Builder builder = new Builder(this);
-		builder.setMessage(
-			"Votre téléphone ne possède pas le Bluetooth")
-			.setCancelable(false)
-			.setNeutralButton("OK",
-				new DialogInterface.OnClickListener() {
-				    public void onClick(DialogInterface dialog,
-					    int id) {
-					dialog.cancel();
-					finish();
-				    }
-				});
-		AlertDialog alert = builder.create();
-		alert.show();
-	    return false;
+	    builder.setTitle(R.string.error_bluetooth);
+	    builder.setMessage(R.string.support_bluetooth);
+	    builder.setCancelable(false);
+	    builder.setNeutralButton(R.string.bt_ok,
+		    new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int id) {
+			    dialog.cancel();
+			}
+		    });
+	    AlertDialog alert = builder.create();
+	    alert.show();
 	}
 
-	return true;
+	BluetoothConnexion.possedeBluetooth();
     }
-    
-    public void activeBluetooth()
-    {
+
+    public void activeBluetooth() {
 	if (!mBluetoothAdapter.isEnabled()) {
 	    Intent enableBtIntent = new Intent(
 		    BluetoothAdapter.ACTION_REQUEST_ENABLE);
 	    startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
+	} else {
+	    BluetoothConnexion.actif();
 	}
     }
 
@@ -80,20 +83,36 @@ public class RicochetRobotActivity extends AndroidApplication implements
 	if (requestCode == REQUEST_ENABLE_BT) {
 	    // Make sure the request was successful
 	    if (resultCode == RESULT_CANCELED) {
+		// popup erreur
 		Builder builder = new Builder(this);
-		builder.setMessage(
-			"Vous devez activer le bluetooth pour jouer à 2")
-			.setCancelable(false)
-			.setNeutralButton("OK",
-				new DialogInterface.OnClickListener() {
-				    public void onClick(DialogInterface dialog,
-					    int id) {
-					dialog.cancel();
-					finish();
-				    }
-				});
+		builder.setTitle(R.string.error_bluetooth);
+		builder.setMessage(R.string.active_bluetooth);
+		builder.setCancelable(false);
+		builder.setNeutralButton(R.string.bt_ok,
+			new DialogInterface.OnClickListener() {
+			    public void onClick(DialogInterface dialog, int id) {
+				dialog.cancel();
+			    }
+			});
 		AlertDialog alert = builder.create();
 		alert.show();
+	    } else if (resultCode == RESULT_OK)
+		BluetoothConnexion.actif();
+	}
+    }
+
+    public void findDevice() {
+	Set<BluetoothDevice> pairedDevices = mBluetoothAdapter
+		.getBondedDevices();
+	// If there are paired devices
+	if (pairedDevices.size() > 0) {
+	    // Loop through paired devices
+	    for (BluetoothDevice device : pairedDevices) {
+		// Add the name and address to an array adapter to show in a
+		// ListView
+		Set<String> mArrayAdapter = null;
+		mArrayAdapter
+			.add(device.getName() + "\n" + device.getAddress());
 	    }
 	}
     }

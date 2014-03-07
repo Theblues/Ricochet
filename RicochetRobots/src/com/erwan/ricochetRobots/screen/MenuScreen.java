@@ -22,6 +22,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.erwan.ricochetRobots.RicochetRobots;
+import com.erwan.ricochetRobots.bluetooth.BluetoothConnexion;
 import com.erwan.ricochetRobots.tween.ActorAccessor;
 
 public class MenuScreen implements Screen {
@@ -61,7 +62,8 @@ public class MenuScreen implements Screen {
 
     @Override
     public void show() {
-	if (stage != null) Gdx.app.log(RicochetRobots.LOG, stage.toString());
+	if (stage != null)
+	    Gdx.app.log(RicochetRobots.LOG, stage.toString());
 	stage = new Stage();
 
 	Gdx.input.setInputProcessor(stage);
@@ -102,8 +104,8 @@ public class MenuScreen implements Screen {
 	btMulti.addListener(new ClickListener() {
 	    @Override
 	    public void clicked(InputEvent event, float x, float y) {
-		((Game) Gdx.app.getApplicationListener())
-		.setScreen(new MultiScreen());
+		new BluetoothConnexion();
+		BluetoothConnexion.initialize();
 	    }
 	});
 	btEssai = new TextButton("Option", txtBtStyle);
@@ -111,7 +113,7 @@ public class MenuScreen implements Screen {
 	btEssai.addListener(new ClickListener() {
 	    @Override
 	    public void clicked(InputEvent event, float x, float y) {
-		
+
 	    }
 	});
 	btQuitter = new TextButton("Quitter", txtBtStyle);

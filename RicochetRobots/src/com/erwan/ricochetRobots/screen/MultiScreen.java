@@ -10,14 +10,6 @@ import com.erwan.ricochetRobots.controller.InputController;
 
 public class MultiScreen implements Screen {
 
-    public MultiScreen() {
-	boolean bluetoothAct = RicochetRobots.getRba().possedeBluetooth();
-	if (!bluetoothAct)
-	    ((Game) Gdx.app.getApplicationListener())
-		    .setScreen(new MenuScreen());
-	RicochetRobots.getRba().activeBluetooth();
-    }
-
     @Override
     public void render(float delta) {
 	Gdx.gl.glClearColor(0, 0, 0, 0);
