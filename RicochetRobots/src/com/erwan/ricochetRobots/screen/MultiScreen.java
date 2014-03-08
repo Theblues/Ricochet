@@ -5,7 +5,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.GL20;
-import com.erwan.ricochetRobots.RicochetRobots;
 import com.erwan.ricochetRobots.controller.InputController;
 
 public class MultiScreen implements Screen {

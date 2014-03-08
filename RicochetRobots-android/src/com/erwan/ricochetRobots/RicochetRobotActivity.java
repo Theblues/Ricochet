@@ -1,11 +1,8 @@
 package com.erwan.ricochetRobots;
 
-import java.util.Set;
-
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.BluetoothDevice;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -98,22 +95,6 @@ public class RicochetRobotActivity extends AndroidApplication implements
 		alert.show();
 	    } else if (resultCode == RESULT_OK)
 		BluetoothConnexion.actif();
-	}
-    }
-
-    public void findDevice() {
-	Set<BluetoothDevice> pairedDevices = mBluetoothAdapter
-		.getBondedDevices();
-	// If there are paired devices
-	if (pairedDevices.size() > 0) {
-	    // Loop through paired devices
-	    for (BluetoothDevice device : pairedDevices) {
-		// Add the name and address to an array adapter to show in a
-		// ListView
-		Set<String> mArrayAdapter = null;
-		mArrayAdapter
-			.add(device.getName() + "\n" + device.getAddress());
-	    }
 	}
     }
 }

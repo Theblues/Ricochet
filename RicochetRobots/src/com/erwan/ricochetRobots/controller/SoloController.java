@@ -2,7 +2,6 @@ package com.erwan.ricochetRobots.controller;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
-import com.erwan.ricochetRobots.RicochetRobots;
 import com.erwan.ricochetRobots.model.Mur;
 import com.erwan.ricochetRobots.model.Robot;
 import com.erwan.ricochetRobots.model.Robot.State;
@@ -30,15 +29,25 @@ public class SoloController {
 	if (robotMove == null)
 	    return;
 
+	// si le robot est a l'arret on ne fait rien
+	if (robotMove.getState() == State.IDLE)
+	    return;
+	
 	switch (robotMove.getDirection()) {
 	case 'R':
 	case 'T':
 	    if (robotMove.getPosition().x >= robotMove.getPositionMax().x
 		    && robotMove.getPosition().y >= robotMove.getPositionMax().y) {
+		// on recalibre la position
+		robotMove.getPosition().x = robotMove.getPositionMax().x;
+		robotMove.getPosition().y = robotMove.getPositionMax().y;
+		// on reinitialise les positions max
 		robotMove.getPositionMax().x = 0;
 		robotMove.getPositionMax().y = 0;
+		// on arrete le robot
 		robotMove.getVelocity().x = 0;
 		robotMove.getVelocity().y = 0;
+		// le robot repasse en etat stationaire
 		robotMove.setState(State.IDLE);
 	    }
 	    break;
@@ -46,6 +55,8 @@ public class SoloController {
 	case 'B':
 	    if (robotMove.getPosition().x <= robotMove.getPositionMax().x
 		    && robotMove.getPosition().y <= robotMove.getPositionMax().y) {
+		robotMove.getPosition().x = robotMove.getPositionMax().x;
+		robotMove.getPosition().y = robotMove.getPositionMax().y;
 		robotMove.getPositionMax().x = 0;
 		robotMove.getPositionMax().y = 0;
 		robotMove.getVelocity().x = 0;
@@ -59,6 +70,8 @@ public class SoloController {
 
     public void rightPressed() {
 	if (robotMove != null) {
+	    if (robotMove.getState() != State.IDLE)
+		    return;
 	    // on ne pêut faire le déplacement inverse
 	    if (!(ancienRobot != null && ancienRobot.equals(robotMove) && direction == 'L')) {
 		// on recupere les coordonnes de notre robots
@@ -75,6 +88,7 @@ public class SoloController {
 			if (robot.getPosition().x > robotX)
 			    if (robot.getPosition().x < moveX)
 				moveX = robot.getPosition().x;
+		
 		// on regarde s'il y a un mur sur la route
 		for (Mur mur : solo.getMurs())
 		    if (mur.getPosition().y == robotY)
@@ -82,7 +96,7 @@ public class SoloController {
 			    if (mur.getPosition().x < moveX)
 				if (mur.getBounds().height == 1)
 				    moveX = mur.getPosition().x;
-
+		
 		// on lance le déplacement de notre robot
 		robotMove.getVelocity().x = Robot.SPEED_ROBOT;
 		robotMove.getVelocity().y = 0;
@@ -108,6 +122,8 @@ public class SoloController {
 
     public void leftPressed() {
 	if (robotMove != null) {
+	    if (robotMove.getState() != State.IDLE)
+		    return;
 	    if (!(ancienRobot != null && ancienRobot.equals(robotMove) && direction == 'R')) {
 		float robotX = robotMove.getPosition().x;
 		float robotY = robotMove.getPosition().y;
@@ -147,6 +163,8 @@ public class SoloController {
 
     public void topPressed() {
 	if (robotMove != null) {
+	    if (robotMove.getState() != State.IDLE)
+		    return;
 	    if (!(ancienRobot != null && ancienRobot.equals(robotMove) && direction == 'B')) {
 		float robotX = robotMove.getPosition().x;
 		float robotY = robotMove.getPosition().y;
@@ -186,6 +204,8 @@ public class SoloController {
 
     public void bottomPressed() {
 	if (robotMove != null) {
+	    if (robotMove.getState() != State.IDLE)
+		    return;
 	    if (!(ancienRobot != null && ancienRobot.equals(robotMove) && direction == 'T')) {
 		float robotX = robotMove.getPosition().x;
 		float robotY = robotMove.getPosition().y;
@@ -224,8 +244,11 @@ public class SoloController {
     }
 
     public void touchDown(int screenX, int screenY) {
-	float ppu = Gdx.graphics.getWidth() / Solo.SIZE_PLATEAU;
+	if (robotMove != null && robotMove.getState() != State.IDLE)
+	    return;
 	robotMove = null;
+	
+	float ppu = Gdx.graphics.getWidth() / Solo.SIZE_PLATEAU;
 	for (Robot robot : solo.getRobots()) {
 	    double coordX = robot.getPosition().x * ppu;
 	    // les coordonées du toucher est inversé par rapport au dessin
