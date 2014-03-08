@@ -2,9 +2,10 @@ package com.erwan.ricochetRobots.controller;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.math.Vector2;
+import com.erwan.ricochetRobots.RicochetRobots;
 import com.erwan.ricochetRobots.model.Mur;
 import com.erwan.ricochetRobots.model.Robot;
+import com.erwan.ricochetRobots.model.Robot.State;
 import com.erwan.ricochetRobots.model.Solo;
 
 public class SoloController {
@@ -23,6 +24,37 @@ public class SoloController {
 
     public Robot getRobotMove() {
 	return robotMove;
+    }
+
+    public void update(float delta) {
+	if (robotMove == null)
+	    return;
+
+	switch (robotMove.getDirection()) {
+	case 'R':
+	case 'T':
+	    if (robotMove.getPosition().x >= robotMove.getPositionMax().x
+		    && robotMove.getPosition().y >= robotMove.getPositionMax().y) {
+		robotMove.getPositionMax().x = 0;
+		robotMove.getPositionMax().y = 0;
+		robotMove.getVelocity().x = 0;
+		robotMove.getVelocity().y = 0;
+		robotMove.setState(State.IDLE);
+	    }
+	    break;
+	case 'L':
+	case 'B':
+	    if (robotMove.getPosition().x <= robotMove.getPositionMax().x
+		    && robotMove.getPosition().y <= robotMove.getPositionMax().y) {
+		robotMove.getPositionMax().x = 0;
+		robotMove.getPositionMax().y = 0;
+		robotMove.getVelocity().x = 0;
+		robotMove.getVelocity().y = 0;
+		robotMove.setState(State.IDLE);
+	    }
+	    break;
+	}
+	robotMove.update(delta);
     }
 
     public void rightPressed() {
@@ -51,8 +83,14 @@ public class SoloController {
 				if (mur.getBounds().height == 1)
 				    moveX = mur.getPosition().x;
 
-		// on deplace notre robot
-		robotMove.setPosition(new Vector2(moveX - 1, moveY));
+		// on lance le déplacement de notre robot
+		robotMove.getVelocity().x = Robot.SPEED_ROBOT;
+		robotMove.getVelocity().y = 0;
+		robotMove.getPositionMax().x = moveX - 1;
+		robotMove.getPositionMax().y = moveY;
+		robotMove.setState(State.WALKING);
+		robotMove.setDirection('R');
+		
 		// on met a jour les compteurs et on verifie si la partie est
 		// fini
 		solo.deplacementRobot(robotMove);
@@ -88,7 +126,12 @@ public class SoloController {
 				if (mur.getBounds().height == 1)
 				    moveX = mur.getPosition().x;
 
-		robotMove.setPosition(new Vector2(moveX, moveY));
+		robotMove.getVelocity().x = -Robot.SPEED_ROBOT;
+		robotMove.getVelocity().y = 0;
+		robotMove.getPositionMax().x = moveX;
+		robotMove.getPositionMax().y = moveY;
+		robotMove.setState(State.WALKING);
+		robotMove.setDirection('L');
 		solo.deplacementRobot(robotMove);
 		if (!solo.objectifAccompli(robotMove)) {
 		    ancienRobot = robotMove;
@@ -122,7 +165,12 @@ public class SoloController {
 				if (mur.getBounds().width == 1)
 				    moveY = mur.getPosition().y;
 
-		robotMove.setPosition(new Vector2(moveX, moveY - 1));
+		robotMove.getVelocity().x = 0;
+		robotMove.getVelocity().y = Robot.SPEED_ROBOT;
+		robotMove.getPositionMax().x = moveX;
+		robotMove.getPositionMax().y = moveY - 1;
+		robotMove.setState(State.WALKING);
+		robotMove.setDirection('T');
 		solo.deplacementRobot(robotMove);
 		if (!solo.objectifAccompli(robotMove)) {
 		    ancienRobot = robotMove;
@@ -156,7 +204,12 @@ public class SoloController {
 				if (mur.getBounds().width == 1)
 				    moveY = mur.getPosition().y;
 
-		robotMove.setPosition(new Vector2(moveX, moveY));
+		robotMove.getVelocity().x = 0;
+		robotMove.getVelocity().y = -Robot.SPEED_ROBOT;
+		robotMove.getPositionMax().x = moveX;
+		robotMove.getPositionMax().y = moveY;
+		robotMove.setState(State.WALKING);
+		robotMove.setDirection('B');
 		solo.deplacementRobot(robotMove);
 		if (!solo.objectifAccompli(robotMove)) {
 		    ancienRobot = robotMove;

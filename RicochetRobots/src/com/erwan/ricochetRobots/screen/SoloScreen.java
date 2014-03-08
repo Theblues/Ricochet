@@ -16,6 +16,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.Align;
+import com.erwan.ricochetRobots.RicochetRobots;
 import com.erwan.ricochetRobots.controller.InputController;
 import com.erwan.ricochetRobots.controller.SoloController;
 import com.erwan.ricochetRobots.model.Solo;
@@ -37,6 +38,7 @@ public class SoloScreen implements Screen {
     private Label nbMouvement;
     private Label timer;
     private Label message;
+    private Label fps;
 
     private BitmapFont fontWhite;
 
@@ -46,12 +48,16 @@ public class SoloScreen implements Screen {
     public void render(float delta) {
 	Gdx.gl.glClearColor(0, 0, 0, 0);
 	Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
+	
+	controller.update(delta);
+	
 	// On dessine l'image de fond
 	batch.begin();
 	fondSprite.draw(batch);
 	batch.end();
 
+	int iFps = Math.round(1 / delta);
+	fps.setText("FPS : " + iFps);
 	// modification du nombre d'objectif reussi
 	nbObjectif.setText("OBJECTIFS REUSSIS : "
 		+ (17 - solo.getAlObjectif().size()) + "/17");
@@ -178,12 +184,17 @@ public class SoloScreen implements Screen {
 	message.setPosition(0, top);
 	message.setSize(width, height);
 
+	style = new LabelStyle(fontWhite, Color.BLUE);
+	fps = new Label("FPS : 00", style);
+	fps.setPosition(0, 0);
+
 	stage.addActor(title);
 	stage.addActor(renderer);
 	stage.addActor(nbObjectif);
 	stage.addActor(nbMouvement);
 	stage.addActor(timer);
 	stage.addActor(message);
+	stage.addActor(fps);
 
 	// on modifie les inputs Controller
 	Gdx.input.setInputProcessor(new InputController() {

@@ -3,7 +3,6 @@ package com.erwan.ricochetRobots.bluetooth;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.erwan.ricochetRobots.RicochetRobots;
-import com.erwan.ricochetRobots.screen.MenuScreen;
 import com.erwan.ricochetRobots.screen.MultiScreen;
 
 public class BluetoothConnexion {
