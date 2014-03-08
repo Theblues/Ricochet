@@ -43,7 +43,7 @@ public class Robot {
 
     public void update(float delta) {
 	stateTime += delta;
-	position.add(velocity.cpy().scl(delta)); 
+	position.add(velocity.cpy().scl(delta));
     }
     
     public State getState() {

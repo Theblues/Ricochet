@@ -3,15 +3,17 @@ package com.erwan.ricochetRobots.model;
 public class Chronometre {
 
     private long startTime;
-    long timeInMillies;
     long timeSwap;
     long finalTime;
+    int secondes;
+    int minutes;
 
     public Chronometre() {
 	startTime = 0L;
-	timeInMillies = 0L;
 	timeSwap = 0L;
 	finalTime = 0L;
+	secondes = 0;
+	minutes = 0;
     }
 
     public long getStartTime() {
@@ -20,14 +22,6 @@ public class Chronometre {
 
     public void setStartTime(long startTime) {
 	this.startTime = startTime;
-    }
-
-    public long getTimeInMillies() {
-	return timeInMillies;
-    }
-
-    public void setTimeInMillies(long timeInMillies) {
-	this.timeInMillies = timeInMillies;
     }
 
     public long getTimeSwap() {
@@ -44,5 +38,15 @@ public class Chronometre {
 
     public void setFinalTime(long finalTime) {
 	this.finalTime = finalTime;
+	this.minutes = (int) (this.finalTime / 60000);
+	this.secondes = (int) ((this.finalTime / 1000) % 60);
+    }
+
+    public int getSecondes() {
+        return secondes;
+    }
+
+    public int getMinutes() {
+        return minutes;
     }
 }

@@ -47,9 +47,9 @@ public class SoloScreen implements Screen {
     public void render(float delta) {
 	Gdx.gl.glClearColor(0, 0, 0, 0);
 	Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-	
+
 	controller.update(delta);
-	
+
 	// On dessine l'image de fond
 	batch.begin();
 	fondSprite.draw(batch);
@@ -67,38 +67,34 @@ public class SoloScreen implements Screen {
 
 	// calcul du temps
 	if (!solo.isStop()) {
-	    solo.getChrono().setTimeInMillies(
-		    SystemClock.uptimeMillis()
-			    - solo.getChrono().getStartTime());
 	    solo.getChrono().setFinalTime(
-		    solo.getChrono().getTimeInMillies()
-			    - solo.getChrono().getTimeSwap());
-	    solo.getChronoTotal().setTimeInMillies(
 		    SystemClock.uptimeMillis()
-			    - solo.getChronoTotal().getStartTime());
+			    - solo.getChrono().getStartTime()
+			    - solo.getChrono().getTimeSwap());
 	    solo.getChronoTotal().setFinalTime(
-		    solo.getChronoTotal().getTimeInMillies()
+		    SystemClock.uptimeMillis()
+			    - solo.getChronoTotal().getStartTime()
 			    - solo.getChronoTotal().getTimeSwap());
 	}
-	int secondsChrono = (int) (solo.getChrono().getFinalTime() / 1000);
-	int minutesChrono = secondsChrono / 60;
-	secondsChrono = secondsChrono % 60;
-	int secondsChronoTotal = (int) (solo.getChronoTotal().getFinalTime() / 1000);
-	int minutesChronoTotal = secondsChronoTotal / 60;
-	secondsChronoTotal = secondsChronoTotal % 60;
 
 	// modification du temps
-	timer.setText("TEMPS : " + minutesChrono + ":"
-		+ String.format("%02d", secondsChrono) + " | TOTAL : "
-		+ minutesChronoTotal + ":"
-		+ String.format("%02d", secondsChronoTotal));
+	timer.setText("TEMPS : " + solo.getChrono().getMinutes() + ":"
+		+ String.format("%02d", solo.getChrono().getSecondes()) + " | TOTAL : "
+		+ solo.getChronoTotal().getMinutes() + ":"
+		+ String.format("%02d", solo.getChronoTotal().getSecondes()));
 
+	solo.getInfo().getChrono().setFinalTime(
+		    SystemClock.uptimeMillis()
+			    - solo.getInfo().getChrono().getStartTime()
+			    - solo.getInfo().getChrono().getTimeSwap());
+	
 	// modification du message
-	if (secondsChronoTotal - solo.getMessageTimer() > 3)
-	    solo.setMessage("");
-	LabelStyle style = new LabelStyle(fontWhite, solo.getMessageColor());
+	if (solo.getInfo().getChrono().getSecondes() > 3)
+	    solo.getInfo().setMessage("");
+	
+	LabelStyle style = new LabelStyle(fontWhite, solo.getInfo().getColor());
 	message.setStyle(style);
-	message.setText(solo.getMessage());
+	message.setText(solo.getInfo().getMessage());
 
 	stage.act(delta);
 	stage.draw();

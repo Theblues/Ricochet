@@ -29,9 +29,7 @@ public class Solo {
     private Chronometre chronoTotal;
     private boolean stop;
 
-    private String message;
-    private int messageTimer;
-    private Color messageColor;
+    private Information info;
 
     public Solo() {
 	blocks = new Array<Block>();
@@ -43,8 +41,7 @@ public class Solo {
 	chrono = new Chronometre();
 	chronoTotal = new Chronometre();
 	stop = false;
-	message = "";
-	messageColor = Color.GREEN;
+	info = new Information("");
 	createWorld();
     }
 
@@ -234,14 +231,15 @@ public class Solo {
 	    alObjectif.remove(objectifEnCours);
 
 	    if (alObjectif.size() > 0) {
-		message = "Objectif suivant !";
+		info.setMessage("Objectif suivant !");
+		info.getChrono().setStartTime(SystemClock.uptimeMillis());
 	    } else {
 		nbMouvement = nbMouvementTotal;
 		stop = true;
-		message = "Félicitation ! Vous avez terminé";
+		info.setMessage("Félicitation ! Vous avez terminé");
+		info.getChrono().setStartTime(SystemClock.uptimeMillis());
 	    }
-	    messageColor = Color.GREEN;
-	    messageTimer = (int) ((chrono.getFinalTime() / 1000) % 60);
+	    info.setColor(Color.GREEN);
 	    // on tire un nouvel objectif
 	    createMiddle();
 	}
@@ -324,28 +322,8 @@ public class Solo {
 	return coordonnee;
     }
 
-    public String getMessage() {
-	return message;
-    }
-
-    public void setMessage(String message) {
-	this.message = message;
-    }
-
-    public int getMessageTimer() {
-	return messageTimer;
-    }
-
-    public void setMessageTimer(int messageTimer) {
-	this.messageTimer = messageTimer;
-    }
-
-    public Color getMessageColor() {
-	return messageColor;
-    }
-
-    public void setMessageColor(Color messageColor) {
-	this.messageColor = messageColor;
+    public Information getInfo() {
+	return info;
     }
 
     public Array<Block> getBlocks() {

@@ -1,5 +1,7 @@
 package com.erwan.ricochetRobots.controller;
 
+import android.os.SystemClock;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.erwan.ricochetRobots.model.Mur;
@@ -49,6 +51,7 @@ public class SoloController {
 		robotMove.getVelocity().y = 0;
 		// le robot repasse en etat stationaire
 		robotMove.setState(State.IDLE);
+		solo.deplacementRobot(robotMove);
 	    }
 	    break;
 	case 'L':
@@ -62,6 +65,7 @@ public class SoloController {
 		robotMove.getVelocity().x = 0;
 		robotMove.getVelocity().y = 0;
 		robotMove.setState(State.IDLE);
+		solo.deplacementRobot(robotMove);
 	    }
 	    break;
 	}
@@ -105,17 +109,12 @@ public class SoloController {
 		robotMove.setState(State.WALKING);
 		robotMove.setDirection('R');
 		
-		// on met a jour les compteurs et on verifie si la partie est
-		// fini
-		solo.deplacementRobot(robotMove);
 		if (!solo.objectifAccompli(robotMove)) {
 		    ancienRobot = robotMove;
 		    direction = 'R';
 		}
 	    } else {
-		solo.setMessageColor(Color.RED);
-		solo.setMessageTimer((int) ((solo.getChrono().getFinalTime() / 1000) % 60));
-		solo.setMessage("Déplacement Impossible !");
+		messageErreur();
 	    }
 	}
     }
@@ -148,15 +147,12 @@ public class SoloController {
 		robotMove.getPositionMax().y = moveY;
 		robotMove.setState(State.WALKING);
 		robotMove.setDirection('L');
-		solo.deplacementRobot(robotMove);
 		if (!solo.objectifAccompli(robotMove)) {
 		    ancienRobot = robotMove;
 		    direction = 'L';
 		}
 	    } else {
-		solo.setMessageColor(Color.RED);
-		solo.setMessageTimer((int) ((solo.getChrono().getFinalTime() / 1000) % 60));
-		solo.setMessage("Déplacement Impossible !");
+		messageErreur();
 	    }
 	}
     }
@@ -189,15 +185,12 @@ public class SoloController {
 		robotMove.getPositionMax().y = moveY - 1;
 		robotMove.setState(State.WALKING);
 		robotMove.setDirection('T');
-		solo.deplacementRobot(robotMove);
 		if (!solo.objectifAccompli(robotMove)) {
 		    ancienRobot = robotMove;
 		    direction = 'T';
 		}
 	    } else {
-		solo.setMessageColor(Color.RED);
-		solo.setMessageTimer((int) ((solo.getChrono().getFinalTime() / 1000) % 60));
-		solo.setMessage("Déplacement Impossible !");
+		messageErreur();
 	    }
 	}
     }
@@ -230,15 +223,12 @@ public class SoloController {
 		robotMove.getPositionMax().y = moveY;
 		robotMove.setState(State.WALKING);
 		robotMove.setDirection('B');
-		solo.deplacementRobot(robotMove);
 		if (!solo.objectifAccompli(robotMove)) {
 		    ancienRobot = robotMove;
 		    direction = 'B';
 		}
 	    } else {
-		solo.setMessageColor(Color.RED);
-		solo.setMessageTimer((int) ((solo.getChrono().getFinalTime() / 1000) % 60));
-		solo.setMessage("Déplacement Impossible !");
+		messageErreur();
 	    }
 	}
     }
@@ -262,5 +252,11 @@ public class SoloController {
 		break;
 	    }
 	}
+    }
+    
+    private void messageErreur() {
+	solo.getInfo().setColor(Color.RED);
+	solo.getInfo().setMessage("Déplacement Impossible !");
+	solo.getInfo().getChrono().setStartTime(SystemClock.uptimeMillis());
     }
 }

@@ -21,7 +21,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.erwan.ricochetRobots.RicochetRobots;
 import com.erwan.ricochetRobots.bluetooth.BluetoothConnexion;
 import com.erwan.ricochetRobots.tween.ActorAccessor;
 
@@ -62,8 +61,6 @@ public class MenuScreen implements Screen {
 
     @Override
     public void show() {
-	if (stage != null)
-	    Gdx.app.log(RicochetRobots.LOG, stage.toString());
 	stage = new Stage();
 
 	Gdx.input.setInputProcessor(stage);
@@ -188,7 +185,6 @@ public class MenuScreen implements Screen {
 
     @Override
     public void dispose() {
-	Gdx.app.log(RicochetRobots.LOG, "dispose");
 	skin.dispose();
 	stage.dispose();
     }
