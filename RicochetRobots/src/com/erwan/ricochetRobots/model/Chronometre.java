@@ -3,10 +3,10 @@ package com.erwan.ricochetRobots.model;
 public class Chronometre {
 
     private long startTime;
-    long timeSwap;
-    long finalTime;
-    int secondes;
-    int minutes;
+    private long timeSwap;
+    private long finalTime;
+    private int secondes;
+    private int minutes;
 
     public Chronometre() {
 	startTime = 0L;

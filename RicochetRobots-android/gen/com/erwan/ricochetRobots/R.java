@@ -31,6 +31,8 @@ public final class R {
         public static final int app_name=0x7f050000;
         public static final int bt_ok=0x7f050004;
         public static final int error_bluetooth=0x7f050001;
+        public static final int indispo_title=0x7f050005;
+        public static final int indispo_txt=0x7f050006;
         public static final int support_bluetooth=0x7f050002;
     }
 }

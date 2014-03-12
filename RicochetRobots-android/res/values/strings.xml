@@ -2,7 +2,9 @@
 <resources>
     <string name="app_name">Ricochet Robots</string>
 	<string name="error_bluetooth">Erreur Bluetooth</string>
-	<string name="support_bluetooth">Votre téléphone ne possède pas le Bluetooth</string>
-	<string name="active_bluetooth">Vous devez activer le bluetooth pour jouer à 2</string>
+	<string name="support_bluetooth">Votre téléphone ne possède pas le Bluetooth.</string>
+	<string name="active_bluetooth">Vous devez activer le bluetooth pour jouer contre un ami.</string>
 	<string name="bt_ok">OK</string>
+	<string name="indispo_title">Accès Indisponible</string>
+	<string name="indispo_txt">En cours de développement.</string>
 </resources>

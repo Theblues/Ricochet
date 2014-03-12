@@ -16,7 +16,6 @@ import com.badlogic.gdx.utils.Array;
 public class Solo {
     public static final float SIZE_PLATEAU = 16;
 
-    /** The blocks making up the blocks **/
     protected Array<Block> blocks;
     protected Array<Robot> robots;
     protected Array<Mur> murs;
