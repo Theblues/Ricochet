@@ -1,7 +1,6 @@
 package com.erwan.ricochetRobots.util;
 
 import com.erwan.ricochetRobots.R;
-import com.erwan.ricochetRobots.R.string;
 
 import android.app.AlertDialog;
 import android.app.Dialog;

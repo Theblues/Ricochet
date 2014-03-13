@@ -104,14 +104,14 @@ public class MenuScreen implements Screen {
 	btMulti.addListener(new ClickListener() {
 	    @Override
 	    public void clicked(InputEvent event, float x, float y) {
-		RicochetRobots.getPopup().indisponible();
+		RicochetRobots.getRicochetInterface().indisponible();
 	    }
 	});
 	btEssai = new TextButton("OPTIONS", txtBtStyle);
 	btEssai.addListener(new ClickListener() {
 	    @Override
 	    public void clicked(InputEvent event, float x, float y) {
-		RicochetRobots.getPopup().indisponible();
+		RicochetRobots.getRicochetInterface().indisponible();
 	    }
 	});
 	btQuitter = new TextButton("QUITTER", txtBtStyle);

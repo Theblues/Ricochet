@@ -8,11 +8,11 @@ import com.erwan.ricochetRobots.screen.MultiScreen;
 public class BluetoothConnexion {
 
     public static void initialize() {
-	RicochetRobots.getBluetooth().possedeBluetooth();
+	RicochetRobots.getRicochetInterface().possedeBluetooth();
     }
 
     public static void possedeBluetooth() {
-	RicochetRobots.getBluetooth().activeBluetooth();
+	RicochetRobots.getRicochetInterface().activeBluetooth();
     }
 
     public static void actif() {

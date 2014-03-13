@@ -1,31 +1,24 @@
 package com.erwan.ricochetRobots;
 
 import com.badlogic.gdx.Game;
-import com.erwan.ricochetRobots.bluetooth.BluetoothInterface;
 import com.erwan.ricochetRobots.screen.MenuScreen;
 import com.erwan.ricochetRobots.screen.SplashScreen;
-import com.erwan.ricochetRobots.util.PopupInterface;
+import com.erwan.ricochetRobots.util.RicochetInterface;
 
 public class RicochetRobots extends Game {
 
     public static final String LOG = "RicochetRobot";
 
-    private static BluetoothInterface bluetooth;
-    private static PopupInterface popup;
+    private static RicochetInterface ricochetInterface;
     private boolean firstTime;
 
-    public RicochetRobots(BluetoothInterface bluetooth, PopupInterface popup) {
-	RicochetRobots.bluetooth = bluetooth;
-	RicochetRobots.popup = popup;
+    public RicochetRobots(RicochetInterface ricochetInterface) {
+	RicochetRobots.ricochetInterface = ricochetInterface;
 	firstTime = true;
     }
 
-    public static BluetoothInterface getBluetooth() {
-	return bluetooth;
-    }
-    
-    public static PopupInterface getPopup() {
-	return RicochetRobots.popup;
+    public static RicochetInterface getRicochetInterface() {
+	return RicochetRobots.ricochetInterface;
     }
 
     @Override
