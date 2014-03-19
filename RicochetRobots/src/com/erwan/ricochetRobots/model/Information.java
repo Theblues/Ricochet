@@ -6,7 +6,7 @@ public class Information {
     private Chronometre chrono;
     private String message;
     private Color color;
-    
+
     public Information(String message) {
 	this.chrono = new Chronometre();
 	this.message = message;
@@ -14,24 +14,23 @@ public class Information {
     }
 
     public String getMessage() {
-        return message;
+	return message;
     }
 
     public void setMessage(String message) {
-        this.message = message;
+	this.message = message;
     }
 
     public Chronometre getChrono() {
-        return chrono;
+	return chrono;
     }
 
     public Color getColor() {
-        return color;
+	return color;
     }
 
     public void setColor(Color color) {
-        this.color = color;
+	this.color = color;
     }
-    
-    
+
 }

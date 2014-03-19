@@ -79,19 +79,21 @@ public class SoloScreen implements Screen {
 
 	// modification du temps
 	timer.setText("TEMPS : " + solo.getChrono().getMinutes() + ":"
-		+ String.format("%02d", solo.getChrono().getSecondes()) + " | TOTAL : "
-		+ solo.getChronoTotal().getMinutes() + ":"
+		+ String.format("%02d", solo.getChrono().getSecondes())
+		+ " | TOTAL : " + solo.getChronoTotal().getMinutes() + ":"
 		+ String.format("%02d", solo.getChronoTotal().getSecondes()));
 
-	solo.getInfo().getChrono().setFinalTime(
-		    SystemClock.uptimeMillis()
-			    - solo.getInfo().getChrono().getStartTime()
-			    - solo.getInfo().getChrono().getTimeSwap());
-	
+	solo.getInfo()
+		.getChrono()
+		.setFinalTime(
+			SystemClock.uptimeMillis()
+				- solo.getInfo().getChrono().getStartTime()
+				- solo.getInfo().getChrono().getTimeSwap());
+
 	// modification du message
 	if (solo.getInfo().getChrono().getSecondes() > 3)
 	    solo.getInfo().setMessage("");
-	
+
 	LabelStyle style = new LabelStyle(fontWhite, solo.getInfo().getColor());
 	message.setStyle(style);
 	message.setText(solo.getInfo().getMessage());

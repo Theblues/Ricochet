@@ -63,7 +63,7 @@ public class RicochetRobotActivity extends AndroidApplication implements Ricoche
 	    BluetoothConnexion.actif();
     }
 
-    public void indisponible() {
+    public void popup_indisponible() {
 	DialogFragment newFragment = CustomDialog.newInstance(
 		R.string.indispo_title, R.string.indispo_txt);
 	newFragment.show(getFragmentManager(), "dialog");

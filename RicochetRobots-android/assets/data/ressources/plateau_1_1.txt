@@ -1,5 +1,0 @@
-3,2 cercle bleu
-7,5 autre multi
-5,1 croix rouge
-3,3 carre vert
-2,6 triangle jaune

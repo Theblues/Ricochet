@@ -42,7 +42,7 @@ public class MenuScreen implements Screen {
 	Gdx.gl.glClearColor(0, 0, 0, 0);
 	Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-	//Table.drawDebug(stage);
+	// Table.drawDebug(stage);
 
 	tweenManager.update(delta);
 
@@ -74,7 +74,7 @@ public class MenuScreen implements Screen {
 
 	float width = Gdx.graphics.getWidth() * .65f;
 	float height = 100f;
-	
+
 	TextButtonStyle txtBtStyle = new TextButtonStyle();
 	txtBtStyle.up = skin.getDrawable("button.up");
 	txtBtStyle.down = skin.getDrawable("button.down");
@@ -83,7 +83,7 @@ public class MenuScreen implements Screen {
 	txtBtStyle.font = fontBlack;
 	// on modifie la taille du texte en fonction de la largeur de l'ecran
 	txtBtStyle.font.setScale(width / (txtBtStyle.font.getXHeight() * 30f));
-	
+
 	btSolo = new TextButton("ENTRAINEMENT", txtBtStyle);
 	btSolo.addListener(new ClickListener() {
 	    @Override
@@ -104,14 +104,14 @@ public class MenuScreen implements Screen {
 	btMulti.addListener(new ClickListener() {
 	    @Override
 	    public void clicked(InputEvent event, float x, float y) {
-		RicochetRobots.getRicochetInterface().indisponible();
+		RicochetRobots.getRicochetInterface().popup_indisponible();
 	    }
 	});
 	btEssai = new TextButton("OPTIONS", txtBtStyle);
 	btEssai.addListener(new ClickListener() {
 	    @Override
 	    public void clicked(InputEvent event, float x, float y) {
-		RicochetRobots.getRicochetInterface().indisponible();
+		RicochetRobots.getRicochetInterface().popup_indisponible();
 	    }
 	});
 	btQuitter = new TextButton("QUITTER", txtBtStyle);

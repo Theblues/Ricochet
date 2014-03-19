@@ -34,7 +34,7 @@ public class SoloController {
 	// si le robot est a l'arret on ne fait rien
 	if (robotMove.getState() == State.IDLE)
 	    return;
-	
+
 	switch (robotMove.getDirection()) {
 	case 'R':
 	case 'T':
@@ -75,7 +75,7 @@ public class SoloController {
     public void rightPressed() {
 	if (robotMove != null) {
 	    if (robotMove.getState() != State.IDLE)
-		    return;
+		return;
 	    // on ne pêut faire le déplacement inverse
 	    if (!(ancienRobot != null && ancienRobot.equals(robotMove) && direction == 'L')) {
 		// on recupere les coordonnes de notre robots
@@ -92,7 +92,7 @@ public class SoloController {
 			if (robot.getPosition().x > robotX)
 			    if (robot.getPosition().x < moveX)
 				moveX = robot.getPosition().x;
-		
+
 		// on regarde s'il y a un mur sur la route
 		for (Mur mur : solo.getMurs())
 		    if (mur.getPosition().y == robotY)
@@ -100,7 +100,7 @@ public class SoloController {
 			    if (mur.getPosition().x < moveX)
 				if (mur.getBounds().height == 1)
 				    moveX = mur.getPosition().x;
-		
+
 		// on lance le déplacement de notre robot
 		robotMove.getVelocity().x = Robot.SPEED_ROBOT;
 		robotMove.getVelocity().y = 0;
@@ -108,7 +108,7 @@ public class SoloController {
 		robotMove.getPositionMax().y = moveY;
 		robotMove.setState(State.WALKING);
 		robotMove.setDirection('R');
-		
+
 		if (!solo.objectifAccompli(robotMove)) {
 		    ancienRobot = robotMove;
 		    direction = 'R';
@@ -122,7 +122,7 @@ public class SoloController {
     public void leftPressed() {
 	if (robotMove != null) {
 	    if (robotMove.getState() != State.IDLE)
-		    return;
+		return;
 	    if (!(ancienRobot != null && ancienRobot.equals(robotMove) && direction == 'R')) {
 		float robotX = robotMove.getPosition().x;
 		float robotY = robotMove.getPosition().y;
@@ -160,7 +160,7 @@ public class SoloController {
     public void topPressed() {
 	if (robotMove != null) {
 	    if (robotMove.getState() != State.IDLE)
-		    return;
+		return;
 	    if (!(ancienRobot != null && ancienRobot.equals(robotMove) && direction == 'B')) {
 		float robotX = robotMove.getPosition().x;
 		float robotY = robotMove.getPosition().y;
@@ -198,7 +198,7 @@ public class SoloController {
     public void bottomPressed() {
 	if (robotMove != null) {
 	    if (robotMove.getState() != State.IDLE)
-		    return;
+		return;
 	    if (!(ancienRobot != null && ancienRobot.equals(robotMove) && direction == 'T')) {
 		float robotX = robotMove.getPosition().x;
 		float robotY = robotMove.getPosition().y;
@@ -237,7 +237,7 @@ public class SoloController {
 	if (robotMove != null && robotMove.getState() != State.IDLE)
 	    return;
 	robotMove = null;
-	
+
 	float ppu = Gdx.graphics.getWidth() / Solo.SIZE_PLATEAU;
 	for (Robot robot : solo.getRobots()) {
 	    double coordX = robot.getPosition().x * ppu;
@@ -253,7 +253,7 @@ public class SoloController {
 	    }
 	}
     }
-    
+
     private void messageErreur() {
 	solo.getInfo().setColor(Color.RED);
 	solo.getInfo().setMessage("Déplacement Impossible !");

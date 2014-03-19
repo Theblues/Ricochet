@@ -1,0 +1,266 @@
+<?xml version="1.0"?>
+<!DOCTYPE plateau [
+	<!ELEMENT plateau(quartier+)>
+	<!ELEMENT quartier(case+, mur+)>
+	<!ELEMENT case(forme, color)>
+	<!ELEMENT mur EMPTY>
+	<!ELEMENT forme(#PCDATA)>
+	<!ELEMENT color(#PCDATA)>
+
+	<!ATTLIST case x CDATA #REQUIRED>
+	<!ATTLIST case y CDATA #REQUIRED>
+	<!ATTLIST mur x CDATA #REQUIRED>
+	<!ATTLIST mur y CDATA #REQUIRED>
+	<!ATTLIST mur l CDTATA #REQUIRED>
+	<!ATTLIST mur h CDATA #REQUIRED>
+]>
+<plateau>
+	<quartier id="0" face="0">
+		<case x="4" y="2">
+			<forme>carre</forme>
+			<color>rouge</color>
+		</case>
+		<case x="2" y="3">
+			<forme>cercle</forme>
+			<color>jaune</color>
+		</case>
+		<case x="5" y="4">
+			<forme>croix</forme>
+			<color>bleu</color>
+		</case>
+		<case x="3" y="5">
+			<forme>triangle</forme>
+			<color>bleu</color>
+		</case>
+		<mur x="0" y="6" l="1" h=".1" />
+		<mur x="2" y="3" l="1" h=".1" />
+		<mur x="2" y="3" l=".1" h="1" />
+		<mur x="3" y="5" l="1" h=".1" />
+		<mur x="4" y="0" l=".1" h="1" />
+		<mur x="4" y="2" l=".1" h="1" />
+		<mur x="4" y="3" l="1" h=".1" />
+		<mur x="4" y="5" l=".1" h="1" />
+		<mur x="5" y="5" l="1" h=".1" />
+		<mur x="6" y="4" l=".1" h="1" />
+		<mur x="7" y="7" l="1" h=".1" />
+		<mur x="7" y="7" l=".1" h="1" />
+	</quartier>
+	<quartier id="0" face="1">
+		<case x="5" y="1">
+			<forme>carre</forme>
+			<color>rouge</color>
+		</case>
+		<case x="2" y="6">
+			<forme>cercle</forme>
+			<color>jaune</color>
+		</case>
+		<case x="2" y="5">
+			<forme>croix</forme>
+			<color>vert</color>
+		</case>
+		<case x="7" y="4">
+			<forme>triangle</forme>
+			<color>bleu</color>
+		</case>
+		<mur x="0" y="3" l="1" h=".1" />
+		<mur x="2" y="6" l="1" h=".1" />
+		<mur x="2" y="6" l=".1" h="1" />
+		<mur x="3" y="5" l=".1" h="1" />
+		<mur x="5" y="1" l="1" h=".1" />
+		<mur x="6" y="1" l=".1" h="1" />
+		<mur x="7" y="0" l=".1" h="1" />
+		<mur x="7" y="4" l=".1" h="1" />
+		<mur x="7" y="5" l="1" h=".1" />
+		<mur x="7" y="7" l="1" h=".1" />
+		<mur x="7" y="7" l=".1" h="1" />
+	</quartier>
+	<quartier id="1" face="0">
+		<case x="1" y="5">
+			<forme>cercle</forme>
+			<color>bleu</color>
+		</case>
+		<case x="2" y="7">
+			<forme>autre</forme>
+			<color>multi</color>
+		</case>
+		<case x="4" y="3">
+			<forme>croix</forme>
+			<color>rouge</color>
+		</case>
+		<case x="5" y="6">
+			<forme>carre</forme>
+			<color>vert</color>
+		</case>
+		<case x="6" y="1">
+			<forme>triangle</forme>
+			<color>jaune</color>
+		</case>
+		<mur x="0" y="3" l="1" h=".1" />
+		<mur x="1" y="5" l="1" h=".1" />
+		<mur x="2" y="5" l=".1" h="1" />
+		<mur x="2" y="8" l="1" h=".1" />
+		<mur x="3" y="7" l=".1" h="1" />
+		<mur x="4" y="0" l=".1" h="1" />
+		<mur x="4" y="4" l="1" h=".1" />
+		<mur x="5" y="3" l=".1" h="1" />
+		<mur x="5" y="6" l=".1" h="1" />
+		<mur x="5" y="6" l="1" h=".1" />
+		<mur x="6" y="1" l=".1" h="1" />
+		<mur x="6" y="2" l="1" h=".1" />
+		<mur x="7" y="7" l="1" h=".1" />
+		<mur x="7" y="7" l=".1" h="1" />
+	</quartier>
+	<quartier id="1" face="1">
+		<case x="3" y="2">
+			<forme>cercle</forme>
+			<color>bleu</color>
+		</case>
+		<case x="7" y="5">
+			<forme>autre</forme>
+			<color>multi</color>
+		</case>
+		<case x="5" y="1">
+			<forme>croix</forme>
+			<color>rouge</color>
+		</case>
+		<case x="3" y="3">
+			<forme>carre</forme>
+			<color>vert</color>
+		</case>
+		<case x="2" y="6">
+			<forme>triangle</forme>
+			<color>jaune</color>
+		</case>
+		<mur x="0" y="5" l="1" h=".1" />
+		<mur x="2" y="6" l="1" h=".1" />
+		<mur x="2" y="6" l=".1" h="1" />
+		<mur x="3" y="2" l=".1" h="1" />
+		<mur x="3" y="3" l="1" h=".1" />
+		<mur x="4" y="3" l=".1" h="1" />
+		<mur x="5" y="2" l="1" h=".1" />
+		<mur x="6" y="1" l=".1" h="1" />
+		<mur x="7" y="0" l=".1" h="1" />
+		<mur x="7" y="6" l="1" h=".1" />
+		<mur x="8" y="5" l=".1" h="1" />
+		<mur x="7" y="7" l="1" h=".1" />
+		<mur x="7" y="7" l=".1" h="1" />
+	</quartier>
+	<quartier id="2" face="0">
+		<case x="6" y="4" >
+			<forme>carre</forme>
+			<color>bleu</color>
+		</case>
+		<case x="4" y="1">
+			<forme>cercle</forme>
+			<color>rouge</color>
+		</case>
+		<case x="3" y="6">
+			<forme>croix</forme>
+			<color>jaune</color>
+		</case>
+		<case x="1" y="3">
+			<forme>triangle</forme>
+			<color>vert</color>
+		</case>
+		<mur x="0" y="2" l="1" h=".1" />
+		<mur x="1" y="3" l="1" h=".1" />
+		<mur x="1" y="3" l=".1" h="1" />
+		<mur x="3" y="7" l="1" h=".1" />
+		<mur x="4" y="1" l="1" h=".1" />
+		<mur x="4" y="6" l=".1" h="1" />
+		<mur x="5" y="1" l=".1" h="1" />
+		<mur x="6" y="4" l=".1" h="1" />
+		<mur x="6" y="5" l="1" h=".1" />
+		<mur x="7" y="0" l=".1" h="1" />
+		<mur x="7" y="7" l="1" h=".1" />
+		<mur x="7" y="7" l=".1" h="1" />
+	</quartier>
+	<quartier id="2" face="1">
+		<case x="6" y="3">
+			<forme>carre</forme>
+			<color>bleu</color>
+		</case>
+		<case x="3" y="1">
+			<forme>cercle</forme>
+			<color>rouge</color>
+		</case>
+		<case x="4" y="6">
+			<forme>croix</forme>
+			<color>jaune</color>
+		</case>
+		<case x="6" y="2">
+			<forme>triangle</forme>
+			<color>vert</color>
+		</case>
+		<mur x="0" y="6" l="1" h=".1" />
+		<mur x="3" y="1" l="1" h=".1" />
+		<mur x="3" y="1" l=".1" h="1" />
+		<mur x="4" y="7" l="1" h=".1" />
+		<mur x="5" y="6" l=".1" h="1" />
+		<mur x="6" y="0" l=".1" h="1" />
+		<mur x="6" y="2" l=".1" h="1" />
+		<mur x="6" y="3" l="1" h=".1" />
+		<mur x="7" y="3" l=".1" h="1" />
+		<mur x="7" y="7" l="1" h=".1" />
+		<mur x="7" y="7" l=".1" h="1" />
+	</quartier>
+	<quartier id="3" face="0">
+		<case x="5" y="5">
+			<forme>carre</forme>
+			<color>jaune</color>
+		</case>
+		<case x="1" y="4" >
+			<forme>cercle</forme>
+			<color>vert</color>
+		</case>
+		<case x="6" y="3">
+			<forme>croix</forme>
+			<color>bleu</color>
+		</case>
+		<case x="3" y="1">
+			<forme>triangle</forme>
+			<color>rouge</color>
+		</case>
+		<mur x="0" y="2" l="1" h=".1" />
+		<mur x="1" y="4" l=".1" h="1" />
+		<mur x="1" y="5" l="1" h=".1" />
+		<mur x="3" y="1" l="1" h=".1" />
+		<mur x="4" y="1" l=".1" h="1" />
+		<mur x="5" y="5" l="1" h=".1" />
+		<mur x="5" y="5" l=".1" h="1" />
+		<mur x="6" y="0" l=".1" h="1" />
+		<mur x="6" y="4" l="1" h=".1" />
+		<mur x="7" y="3" l=".1" h="1" />
+		<mur x="7" y="7" l="1" h=".1" />
+		<mur x="7" y="7" l=".1" h="1" />
+	</quartier>
+	<quartier id="3" face="1">
+		<case x="6" y="5">
+			<forme>carre</forme>
+			<color>jaune</color>
+		</case>
+		<case x="4" y="2">
+			<forme>cercle</forme>
+			<color>vert</color>
+		</case>
+		<case x="2" y="6">
+			<forme>croix</forme>
+			<color>bleu</color>
+		</case>
+		<case x="4" y="3">
+			<forme>triangle</forme>
+			<color>rouge</color>
+		</case>
+		<mur x="3" y="0" l=".1" h="1" />
+		<mur x="0" y="5" l="1" h=".1" />
+		<mur x="2" y="7" l="1" h=".1" />
+		<mur x="3" y="6" l=".1" h="1" />
+		<mur x="4" y="2" l=".1" h="1" />
+		<mur x="4" y="3" l="1" h=".1" />
+		<mur x="5" y="3" l=".1" h="1" />
+		<mur x="6" y="5" l=".1" h="1" />
+		<mur x="6" y="5" l="1" h=".1" />
+		<mur x="7" y="7" l="1" h=".1" />
+		<mur x="7" y="7" l=".1" h="1" />
+	</quartier>
+</plateau>

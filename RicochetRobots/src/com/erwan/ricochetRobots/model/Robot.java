@@ -10,10 +10,10 @@ public class Robot {
     public enum State {
 	IDLE, WALKING
     }
-    
+
     public static final float SIZE_ROBOT = 0.8f;
-    public static final float SPEED_ROBOT = 4f;  // unit per second
-    
+    public static final float SPEED_ROBOT = 4f; // unit per second
+
     protected Vector2 position;
     protected Vector2 velocity;
     protected Vector2 positionMax;
@@ -23,13 +23,12 @@ public class Robot {
     protected String color;
     protected State state;
     protected char direction;
-    
 
     public Robot(Vector2 position, String color) {
 	this.position = position;
 	velocity = new Vector2();
 	positionMax = new Vector2();
-	
+
 	bounds = new Rectangle();
 	bounds.height = SIZE_ROBOT;
 	bounds.width = SIZE_ROBOT;
@@ -45,21 +44,21 @@ public class Robot {
 	stateTime += delta;
 	position.add(velocity.cpy().scl(delta));
     }
-    
+
     public State getState() {
-        return state;
+	return state;
     }
 
     public void setState(State state) {
-        this.state = state;
+	this.state = state;
     }
 
     public Vector2 getPositionMax() {
-        return positionMax;
+	return positionMax;
     }
 
     public Vector2 getVelocity() {
-        return velocity;
+	return velocity;
     }
 
     public Vector2 getPosition() {
@@ -79,10 +78,10 @@ public class Robot {
     }
 
     public char getDirection() {
-        return direction;
+	return direction;
     }
 
     public void setDirection(char direction) {
-        this.direction = direction;
+	this.direction = direction;
     }
 }

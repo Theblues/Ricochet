@@ -43,10 +43,10 @@ public class Chronometre {
     }
 
     public int getSecondes() {
-        return secondes;
+	return secondes;
     }
 
     public int getMinutes() {
-        return minutes;
+	return minutes;
     }
 }
