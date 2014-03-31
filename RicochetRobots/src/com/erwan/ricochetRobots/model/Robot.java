@@ -39,6 +39,10 @@ public class Robot {
 	stateTime = 0;
 	direction = '0';
     }
+    
+    public Robot(Robot robot) {
+	this(new Vector2(robot.position.x, robot.position.y), robot.color);
+    }
 
     public void update(float delta) {
 	stateTime += delta;

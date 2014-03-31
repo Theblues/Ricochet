@@ -24,6 +24,7 @@ public class Solo {
 
     protected Array<Block> blocks;
     protected Array<Robot> robots;
+    protected Array<Robot> oldRobots;
     protected Array<Mur> murs;
     private ArrayList<Objectif> alObjectif;
     private Objectif objectifEnCours;
@@ -38,6 +39,7 @@ public class Solo {
     public Solo() {
 	blocks = new Array<Block>();
 	robots = new Array<Robot>();
+	oldRobots = new Array<Robot>();
 	murs = new Array<Mur>();
 	alObjectif = new ArrayList<Objectif>();
 	r = new Random();
@@ -55,6 +57,8 @@ public class Solo {
 	createMiddle();
 	initWallBorder();
 	initRobots();
+	for (Robot robot : robots)
+	    oldRobots.add(new Robot(robot));
     }
 
     private void createBlocks() {
@@ -64,6 +68,7 @@ public class Solo {
 		if (i < SIZE_PLATEAU / 2f - 1 || i > SIZE_PLATEAU / 2f
 			|| j < SIZE_PLATEAU / 2f - 1 || j > SIZE_PLATEAU / 2f)
 		    blocks.add(new Block(new Vector2(i, j), 1, "game", "blanc"));
+	blocks.add(new Block(new Vector2(7, 7), 2, "game", "blanc"));
     }
 
     private void createBlocksObjectif() {
@@ -183,8 +188,9 @@ public class Solo {
 	}
     }
 
-    private void createMiddle() {
-	blocks.add(new Block(new Vector2(7, 7), 2, "game", "blanc"));
+    public void createMiddle() {
+	if (objectifEnCours != null)
+	    alObjectif.remove(objectifEnCours);
 	if (alObjectif.size() > 0) {
 	    float size = SIZE_PLATEAU / 2f;
 	    // on ajoute un objectif aléatoire parmis les objectifs disponibles
@@ -233,7 +239,20 @@ public class Solo {
 	    info.setColor(Color.GREEN);
 	    // on tire un nouvel objectif
 	    createMiddle();
+	    int lenght = robots.size;
+	    for (int i = 0; i < lenght; i++)
+		oldRobots.removeIndex(0);
+	    for (Robot r : robots)
+		oldRobots.add(new Robot(r));
 	}
+    }
+
+    public void resetRobots() {
+	int lenght = robots.size;
+	for (int i = 0; i < lenght; i++)
+	    robots.removeIndex(0);
+	for (Robot robot : oldRobots)
+	    robots.add(new Robot(robot));
     }
 
     public boolean objectifAccompli(Robot robot) {

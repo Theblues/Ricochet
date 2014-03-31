@@ -4,17 +4,21 @@ import android.os.SystemClock;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.Align;
 import com.erwan.ricochetRobots.controller.InputController;
 import com.erwan.ricochetRobots.controller.SoloController;
@@ -39,9 +43,13 @@ public class SoloScreen implements Screen {
     private Label message;
     private Label fps;
 
+    private TextButton btObjectifSuivant;
+
     private BitmapFont fontWhite;
 
     private long timePause;
+
+    private Skin skin;
 
     @Override
     public void render(float delta) {
@@ -97,6 +105,11 @@ public class SoloScreen implements Screen {
 	LabelStyle style = new LabelStyle(fontWhite, solo.getInfo().getColor());
 	message.setStyle(style);
 	message.setText(solo.getInfo().getMessage());
+
+	if (solo.getChrono().getMinutes() >= 5)
+	    stage.addActor(btObjectifSuivant);
+	else
+	    btObjectifSuivant.remove();
 
 	stage.act(delta);
 	stage.draw();
@@ -193,6 +206,21 @@ public class SoloScreen implements Screen {
 	stage.addActor(message);
 	stage.addActor(fps);
 
+	TextureAtlas atlas = new TextureAtlas("ui/button.pack");
+	skin = new Skin(atlas);
+
+	TextButtonStyle txtBtStyle = new TextButtonStyle();
+	txtBtStyle.up = skin.getDrawable("button.up");
+	txtBtStyle.down = skin.getDrawable("button.down");
+	txtBtStyle.pressedOffsetX = 1;
+	txtBtStyle.pressedOffsetY = -1;
+	txtBtStyle.font = fontWhite;
+	txtBtStyle.fontColor = Color.RED;
+
+	btObjectifSuivant = new TextButton("CHANGER D'OBJECTIF", txtBtStyle);
+	btObjectifSuivant.setPosition(0, top);
+	btObjectifSuivant.setSize(width, height);
+
 	// on modifie les inputs Controller
 	Gdx.input.setInputProcessor(new InputController() {
 	    private int initY;
@@ -210,6 +238,21 @@ public class SoloScreen implements Screen {
 	    public boolean touchDown(int screenX, int screenY, int pointer,
 		    int button) {
 		if (!solo.isStop()) {
+		    int y = Gdx.graphics.getHeight() - screenY;
+		    if (y > btObjectifSuivant.getY()
+			    && y < btObjectifSuivant.getY()
+				    + btObjectifSuivant.getHeight()) {
+			if (solo.getChrono().getMinutes() > 0) {
+			    solo.createMiddle();
+			    solo.resetRobots();
+			    solo.getInfo().setMessage("Changement d'objectif");
+			    solo.getInfo().setColor(Color.RED);
+			    solo.getInfo().getChrono()
+				    .setStartTime(SystemClock.uptimeMillis());
+			    solo.getChrono().setStartTime(
+				    SystemClock.uptimeMillis());
+			}
+		    }
 		    controller.touchDown(screenX, screenY);
 		    initX = screenX;
 		    initY = screenY;
@@ -275,6 +318,7 @@ public class SoloScreen implements Screen {
     @Override
     public void dispose() {
 	batch.dispose();
+	skin.dispose();
 	fondSprite.getTexture().dispose();
 	stage.dispose();
     }
