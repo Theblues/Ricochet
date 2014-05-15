@@ -1,10 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <string name="app_name">Ricochet Robots</string>
-	<string name="error_bluetooth">Erreur Bluetooth</string>
-	<string name="support_bluetooth">Votre téléphone ne possède pas le Bluetooth.</string>
-	<string name="active_bluetooth">Vous devez activer le bluetooth pour jouer contre un ami.</string>
-	<string name="bt_ok">OK</string>
-	<string name="indispo_title">Accès Indisponible</string>
-	<string name="indispo_txt">En cours de développement.</string>
+    <string name="error_bluetooth">Erreur Bluetooth</string>
+    <string name="support_bluetooth">Votre téléphone ne possède pas le Bluetooth.</string>
+    <string name="active_bluetooth">Vous devez activer le bluetooth pour jouer contre un ami.</string>
+    <string name="bt_ok">OK</string>
+    <string name="indispo_title">Accès Indisponible</string>
+    <string name="indispo_txt">En cours de développement.</string>
+    <string name="title_activity_device_list">DeviceListActivity</string>
+    <string name="action_settings">Settings</string>
+    <string name="hello_world">Hello world!</string>
+    
+    <!-- DeviceListActivity -->
+	<string name="scanning">Scanning for devices</string>
+	<string name="select_device">Select a device to connect</string>
+	<string name="none_paired">No devices have been paired</string>
+	<string name="none_found">No devices found</string>
+	<string name="title_paired_devices">Paired Devices</string>
+	<string name="title_other_devices">Other Available Devices</string>
+	<string name="button_scan">Scan for devices</string>
+
 </resources>

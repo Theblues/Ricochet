@@ -11,10 +11,6 @@ public class BluetoothConnexion {
 	RicochetRobots.getRicochetInterface().possedeBluetooth();
     }
 
-    public static void possedeBluetooth() {
-	RicochetRobots.getRicochetInterface().activeBluetooth();
-    }
-
     public static void actif() {
 	((Game) Gdx.app.getApplicationListener()).setScreen(new MultiScreen());
     }

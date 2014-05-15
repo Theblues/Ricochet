@@ -23,10 +23,7 @@ public class RicochetRobots extends Game {
 
     @Override
     public void create() {
-	if (firstTime) {
-	    firstTime = false;
-	    setScreen(new SplashScreen());
-	} else
-	    setScreen(new MenuScreen());
+	setScreen(firstTime ? new SplashScreen() : new MenuScreen());
+	firstTime = false;
     }
 }
